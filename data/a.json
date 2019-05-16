@@ -1,0 +1,180 @@
+{
+  "name": "Sacramento Budget 2015/16",
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "amount2016": 2450000.0,
+              "amount2015": 2810000.0,
+              "name": "Citywide MultiTenant Operations"
+            },
+            {
+              "amount2016": 3195621.0,
+              "amount2015": 2009831.0,
+              "name": "Employee Development"
+            },
+            {
+              "amount2016": 11014393.0,
+              "amount2015": 10288618.0,
+              "name": "Gen Insurance/Termination"
+            },
+            {
+              "amount2016": 39545860.0,
+              "amount2015": 32509124.0,
+              "name": "MYOP Funding"
+            },
+            {
+              "name": "Other",
+              "children": [
+                {
+                  "amount2016": 400000.0,
+                  "amount2015": 500000.0,
+                  "name": "Citywide Elections"
+                },
+                {
+                  "amount2016": 1800000.0,
+                  "amount2015": 1881301.0,
+                  "name": "Citywide IT Maintenance & Supp"
+                },
+                {
+                  "amount2016": 50000.0,
+                  "amount2015": 100000.0,
+                  "name": "Citywide Litigation"
+                },
+                {
+                  "amount2016": 1182000.0,
+                  "amount2015": 1476000.0,
+                  "name": "Other Program Support"
+                },
+                {
+                  "amount2016": 50000.0,
+                  "amount2015": 75000.0,
+                  "name": "Successor Agency"
+                }
+              ]
+            }
+          ],
+          "name": "Citywide Support Division",
+          "desc": ""
+        },
+        {
+          "children": [
+            {
+              "amount2016": 2208567.0,
+              "amount2015": 2254099.0,
+              "name": "CCOMWP"
+            },
+            {
+              "amount2016": 2732259.0,
+              "amount2015": 2717659.0,
+              "name": "Community Programs"
+            },
+            {
+              "amount2016": 14860060.0,
+              "amount2015": 12666469.0,
+              "name": "Library JPA"
+            },
+            {
+              "amount2016": 12456934.0,
+              "amount2015": 13579070.0,
+              "name": "Special/Business Districts"
+            },
+            {
+              "name": "Other",
+              "children": [
+                {
+                  "amount2016": 663758.0,
+                  "amount2015": 527758.0,
+                  "name": "Arts Stabilization"
+                },
+                {
+                  "amount2016": 0.0,
+                  "amount2015": -1.0,
+                  "name": "LAFCo"
+                },
+                {
+                  "amount2016": 0.0,
+                  "amount2015": 0.0,
+                  "name": "SAFCA"
+                },
+                {
+                  "amount2016": 15000.0,
+                  "amount2015": 20000.0,
+                  "name": "Utility Users Tax Rebate"
+                }
+              ]
+            }
+          ],
+          "name": "Community Support Division",
+          "desc": ""
+        },
+        {
+          "children": [
+            {
+              "amount2016": 20664360.0,
+              "amount2015": 20402000.0,
+              "name": "Retired/Transfer Emp Benef"
+            },
+            {
+              "name": "Other",
+              "children": []
+            }
+          ],
+          "name": "Retired/Transfer Emp Benefit 1530",
+          "desc": ""
+        },
+        {
+          "name": "Other",
+          "children": [
+            {
+              "name": "County Property Taxes & Charges",
+              "children": [
+                {
+                  "amount2016": 2450000.0,
+                  "amount2015": 2700000.0,
+                  "name": "Sacramento County Charges"
+                },
+                {
+                  "name": "Other",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "Fund Contingency Division",
+              "children": [
+                {
+                  "amount2016": 1000000.0,
+                  "amount2015": 2400000.0,
+                  "name": "Administrative Contingency"
+                },
+                {
+                  "name": "Other",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "Major Tax Revenues Division",
+              "children": [
+                {
+                  "amount2016": 400000.0,
+                  "amount2015": 500000.0,
+                  "name": "Major Tax Revenues DeptID"
+                },
+                {
+                  "name": "Other",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "name": "Citywide and Community Support",
+      "desc": ""
+    }
+  ]
+}
