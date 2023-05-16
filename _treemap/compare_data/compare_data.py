@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -58,23 +59,105 @@ def create_account_type_table(df, config):
                           columns=[config["account_type_header"]], aggfunc=np.sum, fill_value=0)
 
 
-def generate_file_path(filename):
-    return filename
+def write_json_file(path, contents, overwrite=True):
+    directory = Path(os.path.dirname(path))
+    directory.mkdir(parents=True, exist_ok=overwrite)
+    with open(path, 'w', encoding="utf-8") as file:
+        json.dump(contents, file)
 
 
-def filter_data_frame(df):
-    return df
+def create_budget_expenses_totals_file(general_funds_table, totals_table, expense_key, fiscal_years):
+    totals_table.index.get_level_values(0).unique()
+    totals_list = list()
+    for year in fiscal_years:
+        total_dict = dict()
+        total_dict["budget_type"] = str(1)
+        fiscal_year_range_string = f"FY{year[-2:]}"
+        total_dict["fiscal_year_range"] = fiscal_year_range_string
+        total_dict["total"] = str(totals_table.loc[fiscal_year_range_string].sum()[expense_key])
+        total_dict["general_fund"] = str(general_funds_table.loc[fiscal_year_range_string].sum()[expense_key])
+        totals_list.append(total_dict)
+    write_json_file(Path("fiscal-years-expenses", "totals.json"), totals_list)
+
+
+def create_files_by_year(department_table, account_categories_table, revenue_key, expense_key, config):
+    for group in config["groups"]:
+        fiscal_year_key = f"FY{group['values'][1][-2:]}"
+        if group["values"][0] == revenue_key:
+            account_category_list = list()
+            for account_category in account_categories_table:
+                account_categories_dict = dict()
+                account_categories_dict["budget_type"] = "1"
+                account_categories_dict["fiscal_year_range"] = fiscal_year_key
+                account_categories_dict["account_category"] = ""
+                account_categories_dict["total"] = ""
+
+            account_categories_dict["general_fund"] = ""
+            departments_dict = dict()
+            departments_dict["budget_type"] = "1"
+            departments_dict["fiscal_year_range"] = fiscal_year_key
+            departments_dict["account_category"] = ""
+            departments_dict["total"] = ""
+            departments_dict["general_fund"] = ""
+            write_json_file(Path("fiscal-years-revenue", "account-cats", fiscal_year_key), "")
+            write_json_file(Path("fiscal-years-revenue", "depts", fiscal_year_key), "")
+        elif group["values"][0] == expense_key:
+            account_categories_dict = dict()
+            account_categories_dict["budget_type"] = "1"
+            account_categories_dict["fiscal_year_range"] = fiscal_year_key
+            account_categories_dict["account_category"] = ""
+            account_categories_dict["total"] = ""
+            account_categories_dict["general_fund"] = ""
+            departments_dict = dict()
+            departments_dict["budget_type"] = "1"
+            departments_dict["fiscal_year_range"] = fiscal_year_key
+            departments_dict["account_category"] = ""
+            departments_dict["total"] = ""
+            departments_dict["general_fund"] = ""
+            write_json_file(Path("fiscal-years-expenses", "account-cats", fiscal_year_key), "")
+            write_json_file(Path("fiscal-years-expenses", "depts", fiscal_year_key), "")
+    """
+    "budget_type": "1",
+    "fiscal_year_range": "FY15",
+    "account_category": "Interfund SerProvided",
+    "total": "-122369",
+    "general_fund": "-189657"
+    """
 
 
 def generate_files(df, config):
-    account_type_table = create_account_type_table(df, config)
-    departments_table = create_account_type_table(df, config)
-    for group in config["groups"]:
-        if group["values"][0] == config["account_types"]["revenue"]:
-            json.dump(account_type_table, open(generate_file_path(group['filename']), 'w'))
-        elif group["values"][0] == config["account_types"]["expense"]:
-            json.dump(filter_data_frame(create_department_table(df, config)),
-                      open(generate_file_path(group['filename']), 'w'))
+    departments_general_funds_table = pd.pivot_table(df[df[config["categories"]["fund"]] == 'General Funds'],
+                                                     values=config["amount_header"],
+                                                     index=[config["categories"]["fiscal_year_range"],
+                                                            config["categories"]["department"]],
+                                                     columns=[config["account_type_header"]], aggfunc=np.sum,
+                                                     fill_value=0)
+    departments_totals_table = pd.pivot_table(df, values=config["amount_header"],
+                                              index=[config["categories"]["fiscal_year_range"],
+                                                     config["categories"]["department"]],
+                                              columns=[config["account_type_header"]], aggfunc=np.sum, fill_value=0)
+    account_categories_general_funds_table = pd.pivot_table(df[df[config["categories"]["fund"]] == 'General Funds'],
+                                                            values=config["amount_header"],
+                                                            index=[config["categories"]["fiscal_year_range"],
+                                                                   config["categories"]["account_category"]],
+                                                            columns=[config["account_type_header"]], aggfunc=np.sum,
+                                                            fill_value=0)
+    account_categories_totals_table = pd.pivot_table(df, values=config["amount_header"],
+                                                     index=[config["categories"]["fiscal_year_range"],
+                                                            config["categories"]["account_category"]],
+                                                     columns=[config["account_type_header"]], aggfunc=np.sum,
+                                                     fill_value=0)
+    account_categories_table = account_categories_totals_table[['General Fund Revenues', 'General Fund Expenses']] = \
+        account_categories_general_funds_table[['Revenues', 'Expenses']]
+    departments_table = departments_totals_table[['General Fund Revenues', 'General Fund Expenses']] = \
+        departments_general_funds_table[['Revenues', 'Expenses']]
+    fiscal_years = np.sort(df[config["categories"]["fiscal_year_range"]].unique())
+    revenue_key = config["account_types"]["revenue"]
+    expense_key = config["account_types"]["expense"]
+
+    create_files_by_year(departments_table, account_categories_table, revenue_key, expense_key, config)
+    # create_budget_expenses_totals_file(departments_general_funds_table, departments_totals_table, expense_key,
+    #                                    fiscal_years)
 
 
 def main():

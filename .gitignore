@@ -8,6 +8,3 @@ build/
 yarn.lock
 .sass-cache/release
 _treemap/Approved.*.json
-.vscode/launch.json
-.vscode/settings.json
-.idea/
