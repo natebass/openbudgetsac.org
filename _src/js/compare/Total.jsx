@@ -1,41 +1,75 @@
-import React from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
-import {entries} from 'd3-collection';
-import {asTick, asDiff, DiffStyled, compareChartOptions} from './utils';
-import Spinner from 'react-spinkit';
+import React from "react";
+import {Bar} from "react-chartjs-2";
+import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from "chart.js";
+import {asTick, DiffStyled, parseDiff} from "./utils.jsx";
 
-export default class Total extends React.Component {
-  constructor(props) {
-    super(props);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const chartOptions = {
+  indexAxis: "y",
+  elements: {
+    bar: {
+      borderWidth: 2,
+    },
+  },
+  scales: {
+    x: {
+      ticks: {
+        beginAtZero: true,
+        callback: value => `${asTick(value / 1000000)}M`
+      },
+    },
+  },
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      callbacks: {
+        label: context => `${context.dataset.label}: ${asTick(context.raw / 1000000)}M`
+      },
+    }
   }
+};
 
-  render() {
-    const totals = this.props.data;
-    if (!totals.length || totals.some(record => !record)) {
-      return <Spinner spinnerName="wave" noFadeIn/>
-    }
+const Total = ({selectedYears, colors, diffColors, changeType}) => {
+  const diff = parseDiff(selectedYears, changeType)
+  const data = {
+    labels: ["Total"],
+    datasets: selectedYears.map((entry, i) => {
+      return {
+        data: [entry.total],
+        label: entry.label,
+        backgroundColor: colors[i],
+        barPercentage: 0.8,
+        categoryPercentage: 1,
+      };
+    }),
+  };
 
-    let diff = totals[0].total - totals[1].total;
-    if (this.props.usePct) {
-      diff = diff / totals[1].total;
-    }
-    const data = {
-      labels: ['Total'],
-      datasets: totals.map((entry, i) => {
-        return {
-          data: [entry.total],
-          label: entry.key,
-          backgroundColor: this.props.colors[i],
-        };
-      }),
-    };
-
-    return <div>
-      <h2>Total Change:
-        <DiffStyled diff={diff} colors={this.props.diffColors} usePct={this.props.usePct}>
-        </DiffStyled>
+  return (
+    <div>
+      <h2 className="text-3xl">
+        Total Change:
+        <DiffStyled
+          diff={diff}
+          colors={diffColors}
+          usePercent={changeType.value === "pct"}
+        ></DiffStyled>
       </h2>
-      <HorizontalBar data={data} height={25} options={compareChartOptions}></HorizontalBar>
+      <div className="h-[100px] w-full">
+        <Bar data={data} options={chartOptions}/>
+      </div>
     </div>
-  }
-}
+  );
+};
+
+export default Total;

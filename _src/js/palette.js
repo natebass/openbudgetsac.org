@@ -12,7 +12,7 @@ ob.palette = ob.palette || {};
       return new_color;
     };
 
-     var _default_palette = d3.scale.ordinal().range([
+     var _default_palette = d3.scaleOrdinal().range([
         '#D9CEB2',
         '#948C75',
         '#D5DED9',

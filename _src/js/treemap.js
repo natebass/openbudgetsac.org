@@ -426,7 +426,7 @@ ob.display = ob.display || {};
 
 				/* TODO: how to deal with color arrays */
 				if (!_colors) {
-					_colors = d3.scale.category10().domain([0, _max_rects]);
+					_colors = d3.scaleOrdinal(d3.schemeCategory10).domain([0, _max_rects]);
 				}
 
 				/* create svg */

@@ -44,15 +44,13 @@ script.
 
     function drawFlow(){
         // get currently selected value
-        var filename = d3.select('#fy.form-control')[0][0].value;
-        var fy = filename.split('__')[0];
-
-        d3.csv("../data/flow/" + filename, function(error, data){
+        var filename = d3.select('#fy.form-control').property("value");
+        d3.csv("/data/flow/" + filename, function(data, error){
             if (error) {
                 console.log('error', error);
                 return false;
             }
-            var final_data = data_wrangle(data, fy);
+            var final_data = data_wrangle(data, filename);
             do_with_budget(final_data);
         });
     }

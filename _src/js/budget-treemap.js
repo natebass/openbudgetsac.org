@@ -281,7 +281,7 @@ ob.display = ob.display || {};
 
 
         /* create initial color palette */
-        var _color_stack = ob.palette.stack().palette(d3.scale.ordinal().range(_palette));
+        var _color_stack = ob.palette.stack().palette(d3.scaleOrdinal().range(_palette));
         this._create_dropdown();
 
         /* create and configure the tooltip */

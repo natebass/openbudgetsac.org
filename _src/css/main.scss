@@ -1,12 +1,8 @@
 @import "variables";
 @import "mixins";
-@import "bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "mid-small"; // adds mid-small breakpoint
-@import "bootstrap-overrides"; // custom styles to override Bootstrap defaults
+@import '~bootstrap/scss/bootstrap';
 @import "base";
-@import "sections/home";
 @import "compare";
-// @import "homesplash";
 
 @import "treemap"; // D3 Treemap
 @import "flow"; // D3 Sankey diagram
@@ -75,9 +71,9 @@ footer {
     li {
       margin-right: 10px;
       a {
-        @include opacity(.8);
+        @apply opacity-80;
         &:hover {
-          @include opacity(1);
+          @apply opacity-100;
         }
       }
       img {
@@ -95,6 +91,6 @@ footer {
 }
 @include footer-height(150px);
 
-@media (max-width: $screen-sm-min){
+@include media-breakpoint-up(sm) {
   @include footer-height(200px);
 }

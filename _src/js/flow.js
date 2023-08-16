@@ -6,7 +6,7 @@ var formatNumber = d3.format(",.0f"),
   format = function (d) {
     return "$" + formatNumber(d);
   },
-  color = d3.scale.category10();
+  color = d3.scaleOrdinal(d3.schemeCategory10);
 
 var svg = d3
   .select("#chart")
@@ -28,14 +28,12 @@ svg
   .attr("text-anchor", "end");
 
 // define color scales
-var fundColors = d3.scale
-  .ordinal()
+var fundColors = d3.scaleOrdinal()
   .domain(["General Fund", "Non-discretionary funds"])
   .range(["#4285ff", "#8249b7"]); //2020 renovation
 // .range(["#276419", "#4db029"]);
 // .range(["#276419", "#b8e186"]);
-var erColors = d3.scale
-  .ordinal()
+var erColors = d3.scaleOrdinal()
   .domain(["expense", "revenue"])
   .range(["#ff8129", "#7fc97f"]);
 // .range(["#ffb36b", "#7fc97f"]);
@@ -144,7 +142,7 @@ function data_wrangle(dataset, fy) {
 }
 
 function data_wrangle_v1(dataset, fy) {
-
+  console.log(dataset)
   var newdata = dataset.filter(function (v) {
     return v.budget_year == fy;
   });
@@ -277,6 +275,7 @@ function data_wrangle_v1(dataset, fy) {
 }
 
 function data_wrangle_v2(dataset, fy) {
+  console.log(dataset)
 
   var newdata = dataset.filter(function (v) {
     return true;

@@ -1,115 +1,91 @@
-import React from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
-import {entries, keys, set} from 'd3-collection';
+import React, {useState} from 'react';
+import {Bar} from 'react-chartjs-2';
+import {keys, set} from 'd3-collection';
 import {ascending, descending} from 'd3-array';
+import {DiffStyled, horizontalChartOptions} from './utils.jsx';
+import Select from "react-select";
 
-import {asTick, asDiff, DiffStyled, compareChartOptions} from './utils';
-
-
-export default class DiffTable extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      sortBy: 'diff',
-    }
-    this.updateSort = this.updateSort.bind(this);
-  }
-
-  updateSort (event) {
-    const target = event.target;
-    this.setState({sortBy: target.value});
-  }
-
-  render () {
-    const sortFunc = this.state.sortBy === 'diff' ? descending : ascending;
-
-    // get list of all possible keys from both budgets
-    const allKeys = set();
-    keys(this.props.data[0]).forEach(key => {
-      allKeys.add(key);
-    });
-    keys(this.props.data[1]).forEach(key => {
-      allKeys.add(key);
-    });
-    const diffList = allKeys.values().map(key => {
+const DiffTable = ({data, usePercent, years, colors, diffColors}) => {
+  const [sortBy, setSortBy] = useState("diff")
+  const sortFunc = sortBy === "diff" ? descending : ascending;
+  const options = [{"value": "diff", "label": 'Amount'}, {"value": "key", "label": 'Name'}]
+  const allKeys = set()
+  keys(data[0]).forEach(key => allKeys.add(key))
+  keys(data[1]).forEach(key => allKeys.add(key))
+  const diffList = allKeys
+    .values()
+    .map(key => {
       // check for key in both years; if one is missing,
       // set some special value that indicates that
-      const res = {
+      const response = {
         key,
-        value: this.props.data[0][key],
-        prev: this.props.data[1][key],
-      };
-      // if key exists in previous, we can calculate a diff;
-      // missing values (removed entities) cast to zero for -100% diff
-      if (res.prev) {
-        res.diff = (res.value || 0) - res.prev;
-        if (this.props.usePct) {
-          res.diff = res.diff / Math.abs(res.prev);
-        }
-      } else {
-        // sentinel value: indicates there was no previous budget,
-        // so this is a newly created entity. UI can handle these differently
-        // if desired, and they will sort to the top of the list.
-        res.diff = Infinity;
+        value: data[0][key],
+        prev: data[1][key]
       }
-      return res;
+      // If key exists in previous, we can calculate a diff.
+      // For missing values (removed entities) cast to zero for -100% diff
+      if (response.prev) {
+        response.diff = (response.value || 0) - response.prev
+        if (usePercent) response.diff = response.diff / Math.abs(response.prev)
+      } else {
+        // Sentinel value: indicates there was no previous budget, so this is a newly created entity.
+        // The UI can handle these differently if desired, and they will sort to the top of the list.
+        response.diff = Infinity
+      }
+      return response
     })
-    .sort((a, b) => {
-      return sortFunc(a[this.state.sortBy], b[this.state.sortBy]);
-    })
+    .sort((a, b) => sortFunc(a[sortBy], b[sortBy]))
     .map(entry => {
       const data = {
-        labels: [''],
+        labels: [""],
         datasets: [
           {
             data: [entry.value],
-            label: this.props.years[0].fiscal_year_range,
-            backgroundColor: this.props.colors[0],
+            label: years[0].value,
+            backgroundColor: colors[0],
           },
           {
             data: [entry.prev],
-            label: this.props.years[1].fiscal_year_range,
-            backgroundColor: this.props.colors[1],
+            label: years[1].value,
+            backgroundColor: colors[1],
           },
-        ]
-      };
-
-      return <tr key={entry.key}>
-        <td>
-          <h4>
+        ],
+      }
+      return (
+        // TODO: Fix table styling resize bug. Rewrite and clean up styles.
+        <div className="flex mt-6" key={entry.key}>
+          <div style={{position: "relative", margin: "auto", width: "70vw"}} className="flex-1">
             {entry.key}
-            <HorizontalBar data={data} options={compareChartOptions} height={40}>
-            </HorizontalBar>
-          </h4>
-        </td>
-        <td>
-          <DiffStyled diff={entry.diff} colors={this.props.diffColors}
-            usePct={this.props.usePct}>
-          </DiffStyled>
-        </td>
-      </tr>
-    });
+            <Bar className="grow w-max" data={data} options={horizontalChartOptions} height={40}></Bar>
+          </div>
+          <div className="">
+            <DiffStyled
+              diff={entry.diff}
+              colors={diffColors}
+              usePercent={usePercent}
+            ></DiffStyled>
+          </div>
+        </div>
+      )
+    })
 
-    return <table className="table">
-      <thead>
-        <tr>
-          <th colSpan="2" className="form-horizontal">
-            <div className="form-group">
-              <label className="col-sm-3 col-sm-offset-6 control-label" htmlFor="sortControl">sort by: </label>
-              <div className="col-sm-3">
-                <select className="form-control" id="sortControl"
-                value={this.state.sortBy} onChange={this.updateSort}>
-                  <option value="diff">amount</option>
-                  <option value="key">name</option>
-                </select>
-              </div>
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {diffList}
-      </tbody>
-    </table>
-  }
+  return (
+    <div className="mt-6">
+      <div className="flex justify-end">
+        <div className="flex items-center w-fit">
+          <label className="h-fit mr-3">Sort by:</label>
+          <Select
+            options={options}
+            value={options.filter(option => option.value === sortBy)[0]}
+            onChange={selection => setSortBy(selection.value)}
+            searchable={false}
+            clearable={false}
+          />
+        </div>
+      </div>
+      <div className="">{diffList}</div>
+    </div>
+  )
 }
+
+export default DiffTable;
