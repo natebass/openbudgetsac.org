@@ -1,60 +1,60 @@
-var ob = ob || {};
-ob.display = ob.display || {};
+const ob = ob || {}
+ob.display = ob.display || {}
 
-;(function (namespace, undefined) {
+(function (namespace, undefined) {
 
 	namespace.spreadsheet = function() {
-		var _data = null;
-		var _element = null;
-		var _width = null;
-		var _on = {};
-    var _columns = []
+		const _data = null
+		const _element = null
+		const _width = null
+		const _on = {}
+    const _columns = []
 
-		var _get_value = function(d) {
-			return d.value;
+		const _get_value = function(d) {
+			return d.value
 		}
 
-    var _cell = function(d, i, elem) {
-      elem.html(d.value);
+    const _cell = function(d, i, elem) {
+      elem.html(d.value)
     }
 
-    var _column = function(d, i, elem) {
-      elem.html(d.value);
+    const _column = function(d, i, elem) {
+      elem.html(d.value)
     }
 
 		return {
 
 			width: function() {
 				if (arguments.length == 0) {
-					return _width;
+					return _width
 				}
-				_width = arguments[0];
-				return this;
+				_width = arguments[0]
+				return this
 			},
 
 			on: function(action, callback) {
 				if (callback) {
-					_on[action] = callback;
+					_on[action] = callback
 				}
 				else if (action) {
-					return _on[action];
+					return _on[action]
 				}
-				return this;
+				return this
 			},
 
       columns: function() {
         if (arguments.length == 0) {
-          return _columns;
+          return _columns
         }
-        _columns = arguments[0];
-        return this;
+        _columns = arguments[0]
+        return this
       },
 
       column: function() {
         if (arguments.length == 0) {
-          return _column;
+          return _column
         }
-        _column = arguments[0];
+        _column = arguments[0]
         return this;
       },
 
@@ -103,35 +103,35 @@ ob.display = ob.display || {};
 			display: function() {
 				/* remove old stuff */
 				_element.select("table").remove();
-				var table = _element.append("table")
+				const table = _element.append("table")
 					.attr("class", "spreadsheet table")
 					.attr("width", _width);
-				var thead_tr = table.append("thead").append("tr");
-				var tbody = table.append("tbody");
+				const thead_tr = table.append("thead").append("tr");
+				const tbody = table.append("tbody");
 				_element.select("#more").remove();
 
         /* configure columns */
-        for (var i = 0; i < _columns.length; i++) {
+        for (const i = 0; i < _columns.length; i++) {
           _column(_columns[i], i, thead_tr.append("th"));
         }
 
 				tbody.selectAll("tr").remove();
-				var rows = tbody.selectAll("tr").data(_data);
-				var row = rows.enter().append("tr")
+				const rows = tbody.selectAll("tr").data(_data);
+				const row = rows.enter().append("tr")
 					.on("click", function(d, i) {
 						if (_on["click"]) {
 							_on["click"](d,i);
 						}
 					});
-        var cells = row.selectAll("td").data(function(d, i) {
-          var new_data = [];
-          for (var j = 0; j < _columns.length; j++) {
+        const cells = row.selectAll("td").data(function(d, i) {
+          const new_data = [];
+          for (const j = 0; j < _columns.length; j++) {
             new_data.push({'d': d, 'row': i});
           }
           return new_data;
         });
 
-        var cell = cells.enter().append("td");
+        const cell = cells.enter().append("td");
         cell.datum(function(d, i) {
           _cell(d.d, i, d.row, d3.select(this));
         });

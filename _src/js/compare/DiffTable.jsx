@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {Bar} from 'react-chartjs-2';
-import {keys, set} from 'd3-collection';
-import {ascending, descending} from 'd3-array';
-import {DiffStyled, horizontalChartOptions} from './utils.jsx';
-import Select from "react-select";
+import React, {useState} from 'react'
+import {Bar} from 'react-chartjs-2'
+import {keys, set} from 'd3-collection'
+import {ascending, descending} from 'd3-array'
+import {DiffStyled, horizontalChartOptions} from './utils.jsx'
+import Select from "react-select"
 
 const DiffTable = ({data, usePercent, years, colors, diffColors}) => {
   const [sortBy, setSortBy] = useState("diff")
-  const sortFunc = sortBy === "diff" ? descending : ascending;
+  const sortFunc = sortBy === "diff" ? descending : ascending
   const options = [{"value": "diff", "label": 'Amount'}, {"value": "key", "label": 'Name'}]
   const allKeys = set()
   keys(data[0]).forEach(key => allKeys.add(key))
@@ -15,7 +15,7 @@ const DiffTable = ({data, usePercent, years, colors, diffColors}) => {
   const diffList = allKeys
     .values()
     .map(key => {
-      // check for key in both years; if one is missing,
+      // check for key in both years if one is missing,
       // set some special value that indicates that
       const response = {
         key,
@@ -88,4 +88,4 @@ const DiffTable = ({data, usePercent, years, colors, diffColors}) => {
   )
 }
 
-export default DiffTable;
+export default DiffTable

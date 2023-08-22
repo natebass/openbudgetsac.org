@@ -1,17 +1,17 @@
-import React from "react";
-import { format } from "d3-format";
+import React from "react"
+import { format } from "d3-format"
 
-export const asTick = format("$,.1f");
+export const asTick = format("$,.1f")
 
-export const asDollars = format("+$,");
+export const asDollars = format("+$,")
 
-export const asPct = format("+.2%");
+export const asPct = format("+.2%")
 
 export const BUDGET_TYPES = {
   '1': 'Adopted',
   '2': 'Adjusted',
   '3': 'Proposed',
-};
+}
 
 export const horizontalChartOptions = {
   indexAxis: "y",
@@ -34,29 +34,29 @@ export const horizontalChartOptions = {
       },
     }
   }
-};
+}
 
 export function asDiff(value, usePct) {
   // special handling for sentinel values
   switch (value) {
     case Infinity:
-      return "Newly Added";
+      return "Newly Added"
     default:
       // otherwise, choose the appropriate formatting.
       if (usePct) {
-        return asPct(value);
+        return asPct(value)
       } else {
-        return asDollars(value);
+        return asDollars(value)
       }
   }
 }
 
 
 export function DiffStyled({diff, colors, usePercent}) {
-  const style = {color: diff >= 0 ? colors.pos : colors.neg};
+  const style = {color: diff >= 0 ? colors.pos : colors.neg}
   return (
     <span style={style}> {asDiff(diff, usePercent)}</span>
-  );
+  )
 }
 
 export function parseDiff(selectedYears, changeType) {

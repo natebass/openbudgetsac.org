@@ -1,7 +1,7 @@
-import React from "react";
-import {Bar} from "react-chartjs-2";
-import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from "chart.js";
-import {asTick, DiffStyled, parseDiff} from "./utils.jsx";
+import React from "react"
+import {Bar} from "react-chartjs-2"
+import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip,} from "chart.js"
+import {asTick, DiffStyled, parseDiff} from "./utils.jsx"
 
 ChartJS.register(
   CategoryScale,
@@ -10,7 +10,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 const chartOptions = {
   indexAxis: "y",
@@ -38,7 +38,7 @@ const chartOptions = {
       },
     }
   }
-};
+}
 
 const Total = ({selectedYears, colors, diffColors, changeType}) => {
   const diff = parseDiff(selectedYears, changeType)
@@ -51,9 +51,9 @@ const Total = ({selectedYears, colors, diffColors, changeType}) => {
         backgroundColor: colors[i],
         barPercentage: 0.8,
         categoryPercentage: 1,
-      };
+      }
     }),
-  };
+  }
 
   return (
     <div>
@@ -69,7 +69,7 @@ const Total = ({selectedYears, colors, diffColors, changeType}) => {
         <Bar data={data} options={chartOptions}/>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Total;
+export default Total

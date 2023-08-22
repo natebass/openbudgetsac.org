@@ -36,9 +36,9 @@ block content
         {filename: "FY19.csv"},
         {filename: "FY20.csv"},
         {filename: "FY21.csv"},
-        {filename: "FY22.csv"},
+        {filename: "FY22.csv"}
       ]
     each fileObj in fileNames
       input(class="filename-data", type="hidden", value=fileObj.filename)
       
-    include partials/flowScripts
+    script(src='../dist/flow.bundle.js', charset='utf-8')

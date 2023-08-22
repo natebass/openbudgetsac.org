@@ -1,74 +1,74 @@
-var ob = ob || {};
-ob.display = ob.display || {};
+const ob = ob || {}
+ob.display = ob.display || {}
 
-;(function (namespace, undefined) {
+(function (namespace, undefined) {
 	namespace.treemap = function() {
 
-		var _data = null;
-		var _root = null;
+		const _data = null
+		const _root = null
 
 		/* display elements */
-		var _svg = null;
-		var _g = null;
-		var _colors = null;
-		var _current_display = null;
+		const _svg = null
+		const _g = null
+		const _colors = null
+		const _current_display = null
 
 		/* layout settings */
-		var _margin = {top: 0, right: 0, bottom: 0, left: 0};
-		var _width = 800;
-		var _height = 500;
-		var _min_area_for_text = 0.0125;
-		var _max_rects = 40;
-		var _transitioning = false;
+		const _margin = {top: 0, right: 0, bottom: 0, left: 0}
+		const _width = 800
+		const _height = 500
+		const _min_area_for_text = 0.0125
+		const _max_rects = 40
+		const _transitioning = false
 
-		var _treemap = null;
+		const _treemap = null
 
 		/* interactions */
-		var _on_handlers = {};
+		const _on_handlers = {}
 
 		function _inner_height() {
-			return _height - _margin.top - _margin.bottom;
+			return _height - _margin.top - _margin.bottom
 		}
 
 		function _inner_width() {
-			return _width - _margin.left - _margin.right;
+			return _width - _margin.left - _margin.right
 		}
 
 		/* data settings */
-		var _get_value = function(d) {
-			return d.value;
+		const _get_value = function(d) {
+			return d.value
 		}
 
-		var _rect_text = function(d, i) {
-			return '' + _get_value(d.value);
+		const _rect_text = function(d, i) {
+			return '' + _get_value(d.value)
 		}
 
 		function _path(d) {
-			var p = [];
+			const p = []
 			while (d.parent) {
-				p.push(d);
-				d = d.parent;
+				p.push(d)
+				d = d.parent
 			}
-			p.reverse();
-			return p;
-		};
+			p.reverse()
+			return p
+		}
 
 		/* display helper functions */
 		function _initialize(root) {
-			root.x = root.y = 0;
-			root.dx = 1.0;
-			root.dy = 1.0;
-			root.depth = 0;
+			root.x = root.y = 0
+			root.dx = 1.0
+			root.dy = 1.0
+			root.depth = 0
 		}
 
 		function _create_display(d) {
-			var x = d3.scale.linear()
+			const x = d3.scale.linear()
 				.domain([0.0, 1.0])
-				.range([0, _inner_width()]);
+				.range([0, _inner_width()])
 
-			var y = d3.scale.linear()
+			const y = d3.scale.linear()
 				.domain([0.0, 1.0])
-				.range([0, _inner_height()]);
+				.range([0, _inner_height()])
 
 
 			return {
@@ -77,45 +77,45 @@ ob.display = ob.display || {};
 				y: y,
 
 				text: function(text) {
-					text.attr("x", function(d) { return x(d.x) + 6; })
-						.attr("y", function(d) { return y(d.y) + 6; });
+					text.attr("x", function(d) { return x(d.x) + 6 })
+						.attr("y", function(d) { return y(d.y) + 6 })
 				},
 
 				rect: function(rect) {
-					rect.attr("x", function(d) { return x(d.x); })
-						.attr("y", function(d) { return y(d.y); })
-						.attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
-						.attr("height", function(d) { return y(d.y + d.dy) - y(d.y) });
+					rect.attr("x", function(d) { return x(d.x) })
+						.attr("y", function(d) { return y(d.y) })
+						.attr("width", function(d) { return x(d.x + d.dx) - x(d.x) })
+						.attr("height", function(d) { return y(d.y + d.dy) - y(d.y) })
 				},
 
 				foreign:  function(foreign) {
-					foreign.attr("x", function(d) { return x(d.x); })
-						.attr("y", function(d) { return y(d.y); })
-						.attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
-						.attr("height", function(d) { return y(d.y + d.dy) - y(d.y) });
+					foreign.attr("x", function(d) { return x(d.x) })
+						.attr("y", function(d) { return y(d.y) })
+						.attr("width", function(d) { return x(d.x + d.dx) - x(d.x) })
+						.attr("height", function(d) { return y(d.y + d.dy) - y(d.y) })
 				}
-			};
+			}
 		}
 
 		/* display show the treemap and writes the embedded transition function */
 		function _display(d) {
-      var displayed_data = d;
+      const displayed_data = d
 			if (_on_handlers["display"]) {
-				_on_handlers["display"](d);
+				_on_handlers["display"](d)
 			}
-			var disp = _create_display(d);
+			const disp = _create_display(d)
 
 			disp.g = _svg.insert("g", ".grandparent")
 				.datum(d)
-				.attr("style", "cursor: pointer;")
-				.attr("class", "depth");
+				.attr("style", "cursor: pointer")
+				.attr("class", "depth")
 
 			/* add in data */
 			_g = disp.g.selectAll("g")
 				.data(d.children)
 				.enter().append("g")
-				.on("click", function (d, i) { disp.transition(d, i, true);} )
-				.attr("class", "groups");
+				.on("click", function (d, i) { disp.transition(d, i, true)} )
+				.attr("class", "groups")
 
 			/* transition on child click */
 			_g.filter(function(d) { return d.children; })
@@ -146,7 +146,7 @@ ob.display = ob.display || {};
 				});
 
 			/* Adding a foreign object instead of a text object, allows for text wrapping */
-			var fo = _g.append("foreignObject")
+			const fo = _g.append("foreignObject")
 				.call(disp.rect)
 				.attr("class","foreignobj")
 				.append("xhtml:div")
@@ -189,9 +189,9 @@ ob.display = ob.display || {};
 				/* these are default layout values for items that had
 				 * too small of values to be laid out by d3's treemap
 				 */
-				var small_span = {x: 0.99, dx: 0.01, y: 0.99, dy: 0.01};
-				var span1 = d.visible ? d : small_span;
-				var span2 = disp.d.visible ? disp.d : small_span;
+				const small_span = {x: 0.99, dx: 0.01, y: 0.99, dy: 0.01};
+				const span1 = d.visible ? d : small_span;
+				const span2 = disp.d.visible ? disp.d : small_span;
 
         if (i < -1) {
           span1 = small_span;
@@ -199,7 +199,7 @@ ob.display = ob.display || {};
         }
 
 				/* create new display and update it's coordanates */
-				var disp2 = _display(d);
+				const disp2 = _display(d);
 				if (direction) {
 					disp2.x.domain([
 						-1.0 * span1.x / span1.dx,
@@ -232,8 +232,8 @@ ob.display = ob.display || {};
 				disp2.g.selectAll(".textdiv").style("display", "block");
 				disp2.g.selectAll(".foreignobj").call(disp2.foreign);
 
-				var t1 = disp.g.transition().duration(750)
-				var t2 = disp2.g.transition().duration(750);
+				const t1 = disp.g.transition().duration(750)
+				const t2 = disp2.g.transition().duration(750);
 
 				/* update domain mappings for the state at the end of
 				 * the transition */

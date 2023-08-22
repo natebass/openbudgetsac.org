@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from "react"
 import {schemeSet2 as colors} from "d3-scale-chromatic"
 import Select from "react-select"
-import ReactDOM from "react-dom/client";
-import Total from "./Total.jsx";
-import {BUDGET_TYPES} from "./utils.jsx";
-import {fetchTotals} from "./api.js";
-import Breakdown from "./Breakdown.jsx";
+import ReactDOM from "react-dom/client"
+import Total from "./Total.jsx"
+import {BUDGET_TYPES} from "./utils.jsx"
+import {fetchTotals} from "./api.js"
+import Breakdown from "./Breakdown.jsx"
 import {QueryClient, QueryClientProvider} from 'react-query'
-// import {Col, Nav, Row, Tab} from "react-bootstrap";
-import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
+// import {Col, Nav, Row, Tab} from "react-bootstrap"
+import Col from 'react-bootstrap/Col'
+import Nav from 'react-bootstrap/Nav'
+import Row from 'react-bootstrap/Row'
+import Tab from 'react-bootstrap/Tab'
 
-const styles = [{ color: colors[0] }, { color: colors[1] }];
+const styles = [{ color: colors[0] }, { color: colors[1] }]
 const diffColors = {
   neg: "#e41a1c",
   pos: "#4daf4a",
@@ -28,29 +28,29 @@ function getBudgetOption(record, index) {
   return {
     value: index,
     label: `${record.fiscal_year_range} ${BUDGET_TYPES[record.budget_type]}`,
-  };
+  }
 }
 
 function getBudgetDefaults(budgets) {
-  // TODO: add a more sophisiticated selection algorithm;
+  // TODO: add a more sophisiticated selection algorithm
   // e.g. find current year, compare adopted to proposed,
   // or proposed to previous adopted, etc
-  let index1 = 0;
-  let index2 = 1;
+  let index1 = 0
+  let index2 = 1
   // 19-20 proposed, if we have it
   const currI = budgets.findIndex(record => {
-    return record.label === "FY19-20 Adopted";
-  });
+    return record.label === "FY19-20 Adopted"
+  })
   // 18-19 proposed, if we have it
   const prevI = budgets.findIndex(record => {
-    return record.label === "FY18-19 Adopted";
-  });
+    return record.label === "FY18-19 Adopted"
+  })
   // if we have both, use their indexes instead
   if (currI > -1 && prevI > -1) {
-    index1 = currI;
-    index2 = prevI;
+    index1 = currI
+    index2 = prevI
   }
-  return [budgets[index1], budgets[index2]];
+  return [budgets[index1], budgets[index2]]
 }
 
 const Compare = () => {
@@ -94,7 +94,7 @@ const Compare = () => {
         setSelectOptions(selectOptions)
       })
       .catch((err) => console.log(err))
-  }, [fetchTotals]);
+  }, [fetchTotals])
   const customStyles1 = {singleValue: provided => ({...provided, color: "#66c2a5"})}
   const customStyles2 = {singleValue: provided => ({...provided, color: "#fc8d62"})}
 
@@ -150,7 +150,7 @@ const Compare = () => {
       <Tab.Container id="selectBreakdown" defaultActiveKey="spendDept">
         <Row>
           <Col sm={3}>
-            <Nav variant="pills" className="stacked">
+            <Nav constiant="pills" className="stacked">
               <Nav.Item eventKey="spendDept">Spending by Department</Nav.Item>
               <Nav.Item eventKey="spendCat">Spending by Category</Nav.Item>
               <Nav.Item eventKey="revDept">Revenue by Department</Nav.Item>
@@ -201,12 +201,12 @@ const Compare = () => {
         </Row>
       </Tab.Container>
     </div>
-  );
+  )
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 ReactDOM.createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient}>
       <Compare/>
     </QueryClientProvider>
-);
+)

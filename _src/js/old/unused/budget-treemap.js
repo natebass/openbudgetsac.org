@@ -1,22 +1,22 @@
-var ob = ob || {};
-ob.display = ob.display || {};
+const ob = ob || {}
+ob.display = ob.display || {}
 
-;(function (namespace, undefined) {
+(function (namespace, undefined) {
 	namespace.budget_treemap = function() {
-    var _url = null;
-    var _treemap = null;
-    var _spreadsheet = null;
-    var _dropdown = null;
+    const _url = null
+    const _treemap = null
+    const _spreadsheet = null
+    const _dropdown = null
     /* The 'cruncher' reorganizes the budget data into a hierarchy
     * and offers some other functionality into managing the data */
-    var _cruncher = ob.data.hierarchy();
-    var _get_value = function(d) {
-      return d['data']['amount'];
-    };
-    var _max_rects = 40;
-    var _max_spreadsheet_rows = 10;
-    var _min_area_for_text = 0.0125;
-    var _palette = [
+    const _cruncher = ob.data.hierarchy()
+    const _get_value = function(d) {
+      return d['data']['amount']
+    }
+    const _max_rects = 40
+    const _max_spreadsheet_rows = 10
+    const _min_area_for_text = 0.0125
+    const _palette = [
       '#970000',
       '#CD0059',
       '#E23600',
@@ -28,45 +28,45 @@ ob.display = ob.display || {};
       '#008F16',
       '#395BF6',
       '#690180'
-    ];
-    var _spreadsheet_selector = "#table";
-    var _treemap_selector = "#treemap";
-    var _dropdown_selector = "#dropdown";
-    var _title_selector = "#title";
-    var _breadcrumbs_selector = "#breadrumbs";
+    ]
+    const _spreadsheet_selector = "#table";
+    const _treemap_selector = "#treemap";
+    const _dropdown_selector = "#dropdown";
+    const _title_selector = "#title";
+    const _breadcrumbs_selector = "#breadrumbs";
     /* layout settings */
-    var _layout = {
+    const _layout = {
       width: 800,
       height: 500,
     };
 
     /* used to convert numerical data into text data */
-    var _format = {
+    const _format = {
       number: d3.format("$,d"),
       percent: d3.format(".2%")
     };
 
-    var _config = {
+    const _config = {
       url: function() {
         return '';
       }
     };
 
-    var _hash_normalize = function(s) {
+    const _hash_normalize = function(s) {
       return s;
     }
 
-    var _hash_compare = function(v1, v2) {
+    const _hash_compare = function(v1, v2) {
       return v1 == v2 ? 0 : 1;
     }
 
     /* interaction */
-    var _on_handlers = {};
+    const _on_handlers = {};
     /* apply all events defined in _on_handlers to an object that supports the
      * "on" method in a d3 style
      */
     function _apply_handlers(d3obj) {
-      for (var event_name in _on_handlers) {
+      for (const event_name in _on_handlers) {
         if (_on_handlers.hasOwnProperty(event_name)) {
           if (_on_handlers[event_name]) {
             d3obj.on(event_name, _on_handlers[event_name]);
@@ -77,12 +77,12 @@ ob.display = ob.display || {};
 
 
     /* create and configure the tooltip */
-    var _tooltip_function = function(d, i) {
+    const _tooltip_function = function(d, i) {
       /* this creates the html content that is displayed within
       * the tooltip */
-      var display = '<p class="treemap_tooltip title">' + d.key + '</p>';
+      const display = '<p class="treemap_tooltip title">' + d.key + '</p>';
       display += '<p class="treemap_tooltip amount">' + _format.number(_get_value(d)) + '</p>';
-      var percent = 1.0;
+      const percent = 1.0;
       if (d.parent) {
         percent = _get_value(d) / _get_value(d.parent);
       }
@@ -91,7 +91,7 @@ ob.display = ob.display || {};
     };
 
     /* determine current view in hierarchy based on url _hash */
-    var _hash = {
+    const _hash = {
       _expected_hash: '',
 
       expected: function() {
@@ -103,7 +103,7 @@ ob.display = ob.display || {};
       },
 
       get: function(root) {
-        var hash = window.location.hash.replace("#", "");
+        const hash = window.location.hash.replace("#", "");
         if (_on_handlers.hasOwnProperty("get_hash")) {
           hash = _on_handlers["get_hash"](hash);
         }
@@ -118,7 +118,7 @@ ob.display = ob.display || {};
         );
       },
       set: function(node) {
-        var hash = _cruncher.path(node)
+        const hash = _cruncher.path(node)
           .slice(1)
           .map(function(d) { return _hash_normalize(d.key); })
           .join('.');
@@ -271,9 +271,9 @@ ob.display = ob.display || {};
       create: function() {
 
         /* this handles changes due to backbuttons in the browser */
-        var self = this;
+        const self = this;
         window.onhashchange = function(e) {
-          var hash = window.location.hash.replace("#", "");
+          const hash = window.location.hash.replace("#", "");
           if (hash != _hash.expected()) {
             self.refresh();
           }
@@ -281,21 +281,21 @@ ob.display = ob.display || {};
 
 
         /* create initial color palette */
-        var _color_stack = ob.palette.stack().palette(d3.scaleOrdinal().range(_palette));
+        const _color_stack = ob.palette.stack().palette(d3.scaleOrdinal().range(_palette));
         this._create_dropdown();
 
         /* create and configure the tooltip */
-        var _tooltip = ob.display.tooltip().html(_tooltip_function);
+        const _tooltip = ob.display.tooltip().html(_tooltip_function);
 
         /* call d3 to load the budget data, and then display the data
         * after it has loaded */
         d3.json(_url, function(data) {
-          var root = data;
+          const root = data;
           function _create_breadcrumbs(d) {
-            var current_node = d;
+            const current_node = d;
             d3.select(_breadcrumbs_selector).selectAll(".crumb").remove();
 
-            var crumbs = d3.select(_breadcrumbs_selector)
+            const crumbs = d3.select(_breadcrumbs_selector)
               .selectAll(".crumb")
               .data(ob.data.hierarchy().path(d));
 
@@ -307,8 +307,8 @@ ob.display = ob.display || {};
                      being display */
                   return;
                 }
-                var levels = 0;
-                var current = current_node;
+                const levels = 0;
+                const current = current_node;
                 while (current && current != clicked) {
                   levels -= 1;
                   current = current.parent;
@@ -338,12 +338,12 @@ ob.display = ob.display || {};
               node.percentage = 1.0;
             }
           });
-          var node = _hash.get(root);
+          const node = _hash.get(root);
 
 
           _cruncher.path(node).forEach(function(d) {
             if (d.parent) {
-              var i = d.parent.values.indexOf(d);
+              const i = d.parent.values.indexOf(d);
               /* TODO: color stack isn't consistent when page is refreshed because
                * values are sorted in treemap.js and spreadsheet.js which screws up
                * ordering of "values".  If you want this consistent, you'll have to
@@ -394,7 +394,7 @@ ob.display = ob.display || {};
                 elem.attr("class", "money").html(_format.number(d.data.revenue));
               }
               if (i == 0) {
-                var parent_node = d3.select(elem.node().parentNode);
+                const parent_node = d3.select(elem.node().parentNode);
                 if (j > _max_spreadsheet_rows) {
                   parent_node.style("visibility", "hidden")
                     .style("display", "none");
@@ -404,7 +404,7 @@ ob.display = ob.display || {};
                     .style("display", "table-row");
                 }
                 if (j == (_max_spreadsheet_rows + 1)) {
-                  var spreadsheet_element = d3.select(_spreadsheet_selector);
+                  const spreadsheet_element = d3.select(_spreadsheet_selector);
                   spreadsheet_element.append("button")
                     .attr("class", "btn btn-default")
                     .attr("id", "more")
@@ -443,12 +443,12 @@ ob.display = ob.display || {};
             .rect_text(function(d, i) {
               /* this controls the text that is displayed in the
               * rectangles */
-              var text_width = _layout.width * d.dx;
-              var text_height = _layout.height * d.dy;
+              const text_width = _layout.width * d.dx;
+              const text_height = _layout.height * d.dy;
               if (text_width < 100 || text_height < 40) {
                 return "";
               }
-              var html = '<div class="amount">';
+              const html = '<div class="amount">';
               html += _format.number(_get_value(d));
               html += '</div><div class="name">';
               html += d.key;
@@ -512,9 +512,9 @@ ob.display = ob.display || {};
       },
 
       _create_dropdown: function() {
-        var self = this;
-        var values = [];
-        for (var key in _config.dropdown_values) {
+        const self = this;
+        const values = [];
+        for (const key in _config.dropdown_values) {
           if (_config.dropdown_values.hasOwnProperty(key)) {
             values.push(key);
           }

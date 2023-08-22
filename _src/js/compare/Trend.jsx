@@ -1,7 +1,7 @@
-import React from "react";
-import {Bar} from "react-chartjs-2";
-import {keys, set} from "d3-collection";
-import {asTick} from "./utils.jsx";
+import React from "react"
+import {Bar} from "react-chartjs-2"
+import {keys, set} from "d3-collection"
+import {asTick} from "./utils.jsx"
 
 const verticalChartOptions = {
   plugins: {
@@ -31,4 +31,4 @@ const Trend = ({data, years, colors}) => {
   return <Bar options={verticalChartOptions} data={{labels, datasets}} height={125}></Bar>
 }
 
-export default Trend;
+export default Trend

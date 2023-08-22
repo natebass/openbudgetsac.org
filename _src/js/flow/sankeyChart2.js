@@ -1,42 +1,40 @@
-d3.sankey = function() {
-  const sankey = {},
-      nodeWidth = 24,
-      nodePadding = 8,
-      size = [1, 1],
-      nodes = [],
-      links = []
+import * as d3 from "d3"
+import {nest} from 'd3-collection'
+import {interpolateNumber} from 'd3-interpolate'
 
-  sankey.nodeWidth = function(_) {
+export default function sankeyChart2() {
+  let sankey = {}
+  let nodeWidth = 24
+  let nodePadding = 8
+  let size = [1, 1]
+  let nodes = []
+  let links = []
+  sankey.nodeWidth = it => {
     if (!arguments.length) return nodeWidth
-    nodeWidth = +_
+    nodeWidth = +it
     return sankey
   }
-
-  sankey.nodePadding = function(_) {
+  sankey.nodePadding = it => {
     if (!arguments.length) return nodePadding
-    nodePadding = +_
+    nodePadding = +it
     return sankey
   }
-
-  sankey.nodes = function(_) {
+  sankey.nodes = function (it) {
     if (!arguments.length) return nodes
-    nodes = _
+    nodes = it
     return sankey
   }
-
-  sankey.links = function(_) {
+  sankey.links = function (it) {
     if (!arguments.length) return links
-    links = _
+    links = it
     return sankey
   }
-
-  sankey.size = function(_) {
+  sankey.size = function (it) {
     if (!arguments.length) return size
-    size = _
+    size = it
     return sankey
   }
-
-  sankey.layout = function(iterations) {
+  sankey.layout = function (iterations) {
     computeNodeLinks()
     computeNodeValues()
     computeNodeBreadths()
@@ -44,48 +42,42 @@ d3.sankey = function() {
     computeLinkDepths()
     return sankey
   }
-
-  sankey.relayout = function() {
+  sankey.relayout = function () {
     computeLinkDepths()
     return sankey
   }
-
-  sankey.link = function() {
-    const curvature = .5
-
-    function link(d) {
-      const x0 = d.source.x + d.source.dx,
-          x1 = d.target.x,
-          xi = d3.interpolateNumber(x0, x1),
-          x2 = xi(curvature),
-          x3 = xi(1 - curvature),
-          y0 = d.source.y + d.sy + d.dy / 2,
-          y1 = d.target.y + d.ty + d.dy / 2
+  sankey.link = function () {
+    let curvature = .5
+    const link = data => {
+      const x0 = data.source.x + data.source.dx,
+        x1 = data.target.x,
+        xi = interpolateNumber(x0, x1),
+        x2 = xi(curvature),
+        x3 = xi(1 - curvature),
+        y0 = data.source.y + data.sy + data.dy / 2,
+        y1 = data.target.y + data.ty + data.dy / 2
       return "M" + x0 + "," + y0
-           + "C" + x2 + "," + y0
-           + " " + x3 + "," + y1
-           + " " + x1 + "," + y1
+        + "C" + x2 + "," + y0
+        + " " + x3 + "," + y1
+        + " " + x1 + "," + y1
     }
-
-    link.curvature = function(_) {
+    link.curvature = it => {
       if (!arguments.length) return curvature
-      curvature = +_
+      curvature = +it
       return link
     }
-
     return link
   }
-
   // Populate the sourceLinks and targetLinks for each node.
   // Also, if the source and target are not objects, assume they are indices.
   function computeNodeLinks() {
-    nodes.forEach(function(node) {
+    nodes.forEach(function (node) {
       node.sourceLinks = []
       node.targetLinks = []
     })
-    links.forEach(function(link) {
-      const source = link.source,
-          target = link.target
+    links.forEach(link => {
+      let source = link.source
+      let target = link.target
       if (typeof source === "number") source = link.source = nodes[link.source]
       if (typeof target === "number") target = link.target = nodes[link.target]
       source.sourceLinks.push(link)
@@ -95,7 +87,7 @@ d3.sankey = function() {
 
   // Compute the value (size) of each node by summing the associated links.
   function computeNodeValues() {
-    nodes.forEach(function(node) {
+    nodes.forEach(function (node) {
       node.value = Math.max(
         d3.sum(node.sourceLinks, value),
         d3.sum(node.targetLinks, value)
@@ -108,38 +100,37 @@ d3.sankey = function() {
   // nodes with no incoming links are assigned breadth zero, while
   // nodes with no outgoing links are assigned the maximum breadth.
   function computeNodeBreadths() {
-    const remainingNodes = nodes,
-        nextNodes,
-        x = 0
-
+    let remainingNodes = nodes
+    let x = 0
     while (remainingNodes.length) {
-      nextNodes = []
-      remainingNodes.forEach(function(node) {
+      let nextNodes = []
+      remainingNodes.forEach(function (node) {
         node.x = x
         node.dx = nodeWidth
-        node.sourceLinks.forEach(function(link) {
+        node.sourceLinks.forEach(function (link) {
           nextNodes.push(link.target)
         })
       })
       remainingNodes = nextNodes
       ++x
     }
-
     //
     moveSinksRight(x)
     scaleNodeBreadths((width - nodeWidth) / (x - 1))
   }
 
   function moveSourcesRight() {
-    nodes.forEach(function(node) {
+    nodes.forEach(function (node) {
       if (!node.targetLinks.length) {
-        node.x = d3.min(node.sourceLinks, function(d) { return d.target.x }) - 1
+        node.x = d3.min(node.sourceLinks, function (d) {
+          return d.target.x
+        }) - 1
       }
     })
   }
 
   function moveSinksRight(x) {
-    nodes.forEach(function(node) {
+    nodes.forEach(function (node) {
       if (!node.sourceLinks.length) {
         node.x = x - 1
       }
@@ -147,22 +138,36 @@ d3.sankey = function() {
   }
 
   function scaleNodeBreadths(kx) {
-    nodes.forEach(function(node) {
+    nodes.forEach(function (node) {
       node.x *= kx
     })
   }
 
   function computeNodeDepths(iterations) {
-    const nodesByBreadth = d3.nest()
-        .key(function(d) { return d.x })
-        .sortKeys(d3.ascending)
-        .entries(nodes)
-        .map(function(d) { return d.values })
-
-    //
+    const ascendingDepth = (a, b) => a.y - b.y
+    // custom placement of Funds
+    const centerFunds = () => {
+      // figure out leftover vertical space
+      let funds = nodesByBreadth[2]
+      let vpad = sankey.size()[1] - sankey.nodePadding()
+      funds.forEach(node => vpad -= node.dy)
+      // space funds out more
+      funds[0].y += vpad / 3
+      funds[1].y += (vpad / 3) * 2
+    }
+    nodesByBreadth = nest()
+      .key(function (d) {
+        return d.x
+      })
+      .sortKeys(d3.ascending)
+      .entries(nodes)
+      .map(function (d) {
+        return d.values
+      })
     initializeNodeDepth()
     resolveCollisions()
-    for (const alpha = 1 iterations > 0 --iterations) {
+    centerFunds()
+    for (let alpha = 1; iterations > 0; --iterations) {
       relaxRightToLeft(alpha *= .99)
       resolveCollisions()
       relaxLeftToRight(alpha)
@@ -170,76 +175,60 @@ d3.sankey = function() {
     }
 
     function initializeNodeDepth() {
-      const ky = d3.min(nodesByBreadth, function(nodes) {
-        return (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value)
-      })
-
-      nodesByBreadth.forEach(function(nodes) {
-        nodes.forEach(function(node, i) {
+      const ky = d3.min(nodesByBreadth, nodes => (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value))
+      nodesByBreadth.forEach(nodes => {
+        nodes.forEach((node, i) => {
           node.y = i
           node.dy = node.value * ky
         })
       })
-
-      links.forEach(function(link) {
-        link.dy = link.value * ky
-      })
+      links.forEach(link => link.dy = link.value * ky)
     }
 
     function relaxLeftToRight(alpha) {
-      nodesByBreadth.forEach(function(nodes, breadth) {
-        nodes.forEach(function(node) {
+      nodesByBreadth.forEach(nodes => {
+        nodes.forEach(node => {
           if (node.targetLinks.length) {
             const y = d3.sum(node.targetLinks, weightedSource) / d3.sum(node.targetLinks, value)
             node.y += (y - center(node)) * alpha
           }
         })
       })
-
-      function weightedSource(link) {
-        return center(link.source) * link.value
-      }
+      const weightedSource = link => center(link.source) * link.value
     }
 
     function relaxRightToLeft(alpha) {
-      nodesByBreadth.slice().reverse().forEach(function(nodes) {
-        nodes.forEach(function(node) {
+      const weightedTarget = link => center(link.target) * link.value
+      nodesByBreadth.slice().reverse().forEach(nodes => {
+        nodes.forEach(node => {
           if (node.sourceLinks.length) {
             const y = d3.sum(node.sourceLinks, weightedTarget) / d3.sum(node.sourceLinks, value)
             node.y += (y - center(node)) * alpha
           }
         })
       })
-
-      function weightedTarget(link) {
-        return center(link.target) * link.value
-      }
     }
 
     function resolveCollisions() {
-      nodesByBreadth.forEach(function(nodes) {
-        const node,
-            dy,
-            y0 = 0,
-            n = nodes.length,
-            i
-
+      nodesByBreadth.forEach(function (nodes) {
+        let node
+        let dy
+        let y0 = 0
+        let n = nodes.length
         // Push any overlapping nodes down.
         nodes.sort(ascendingDepth)
-        for (i = 0 i < n ++i) {
+        for (let i = 0; i < n; ++i) {
           node = nodes[i]
           dy = y0 - node.y
           if (dy > 0) node.y += dy
           y0 = node.y + node.dy + nodePadding
         }
-
-        // If the bottommost node goes outside the bounds, push it back up.
+        // If the bottom-most node goes outside the bounds, push it back up.
         dy = y0 - nodePadding - size[1]
         if (dy > 0) {
           y0 = node.y -= dy
-
           // Push any overlapping nodes back up.
-          for (i = n - 2 i >= 0 --i) {
+          for (i = n - 2; i >= 0; --i) {
             node = nodes[i]
             dy = node.y + node.dy + nodePadding - y0
             if (dy > 0) node.y -= dy
@@ -248,45 +237,30 @@ d3.sankey = function() {
         }
       })
     }
-
-    function ascendingDepth(a, b) {
-      return a.y - b.y
-    }
   }
 
   function computeLinkDepths() {
-    nodes.forEach(function(node) {
+    nodes.forEach(node => {
       node.sourceLinks.sort(ascendingTargetDepth)
       node.targetLinks.sort(ascendingSourceDepth)
     })
-    nodes.forEach(function(node) {
-      const sy = 0, ty = 0
-      node.sourceLinks.forEach(function(link) {
+    nodes.forEach(node => {
+      let sy = 0
+      let ty = 0
+      node.sourceLinks.forEach(link => {
         link.sy = sy
         sy += link.dy
       })
-      node.targetLinks.forEach(function(link) {
+      node.targetLinks.forEach(link => {
         link.ty = ty
         ty += link.dy
       })
     })
-
-    function ascendingSourceDepth(a, b) {
-      return a.source.y - b.source.y
-    }
-
-    function ascendingTargetDepth(a, b) {
-      return a.target.y - b.target.y
-    }
+    const ascendingSourceDepth = (a, b) => a.source.y - b.source.y
+    const ascendingTargetDepth = (a, b) => a.target.y - b.target.y
   }
 
-  function center(node) {
-    return node.y + node.dy / 2
-  }
-
-  function value(link) {
-    return link.value
-  }
-
+  const center = node => node.y + node.dy / 2
+  const value = link => link.value
   return sankey
 }

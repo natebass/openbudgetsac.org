@@ -1,8 +1,8 @@
 import React from "react"
 import {useQuery} from "react-query"
-import DiffTable from './DiffTable.jsx';
+import DiffTable from './DiffTable.jsx'
 import {fetchBreakdownData} from './api.js'
-import Trend from './Trend.jsx';
+import Trend from './Trend.jsx'
 
 const Breakdown = props => {
   const {colors, diffColors, usePercent, years, type, dimension} = props
@@ -29,4 +29,4 @@ const Breakdown = props => {
     </div>
   )
 }
-export default Breakdown;
+export default Breakdown
