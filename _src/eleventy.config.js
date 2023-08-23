@@ -3,6 +3,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("data");
   eleventyConfig.addPassthroughCopy("dist");
   eleventyConfig.addPassthroughCopy("images");
+  eleventyConfig.addPassthroughCopy({ "images/favicon.ico": "/" })
   return {
     dir: {
       input: ".",

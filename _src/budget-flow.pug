@@ -1,10 +1,10 @@
 extends partials/layout
 
 prepend pageTitle
-  - var title = "Cash Flow: 2014 through 2022"
+  - const title = "Cash Flow: 2014 through 2022";
 
 block bodyClass
-  - var slug = "flow"
+  - const slug = "flow";
 
 block content
   .container
@@ -19,14 +19,14 @@ block content
     #sankey
       #chart
 
-    - var dataSource = "https://data.cityofsacramento.org/"
-    - var dataName = "Sacramento Open Data"
+    - const dataSource = "https://data.cityofsacramento.org/";
+    - const dataName = "Sacramento Open Data";
     include partials/linkToDataSource
 
     #hover_description
 
     -
-      var fileNames = [
+      const fileNames = [
         //{filename: "FY13.csv"},
         {filename: "FY14.csv"},
         {filename: "FY15.csv"},
@@ -37,8 +37,8 @@ block content
         {filename: "FY20.csv"},
         {filename: "FY21.csv"},
         {filename: "FY22.csv"}
-      ]
+      ];
     each fileObj in fileNames
       input(class="filename-data", type="hidden", value=fileObj.filename)
-      
-    script(src='../dist/flow.bundle.js', charset='utf-8')
+
+  script(src='../dist/flow.bundle.js', charset='utf-8')

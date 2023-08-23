@@ -1,6 +1,6 @@
 import {format} from "d3-format"
 import {csvParse} from "d3-dsv";
-import {dataWrangle} from "./flowChart2";
+import {dataWrangle} from "./dataWrangle";
 import {sankey} from "d3-sankey";
 // import {nest} from 'd3-collection'
 import {select} from "d3-selection";

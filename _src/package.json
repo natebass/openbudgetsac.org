@@ -4,8 +4,7 @@
   "scripts": {
     "serve": "npx @11ty/eleventy --serve --port=8011",
     "watch": "npx webpack --config webpack.config.js --watch",
-    "build": "npx webpack build --mode=production",
-    "build-css": "dart-sass --style=compressed css/main.scss stylesOld/main.css"
+    "build": "npx webpack build --mode=production"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",

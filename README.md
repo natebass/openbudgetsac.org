@@ -38,7 +38,7 @@ You'll need these installed globally:
 
 ### Install & Run Eleventy in \_src/
 
-Once you have the NPM package manager installed, you can install Eleventy and the other dependencies listed in **package.json**. Enter the following from the \_src/ folder, where the Eleventy configuration file **.eleventy.js** lives.
+Once you have the NPM package manager installed, you can install Eleventy and the other dependencies listed in **package.json**. Enter the following from the \_src/ folder, where the Eleventy configuration file **eleventy.config.js** lives.
 
 ```
 npm install
