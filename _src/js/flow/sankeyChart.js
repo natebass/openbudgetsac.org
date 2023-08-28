@@ -2,8 +2,9 @@ import {format} from "d3-format"
 import {csvParse} from "d3-dsv";
 import {dataWrangle} from "./dataWrangle";
 import {sankey} from "d3-sankey";
-// import {nest} from 'd3-collection'
 import {select} from "d3-selection";
+import {scaleOrdinal} from "d3-scale";
+import {schemeCategory10} from "d3-scale-chromatic";
 // import {rgb} from 'd3-color'
 
 // Specify the dimensions of the chart.
@@ -12,7 +13,6 @@ const width = 928;
 const height = 600;
 const formatFunction = format(",.0f")
 const linkColor = 'source-target'
-
 /**
  * Draw Sankey chart.
  * @param fileName
@@ -40,28 +40,20 @@ const drawChart = fileName => {
       .nodeAlign(sankey.nodeAlign) // d3.sankeyLeft, etc.
       .nodeWidth(15)
       .nodePadding(10)
-      // .extent([[1, 5], [width - 1, height - 5]])
-    // Applies it to the data. We make a copy of the nodes and links objects
-    // so as to avoid mutating the original.
-    console.log(data.links.map(d => Object.assign({}, d)))
-    const {nodes, links} = chart({
-      nodes: data.nodes.map(d => Object.assign({}, d)),
-      links: data.links.map(d => Object.assign({}, d))
-    })
-    //   // Defines a color scale.
-    //   const color = scaleOrdinal(schemeCategory10);
-    //
-    //   // Creates the rects that represent the nodes.
-    //   let rect = svg.append("g")
-    //     .attr("stroke", "#000")
-    //     .selectAll()
-    //     .data(nodes)
-    //     .join("rect")
-    //     .attr("x", d => d.x0)
-    //     .attr("y", d => d.y0)
-    //     .attr("height", d => d.y1 - d.y0)
-    //     .attr("width", d => d.x1 - d.x0)
-    //     .attr("fill", d => color(d.category));
+    // .extent([[1, 5], [width - 1, height - 5]])
+    // Defines a color scale.
+    const color = scaleOrdinal(schemeCategory10);
+    // Creates the rects that represent the nodes.
+    let rect = svg.append("g")
+      .attr("stroke", "#000")
+      .selectAll()
+      .data(nodes)
+      .join("rect")
+      .attr("x", d => d.x0)
+      .attr("y", d => d.y0)
+      .attr("height", d => d.y1 - d.y0)
+      .attr("width", d => d.x1 - d.x0)
+      .attr("fill", d => color(d.category));
     //
     //   // Adds a title on the nodes.
     //   rect.append("title")

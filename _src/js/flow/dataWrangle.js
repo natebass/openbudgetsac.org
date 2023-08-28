@@ -213,5 +213,5 @@ function data_wrangle_v2(dataset, fiscalYear) {
       links.push(link)
     }
   }
-  return {nodes: nodes, links: links}
+  return {nodes, links}
 }
