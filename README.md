@@ -8,11 +8,6 @@ Some of the other Issues are larger and require some deeper design or architectu
 
 ## Developing Locally
 
-### Run with Docker
-Run docker compose and view the page in your browser at localhost:8011. It is required to rerun the command after making changes to see the effects.
-```
-docker compose up --build
-```
 ### Quick Start Guide for Unix-based systems (Windows, Mac or Linux)
 
 1. Sign into GitHub and fork this repo
@@ -50,6 +45,12 @@ To start Eleventy, simply enter the following. (You may choose any network port 
 
 ```
 npx @11ty/eleventy --serve --port=8011
+```
+
+### Run with Docker
+Run docker compose and view the page in your browser at localhost:8011. It is required to rerun the command after making changes to see the effects.
+```
+docker compose up --build
 ```
 
 ## Frontend Stack

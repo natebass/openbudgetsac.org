@@ -1,0 +1,27 @@
+extends layout
+
+prepend pageTitle
+  - var title = "Contact Open Budget: Sacramento"
+
+block bodyClass
+  - var slug = "contact"
+
+block content
+  .container
+    .row
+      .col-md-8
+        //- h2.subheader Explore Oakland's budget.
+        div
+          h2.subheader Get in touch
+          p Meetup: 
+            a(href='https://www.meetup.com/code4sac/') meetup.com/code4sac
+          p Twitter: 
+            a(href='https://twitter.com/code4sac') @code4sac
+          p LinkedId: 
+            a(href='https://www.linkedin.com/company/code4sac/') linkedin.com/company/code4sac
+          p Facebook: 
+            a(href='https://www.facebook.com/code4sac') facebook.com/code4sac 
+          p GitHub: 
+            a(href='https://github.com/code4sac') github.com/code4sac
+            | , 
+            a(href='https://github.com/code4sac/openbudgetsac.org') github.com/code4sac/openbudgetsac.org

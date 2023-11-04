@@ -1,0 +1,13 @@
+extends layout
+
+prepend pageTitle
+  - var title = "Budget Comparison"
+
+block bodyClass
+  - var slug = "compare"
+
+block content
+  .container
+    #root
+  //- get app bundled by Webpack
+  script(src="/dist/compare.bundle.js")

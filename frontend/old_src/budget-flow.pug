@@ -1,0 +1,44 @@
+extends layout
+
+prepend pageTitle
+  - const title = "Cash Flow: 2014 through 2022";
+
+block bodyClass
+  - const slug = "flow";
+
+block content
+  .container
+    .row
+      .intro.col-md-12
+        h2= title
+        include flowIntro
+    .row
+      .col-md-3
+        h4 Fiscal Year
+        select#fy.form-control
+    #sankey
+      #chart
+
+    - const dataSource = "https://data.cityofsacramento.org/";
+    - const dataName = "Sacramento Open Data";
+    include linkToDataSource
+
+    #hover_description
+
+    -
+      const fileNames = [
+        //{filename: "FY13.csv"},
+        {filename: "FY14.csv"},
+        {filename: "FY15.csv"},
+        {filename: "FY16.csv"},
+        {filename: "FY17.csv"},
+        {filename: "FY18.csv"},
+        {filename: "FY19.csv"},
+        {filename: "FY20.csv"},
+        {filename: "FY21.csv"},
+        {filename: "FY22.csv"}
+      ];
+    each fileObj in fileNames
+      input(class="filename-data", type="hidden", value=fileObj.filename)
+
+  script(src='../dist/flow.bundle.js', charset='utf-8')
