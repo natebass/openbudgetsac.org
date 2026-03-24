@@ -1,0 +1,176 @@
+<h1>How To Create a New Budget Treemap Visualization Webpage</h1>
+<h2><a name="createdata"></a>
+Creating Treemap Data Files</h2>
+<p>To create the treemap data files perform the following steps:</p>
+<ol>
+<li>
+<p>Save the budget in a commma-seperated-value (CSV) format.</p>
+<blockquote>
+<p>File &gt; Save As...</p>
+</blockquote>
+</li>
+<li>
+<p>Create or edit a configuration file.</p>
+<blockquote>
+<p>To view an existing configuration file, open the config.json</p>
+</blockquote>
+<blockquote>
+<p>The configuration file controls how the budget data is parsed. It tells the parser the header names, how to group data in the budget, the hierarchy ordering, and the output filenames. Generally, you'll only have to update the years if you're updating an existing configuration file for consitent budget format.</p>
+</blockquote>
+<blockquote>
+<p>See <a href="#dataconfigappendix">Appendix: Data Processing Configuration File Details</a> for more information about the configuration file.</p>
+</blockquote>
+</li>
+<li>
+<p>Run the data processing <a href="https://www.python.org/">python</a> script</p>
+<blockquote>
+<p>In the terminal:</p>
+</blockquote>
+<p>$ python treemap_process_data.py config.json budget.csv</p>
+<blockquote>
+<p>If your confused, try the --help option</p>
+</blockquote>
+<p>$ python treemap_process_data.py --help
+usage: treemap_process_data.py [-h] configuration budget</p>
+<p>Create treemap data files from a budget in CSV format.</p>
+<p>positional arguments:
+configuration  A configuration file describing how the data should be
+organized.
+budget         A CSV formatted budget</p>
+<p>optional arguments:
+-h, --help     show this help message and exit</p>
+</li>
+<li>
+<p>Move the generated data files to an appropriate place with your source data.</p>
+<p>mkdir ../_src/data/my-budget-directory
+mv Revenue.FY13-14.json ../_src/data/my-budget-directory/
+mv Revenue.FY14-15.json ../_src/data/my-budget-directory/
+mv Expense.FY13-14.json ../_src/data/my-budget-directory/
+mv Expense.FY14-15.json ../_src/data/my-budget-directory/</p>
+</li>
+</ol>
+<h1>Appendix</h1>
+<p><a name="dataconfigappendix"></a></p>
+<h3>Appendix A: Data Processing Configuration File Details</h3>
+<p>The configuration file controls how the budget data is parsed. It tells the
+parser the header names, how to group data in the budget, the hierarchy
+ordering, and the output filenames. Generally, you'll only have to update the
+years if you're updating an existing configuration file for consitent budget format.</p>
+<p>Example:</p>
+<p>{
+&quot;amount_header&quot;: &quot;Amount&quot;,
+&quot;account_type_header&quot;: &quot;Account Type&quot;,
+&quot;account_types&quot;: {
+&quot;revenue&quot;: &quot;Revenue&quot;,
+&quot;expense&quot;: &quot;Expense&quot;
+},
+&quot;grouping_headers&quot;: [&quot;Account Type&quot;, &quot;Budget Year Name&quot;],
+&quot;groups&quot;: [
+{
+&quot;values&quot;: [&quot;Revenue&quot;, &quot;FY13-14&quot;],
+&quot;hierarchy&quot;:[&quot;Budget Year Name&quot;, &quot;Fund Description&quot;, &quot;Account Category&quot;, &quot;Account  Description&quot;],
+&quot;filename&quot;: &quot;Revenue.FY13-14.json&quot;
+},
+{
+&quot;values&quot;: [&quot;Revenue&quot;, &quot;FY14-15&quot;],
+&quot;hierarchy&quot;:[&quot;Budget Year Name&quot;, &quot;Fund Description&quot;, &quot;Account Category&quot;, &quot;Account  Description&quot;],
+&quot;filename&quot;: &quot;Revenue.FY14-15.json&quot;
+},
+{
+&quot;values&quot;: [&quot;Expense&quot;, &quot;FY13-14&quot;],
+&quot;hierarchy&quot;:[
+&quot;Budget Year Name&quot;,
+&quot;Fund Description&quot;,
+&quot;Department&quot;,
+&quot;Division&quot;,
+&quot;Account Category&quot;,
+&quot;Account  Description&quot;
+],
+&quot;filename&quot;: &quot;Expense.FY13-14.json&quot;
+},
+{
+&quot;values&quot;: [&quot;Expense&quot;, &quot;FY14-15&quot;],
+&quot;hierarchy&quot;:[
+&quot;Budget Year Name&quot;,
+&quot;Fund Description&quot;,
+&quot;Department&quot;,
+&quot;Division&quot;,
+&quot;Account Category&quot;,
+&quot;Account  Description&quot;
+],
+&quot;filename&quot;: &quot;Expense.FY14-15.json&quot;
+}
+]
+}</p>
+<p>Description of fields:</p>
+<ul>
+<li>
+<p>amount_header</p>
+<blockquote>
+<p>The column header which contains the budget numerical amounts.</p>
+</blockquote>
+</li>
+<li>
+<p>amount_type_header</p>
+<blockquote>
+<p>The column header which denotes whether the amount is a revenue or expense.</p>
+</blockquote>
+</li>
+<li>
+<p>account_types</p>
+<blockquote>
+<p>The column headers of the different accounts types (only &quot;revenue&quot; and &quot;expense&quot; are supported).</p>
+</blockquote>
+<p>&quot;account_types&quot;: {
+&quot;expense&quot;: expense_column_header,
+&quot;revenue&quot;: revenue_column_header
+}</p>
+</li>
+<li>
+<p>grouping_headers</p>
+<blockquote>
+<p>A list of one or more column headers used to group the budgets into different treemap views.
+On the treemap webpage, different &quot;groups&quot; show up as different dropdown menu options.</p>
+</blockquote>
+<p>&quot;grouping_headers&quot;: [column_header, ...]</p>
+</li>
+<li>
+<p>groups</p>
+<blockquote>
+<p>A list of one or more group configurations.<br>
+On the treemap webpage, different &quot;groups&quot; show up as different dropdown menu options.</p>
+</blockquote>
+<p>&quot;groups&quot; : {
+&quot;values&quot;: [value, ...],
+&quot;hierarcy&quot;: [column_header, ...],
+&quot;filename&quot;: group_filename
+}</p>
+<blockquote>
+<ul>
+<li>values
+<blockquote>
+<p>A list of values that describe this group.  These must conincide with the values found in the grouping_headers.</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>hierarchy
+<blockquote>
+<p>A list of column headers that control the order in which budget items are summarized.</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>filename
+<blockquote>
+<p>The output filename for that group.</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>

@@ -42,7 +42,7 @@ $(function() {
     };
 
     var context = {
-  dataset: "oakland-adopted-budget-fy-2011-13-expenditures",
+  dataset: "sacramento-adopted-budget-fy-2011-13-expenditures",
   siteUrl: "http://openspending.org",
         drilldown: function(node) { // Gets called on node click
       // If the node has children we can drill more

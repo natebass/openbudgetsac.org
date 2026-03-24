@@ -43,8 +43,8 @@ style.
         p#chart
         h5
           | Source: FY2011-2013 Adopted Policy Budget 
-          a(href='http://www2.oaklandnet.com/oakca1/groups/cityadministrator/documents/report/oak032748.pdf')
-            | http://www2.oaklandnet.com/oakca1/groups/cityadministrator/documents/report/oak032748.pdf
+          a(href='https://www.cityofsacramento.org/oakca1/groups/cityadministrator/documents/report/oak032748.pdf')
+            | https://www.cityofsacramento.org/oakca1/groups/cityadministrator/documents/report/oak032748.pdf
         h5 Notes:
         p
           ol
@@ -121,11 +121,11 @@ script.
   .attr("text-anchor", "start");
   };
   /*
-  $.get("./js/oakland_v2.json", function(data){
+  $.get("./js/sacramento_v2.json", function(data){
   do_with_budget(data);
   });
   */
-  oaklandData=
+  sacramentoData=
   {"nodes":[
   {"name":"General Fund"},
   {"name":"Mayor"},
@@ -160,7 +160,7 @@ script.
   {"name":"Miscellaneous"},
   {"name":"Interfund Transfers"},
   {"name":"Measure Y: Public Safety Act"},
-  {"name":"Kid's First Oakland Children's Fund"},
+  {"name":"Kid's First Sacramento Children's Fund"},
   {"name":"Department of Health and Human Services (Federal)"},
   {"name":"Measure B - ACTIA"},
   {"name":"Measure Q - Library Services Retention & Enhancement"},
@@ -177,7 +177,7 @@ script.
   {"name":"HUD-CDBG"},
   {"name":"OPRCA Self-Sustaining Revolving Fund"},
   {"name":"HUD-Home"},
-  {"name":"Oakland Redevelopment Agency Grants"},
+  {"name":"Sacramento Redevelopment Agency Grants"},
   {"name":"Transient Occupancy Tax (TOT) Surcharge"}
   ],
   "links":[
@@ -239,13 +239,13 @@ script.
   {"source":42,"target":18,"value":2550000},
   {"source":51,"target":17,"value":2279150}
   ]};
-  do_with_budget(oaklandData);
+  do_with_budget(sacramentoData);
 
 //- DISQUS script
 script(type='text/javascript').
   /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-  var disqus_shortname = 'openbudgetoakland'; // required: replace example with your forum shortname
-  var disqus_identifier = '2012-13 Oakland Revenue and Expenditures Adopted Sankey';
+  var disqus_shortname = 'openbudgetsac'; // required: replace example with your forum shortname
+  var disqus_identifier = '2012-13 Sacramento Revenue and Expenditures Adopted Sankey';
   /* * * DON'T EDIT BELOW THIS LINE * * */
   (function() {
   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

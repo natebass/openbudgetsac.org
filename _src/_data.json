@@ -1,66 +1,66 @@
 {
   "globals": {
-    "title": "Open Budget Oakland",
-    "uri": "http://openbudgetoakland.com"
+    "title": "Open Budget Sacramento",
+    "uri": "https://openbudgetsac.org"
   },
 
   "index": {
-    "title": "Open Budget Oakland",
+    "title": "Open Budget Sacramento",
     "slug": "home"
   },
 
   "what-we-do": {
-    "title": "What and How - Open Budget Oakland"
+    "title": "What and How - Open Budget Sacramento"
   },
 
   "who-we-are": {
-    "title": "Who We Are - Open Budget Oakland"
+    "title": "Who We Are - Open Budget Sacramento"
   },
 
   "news": {
-    "title": "News - Open Budget Oakland"
+    "title": "News - Open Budget Sacramento"
   },
 
   "contact": {
-    "title": "Contact Us - Open Budget Oakland"
+    "title": "Contact Us - Open Budget Sacramento"
   },
 
   "discuss": {
-    "title": "Discuss - Open Budget Oakland"
+    "title": "Discuss - Open Budget Sacramento"
   },
 
   "feedback": {
-    "title": "Feedback - Open Budget Oakland"
+    "title": "Feedback - Open Budget Sacramento"
   },
 
-  "oakland-budget-101": {
-    "title": "Oakland Budget 101 - Open Budget Oakland"
+  "sacramento-budget-101": {
+    "title": "Sacramento Budget 101 - Open Budget Sacramento"
   },
 
   "tools-projects": {
-    "title": "Tools & Projects - Open Budget Oakland"
+    "title": "Tools & Projects - Open Budget Sacramento"
   },
 
   "budget-visuals": {
-    "title": "Budget Visualizations - Open Budget Oakland"
+    "title": "Budget Visualizations - Open Budget Sacramento"
   },
 
 
 
   "mayor-2013-2015-proposed": {
-    "title": "Mayor's Proposed Spending 2013-15 (Treemap) - Open Budget Oakland"
+    "title": "Mayor's Proposed Spending 2013-15 (Treemap) - Open Budget Sacramento"
   },
 
   "2011-2013-adopted-budget": {
-    "title": "Adopted Spending 2011-2013 (Treemap) - Open Budget Oakland"
+    "title": "Adopted Spending 2011-2013 (Treemap) - Open Budget Sacramento"
   },
 
   "2012-2013-sankey": {
-    "title": "Adopted Revenues & Spending 2012-2013 (Sankey) - Open Budget Oakland"
+    "title": "Adopted Revenues & Spending 2012-2013 (Sankey) - Open Budget Sacramento"
   },
 
   "updated-mayor-2013-2015-proposed": {
-    "title": "UPDATED: 2013-2015 Mayor's Proposed Spending (Treemap) v2 - Open Budget Oakland"
+    "title": "UPDATED: 2013-2015 Mayor's Proposed Spending (Treemap) v2 - Open Budget Sacramento"
   }, 
 
   "2015-17-proposed-budget": {
@@ -68,58 +68,58 @@
   },
 
   "2013-2015-adopted-budget-flow": {
-    "title": "Cash Flow: 2013-15 Adopted Budget - Open Budget Oakland"
+    "title": "Cash Flow: 2013-15 Adopted Budget - Open Budget Sacramento"
   },
   
   "2013-2015-adopted-budget": {
-    "title": "Detailed Breakdown: 2013-15 Adopted Budget - Open Budget Oakland"
+    "title": "Detailed Breakdown: 2013-15 Adopted Budget - Open Budget Sacramento"
   },
 
   "2014-15-adjusted-budget-flow": {
-    "title": "Cash Flow: 2014-15 Adjusted Budget - Open Budget Oakland"
+    "title": "Cash Flow: 2014-15 Adjusted Budget - Open Budget Sacramento"
   },
 
   "2015-17-adopted-budget-flow": {
-    "title": "Cash Flow: 2015-17 Adopted Budget - Open Budget Oakland"
+    "title": "Cash Flow: 2015-17 Adopted Budget - Open Budget Sacramento"
   },
 
   "2015-17-adopted-budget-tree": {
-    "title": "Detailed Breakdown: 2015-17 Adopted Budget - Open Budget Oakland"
+    "title": "Detailed Breakdown: 2015-17 Adopted Budget - Open Budget Sacramento"
   },
 
   "2015-17-proposed-budget-flow": {
-    "title": "Cash Flow: Mayor's 2015-17 Proposed Policy Budget - Open Budget Oakland"
+    "title": "Cash Flow: Mayor's 2015-17 Proposed Policy Budget - Open Budget Sacramento"
   },
 
   "2015-17-proposed-budget-tree": {
-    "title": "Detailed Breakdown: Mayor's 2015-17 Proposed Policy Budget - Open Budget Oakland"
+    "title": "Detailed Breakdown: Mayor's 2015-17 Proposed Policy Budget - Open Budget Sacramento"
   },
 
   "2016-17-adjusted-budget-flow": {
-    "title": "Cash Flow: 2016-17 Adjusted Budget - Open Budget Oakland"
+    "title": "Cash Flow: 2016-17 Adjusted Budget - Open Budget Sacramento"
   },
 
   "2016-17-adjusted-budget-tree": {
-    "title": "Detailed Breakdown: 2016-17 Adjusted Budget - Open Budget Oakland"
+    "title": "Detailed Breakdown: 2016-17 Adjusted Budget - Open Budget Sacramento"
   },
 
   "2017-19-proposed-budget-flow": {
-    "title": "Cash Flow: Mayor's 2017-19 Proposed Policy Budget - Open Budget Oakland"
+    "title": "Cash Flow: Mayor's 2017-19 Proposed Policy Budget - Open Budget Sacramento"
   },
 
   "2017-19-proposed-budget-tree": {
-    "title": "Detailed Breakdown: Mayor's 2017-19 Proposed Policy Budget - Open Budget Oakland"
+    "title": "Detailed Breakdown: Mayor's 2017-19 Proposed Policy Budget - Open Budget Sacramento"
   },
 
   "2019-21-adopted-budget-flow": {
-    "title": "Cash Flow: 2019 - 2021 Adopted Budget - Open Budget Oakland"
+    "title": "Cash Flow: 2019 - 2021 Adopted Budget - Open Budget Sacramento"
   },
 
   "2019-21-adopted-budget-tree": {
-    "title": "Detailed Breakdown: Adopted Budget - Open Budget Oakland"
+    "title": "Detailed Breakdown: Adopted Budget - Open Budget Sacramento"
   },
 
   "compare": {
-    "title": "Compare Budgets - Open Budget Oakland"
+    "title": "Compare Budgets - Open Budget Sacramento"
   }
 }

@@ -6,7 +6,7 @@ block title
 block datasource
   h6
     | Data source:&nbsp;
-    a(href = "https://data.oaklandnet.com/Financial/Budget-Data-For-Public-Adopted-FY2015-17-Biennial/urid-amga") OakData: Budget Data For Public Adopted FY2015-17 Biennial
+    a(href = "https://data.cityofsacramento.org/Financial/Budget-Data-For-Public-Adopted-FY2015-17-Biennial/urid-amga") OakData: Budget Data For Public Adopted FY2015-17 Biennial
 
 block disqus_config
   script(type='text/javascript').
@@ -82,7 +82,7 @@ block datafiles
 
       p Select year and account (revenues or expenses). Click on a fund to see the departments that receive its funding. Click on that department to see its spending or revenue.
 
-      p The <strong>General Fund</strong> — roughly 40% of Oakland's total budget -- is decided by a <a href="/budget-process.html">budget process</a> that includes private and public meetings, surveys, and negotiations. The other 60% of the budget comes from taxes, ballot measures, grants, fees, and other sources.
+      p The <strong>General Fund</strong> — roughly 40% of Sacramento's total budget -- is decided by a <a href="/budget-process.html">budget process</a> that includes private and public meetings, surveys, and negotiations. The other 60% of the budget comes from taxes, ballot measures, grants, fees, and other sources.
 
   .row
     .col-sm-12
@@ -108,7 +108,7 @@ block datafiles
 //- DISQUS script
 script(type='text/javascript').
   /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-  var disqus_shortname = 'openbudgetoakland'; // required: replace example with your forum shortname
+  var disqus_shortname = 'openbudgetsac'; // required: replace example with your forum shortname
   
   /* * * DON'T EDIT BELOW THIS LINE * * */
   (function() {
