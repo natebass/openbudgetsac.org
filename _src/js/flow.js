@@ -144,6 +144,8 @@ function data_wrangle(dataset, fy) {
       return(data_wrangle_v1(dataset, "CATEGORY", "Department", "ExpenseRevenue", "R", "E", "Fund", "General Fund", "Amount"));
     case "FY25":
       return(data_wrangle_v1(dataset, "CATEGORY", "Department", "ExpenseRevenue", "Revenues", "Expenses", "Fund", "General Fund", "Amount"));
+    case "FY26":
+      return(data_wrangle_v1(dataset, "CATEGORY", "Department", "ExpenseRevenue", "Revenues", "Expenses", "Fund", "General Fund", "Amount"));
     default:
       return(data_wrangle_v1(dataset, "CATEGORY", "Department", "ExpenseRevenue", "Revenues", "Expenses", "Fund", "General Fund", "Amount"));
   } 
