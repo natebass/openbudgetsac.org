@@ -106,3 +106,7 @@ Changes pushed to the main branch of the (original) repo will use GitHub Actions
 - runs WebPack;
 - builds static files with Eleventy; and
 - deploys the updated web files to GitHub Pages
+
+- Please note that after editing a SASS file you should run `npm run build-css` from the _src/ folder in order to incorporate your changes into the CSS
+
+**Linux/WSL tip:** Install Node via [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (e.g., `nvm install 20 && nvm use 20`) so `node`/`npm` come from Linux, not `/mnt/c/...`. If you previously installed with Windows npm, delete `node_modules` and `package-lock.json` in `_src/`, then run `npm install --legacy-peer-deps` before `npx @11ty/eleventy --serve --port=8011`.
