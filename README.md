@@ -110,3 +110,6 @@ Changes pushed to the main branch of the (original) repo will use GitHub Actions
 - Please note that after editing a SASS file you should run `npm run build-css` from the _src/ folder in order to incorporate your changes into the CSS
 
 **Linux/WSL tip:** Install Node via [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (e.g., `nvm install 20 && nvm use 20`) so `node`/`npm` come from Linux, not `/mnt/c/...`. If you previously installed with Windows npm, delete `node_modules` and `package-lock.json` in `_src/`, then run `npm install --legacy-peer-deps` before `npx @11ty/eleventy --serve --port=8011`.
+
+### Additional Instructions for Data Filtering
+To get data for each year from the city budget spreadsheet, in `_src/data`, run the command `python split_csv.py City_of_Sacramento_Approved_Budgets.csv Fiscal_Year _src/data/flow --txf "lambda x: 'FY' + str(x)[-2:]"` and in `_src/js/flow.js` and `_src/adopted-budget-flow.pug`, add an extra case for `FY26` similar to `FY25`, all using the Fiscal Year 2026 (FY2026) as an example.
