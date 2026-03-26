@@ -11,3 +11,6 @@ _treemap/Approved.*.json
 .vscode/launch.json
 .vscode/settings.json
 .idea/
+
+*:Zone.Identifier
+
