@@ -1,7 +1,7 @@
 extends partials/layout
 
 prepend pageTitle
-  - var title = "Contact Open Budget: Sacramento"
+  - var title = "Contact Open Sacramento"
 
 block bodyClass
   - var slug = "contact"
@@ -10,18 +10,28 @@ block content
   .container
     .row
       .col-md-8
-        //- h2.subheader Explore Sacramento's budget.
+        //- h2.subheader Open Sacramento made Open Budget: Sacramento.
         div
-          h2.subheader Get in touch
+          h2.subheader Get in Touch with Open Sacramento
+          p LinkTree:
+            a(href='https://linktr.ee/opensacorg') opensacorg
+          p Website:
+            a(href='https://opensac.org/') opensac.org
+          p Email:
+            a(href='mailto:hello@opensac.org') hello [AT] opensac [DOT] org
           p Meetup: 
-            a(href='https://www.meetup.com/code4sac/') meetup.com/code4sac
+            a(href='https://www.meetup.com/code4sac/') code4sac
           p Twitter: 
-            a(href='https://twitter.com/code4sac') @code4sac
-          p LinkedId: 
-            a(href='https://www.linkedin.com/company/code4sac/') linkedin.com/company/code4sac
+            a(href='https://x.com/opensacorg') @opensacorg
+          p Bluesky: 
+            a(href='https://bsky.app/profile/opensacorg.bsky.social') @opensacorg.bsky.social
+          p Mastodon: 
+            a(href='https://mastodon.social/@opensacorg') @opensacorg.mastodon.social
+          p LinkedIn: 
+            a(href='https://www.linkedin.com/company/opensacorg') opensacorg
           p Facebook: 
-            a(href='https://www.facebook.com/code4sac') facebook.com/code4sac 
+            a(href='https://www.facebook.com/opensacorg') opensacorg
           p GitHub: 
-            a(href='https://github.com/code4sac') github.com/code4sac
+            a(href='https://github.com/opensacorg') Open Sacramento
             | , 
-            a(href='https://github.com/code4sac/openbudgetsac.org') github.com/code4sac/openbudgetsac.org
+            a(href='https://github.com/opensacorg/openbudgetsac.org/') Open Budget: Sacramento
