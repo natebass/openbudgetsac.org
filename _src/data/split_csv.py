@@ -4,27 +4,43 @@
 # splitting up the csvs for the flow graphs. old openbudget used one file for
 # every year, new one takes one file per chart
 #
-# usage: split_csv.py <csv_file> <column_name> <output_dir> [--txf "<lambda func for column_name transformation>"]
-#  example of lambda 
-# python3 split_csv.py test.csv Fiscal_Year _src/data/flow --txf "lambda x: 'FY' + str(x)[-2:]"
+# usage: split_csv.py <csv_file> <column_name> <output_dir> [--txf <transform_name>]
+# example:
+# python3 split_csv.py test.csv Fiscal_Year _src/data/flow --txf fy_suffix
 # This --txf transforms 2019 to FY19
-# the default value for txf is the identity map
+# supported transforms are "identity" and "fy_suffix"
 import os
 import pandas as pd
 import argparse
+
+
+def get_transform(name):
+    normalized = str(name).replace('\\', '').strip()
+    transforms = {
+        'identity': lambda value: value,
+        'fy_suffix': lambda value: f"FY{str(value)[-2:]}",
+        # Backward-compatible aliases for older docs and shell history.
+        'lambda x: x': lambda value: value,
+        "lambda x: 'FY' + str(x)[-2:]": lambda value: f"FY{str(value)[-2:]}",
+    }
+    if normalized not in transforms:
+        raise ValueError(
+            f'Unsupported transform "{name}". Use one of: identity, fy_suffix.'
+        )
+    return transforms[normalized]
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('csv_file')
     parser.add_argument('column_name')
     parser.add_argument('output_dir')
-    parser.add_argument('--txf', required=False, default='lambda x: x')
+    parser.add_argument('--txf', required=False, default='identity')
     args = parser.parse_args()
 
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
 
-    txf = eval(str(args.txf).replace('\\',''))
+    txf = get_transform(args.txf)
     df = pd.read_csv(args.csv_file)
 
     #calculate the list of unique column_name values
