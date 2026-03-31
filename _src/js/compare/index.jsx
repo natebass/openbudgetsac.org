@@ -1,10 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { Nav, NavItem, Tab } from "react-bootstrap";
+import { createRoot } from "react-dom/client";
 import Select from "react-select";
 import { schemeSet2 as colors } from "d3-scale-chromatic";
-
-import "react-select/dist/react-select.css";
 
 import Total from "./Total.jsx";
 import { BUDGET_TYPES } from "./utils.jsx";
@@ -25,31 +22,22 @@ function getBudgetOption(record, index) {
 }
 
 function getBudgetDefaults(budgets) {
-  // TODO: add a more sophisiticated selection algorithm;
-  // e.g. find current year, compare adopted to proposed,
-  // or proposed to previous adopted, etc
-  let index1 = 0;
-  let index2 = 1;
-  // 19-20 proposed, if we have it
-  const currI = budgets.findIndex(record => {
-    return record.label === "FY19-20 Adopted";
-  });
-  // 18-19 proposed, if we have it
-  const prevI = budgets.findIndex(record => {
-    return record.label === "FY18-19 Adopted";
-  });
-  // if we have both, use their indexes instead
-  if (currI > -1 && prevI > -1) {
-    index1 = currI;
-    index2 = prevI;
+  if (!budgets.length) {
+    return [null, null];
   }
-  return [budgets[index1], budgets[index2]];
+  if (budgets.length === 1) {
+    return [budgets[0], budgets[0]];
+  }
+  // fetchTotals already sorts newest-first, so default to the latest
+  // two fiscal years available in the dataset.
+  return [budgets[0], budgets[1]];
 }
 
 class Compare extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeBreakdown: "spendDept",
       changeType: "pct",
       usePct: true,
       budgetChoices: [],
@@ -65,19 +53,24 @@ class Compare extends React.Component {
     fetchTotals().then(totals => {
       const budgetChoices = totals.map(getBudgetOption);
       const defaultChoices = getBudgetDefaults(budgetChoices);
+      if (!defaultChoices[0] || !defaultChoices[1]) {
+        return;
+      }
+      const budget1Choice = defaultChoices[0].value;
+      const budget2Choice = defaultChoices[1].value;
+      const budget1Options = budgetChoices.filter(
+        option => option.value !== budget2Choice
+      );
+      const budget2Options = budgetChoices.filter(
+        option => option.value !== budget1Choice
+      );
       this.setState({
         budgetChoices,
         totals,
-        budget1Choice: defaultChoices[0].value,
-        budget1: totals[defaultChoices[0].value],
-        budget2Choice: defaultChoices[1].value,
-        budget2: totals[defaultChoices[1].value],
-      });
-      const budget1Options = budgetChoices.slice();
-      const budget2Options = budgetChoices.slice();
-      budget1Options.splice(this.state.budget2Choice, 1);
-      budget2Options.splice(this.state.budget1Choice, 1);
-      this.setState({
+        budget1Choice,
+        budget1: totals[budget1Choice],
+        budget2Choice,
+        budget2: totals[budget2Choice],
         budget1Options,
         budget2Options,
       });
@@ -116,6 +109,12 @@ class Compare extends React.Component {
 
   render() {
     const usePct = this.state.changeType === "pct";
+    const budget1Selected = this.state.budgetChoices.find(
+      option => option.value === this.state.budget1Choice
+    ) || null;
+    const budget2Selected = this.state.budgetChoices.find(
+      option => option.value === this.state.budget2Choice
+    ) || null;
     const selectedYears = [this.state.budget1, this.state.budget2];
     const totals = selectedYears.map(record => {
       if (record) {
@@ -125,6 +124,35 @@ class Compare extends React.Component {
         };
       }
     });
+    const breakdowns = [
+      {
+        key: "spendDept",
+        label: "Spending by Department",
+        type: "spending",
+        dimension: "department",
+      },
+      {
+        key: "spendCat",
+        label: "Spending by Category",
+        type: "spending",
+        dimension: "category",
+      },
+      {
+        key: "revDept",
+        label: "Revenue by Department",
+        type: "revenue",
+        dimension: "department",
+      },
+      {
+        key: "revCat",
+        label: "Revenue by Category",
+        type: "revenue",
+        dimension: "category",
+      },
+    ];
+    const activeBreakdown = breakdowns.find(
+      item => item.key === this.state.activeBreakdown
+    ) || breakdowns[0];
 
     return (
       <div>
@@ -135,20 +163,20 @@ class Compare extends React.Component {
               <span style={styles[0]} className="choose-budget">
                 <Select
                   options={this.state.budget1Options}
-                  value={this.state.budget1Choice}
+                  value={budget1Selected}
                   onChange={this.selectBudget1}
-                  searchable={false}
-                  clearable={false}
+                  isSearchable={false}
+                  isClearable={false}
                 />
               </span>{" "}
               with{" "}
               <span style={styles[1]} className="choose-budget">
                 <Select
                   options={this.state.budget2Options}
-                  value={this.state.budget2Choice}
+                  value={budget2Selected}
                   onChange={this.selectBudget2}
-                  searchable={false}
-                  clearable={false}
+                  isSearchable={false}
+                  isClearable={false}
                 />
               </span>
             </h1>
@@ -178,61 +206,41 @@ class Compare extends React.Component {
             </p>
           </div>
         </div>
-        <Tab.Container id="selectBreakdown" defaultActiveKey="spendDept">
-          <div className="row">
-            <div className="col-sm-3">
-              <Nav bsStyle="pills" stacked>
-                <NavItem eventKey="spendDept">Spending by Department</NavItem>
-                <NavItem eventKey="spendCat">Spending by Category</NavItem>
-                <NavItem eventKey="revDept">Revenue by Department</NavItem>
-                <NavItem eventKey="revCat">Revenue by Category</NavItem>
-              </Nav>
-            </div>
-            <div className="col-sm-9">
-              <Tab.Content mountOnEnter>
-                <Tab.Pane eventKey="spendDept">
-                  <Breakdown
-                    colors={colors}
-                    diffColors={diffColors}
-                    usePct={usePct}
-                    years={selectedYears}
-                    type="spending"
-                    dimension="department"></Breakdown>
-                </Tab.Pane>
-                <Tab.Pane eventKey="spendCat">
-                  <Breakdown
-                    colors={colors}
-                    diffColors={diffColors}
-                    usePct={usePct}
-                    years={selectedYears}
-                    type="spending"
-                    dimension="category"></Breakdown>
-                </Tab.Pane>
-                <Tab.Pane eventKey="revDept">
-                  <Breakdown
-                    colors={colors}
-                    diffColors={diffColors}
-                    usePct={usePct}
-                    years={selectedYears}
-                    type="revenue"
-                    dimension="department"></Breakdown>
-                </Tab.Pane>
-                <Tab.Pane eventKey="revCat">
-                  <Breakdown
-                    colors={colors}
-                    diffColors={diffColors}
-                    usePct={usePct}
-                    years={selectedYears}
-                    type="revenue"
-                    dimension="category"></Breakdown>
-                </Tab.Pane>
-              </Tab.Content>
-            </div>
+        <div className="row">
+          <div className="col-sm-3">
+            <ul className="nav nav-pills nav-stacked">
+              {breakdowns.map(item => (
+                <li
+                  key={item.key}
+                  className={item.key === activeBreakdown.key ? "active" : ""}>
+                  <a
+                    href={`#${item.key}`}
+                    onClick={event => {
+                      event.preventDefault();
+                      this.setState({ activeBreakdown: item.key });
+                    }}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-        </Tab.Container>
+          <div className="col-sm-9">
+            <Breakdown
+              colors={colors}
+              diffColors={diffColors}
+              usePct={usePct}
+              years={selectedYears}
+              type={activeBreakdown.type}
+              dimension={activeBreakdown.dimension}></Breakdown>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-ReactDOM.render(<Compare />, document.getElementById("root"));
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  createRoot(rootElement).render(<Compare />);
+}

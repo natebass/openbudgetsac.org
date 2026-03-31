@@ -1,9 +1,9 @@
 import React from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
-import {entries, keys, set} from 'd3-collection';
+import {Bar} from 'react-chartjs-2';
+import {keys, set} from 'd3-collection';
 import {ascending, descending} from 'd3-array';
 
-import {asTick, asDiff, DiffStyled, compareChartOptions} from './utils';
+import {DiffStyled, compareChartOptions} from './utils';
 
 
 export default class DiffTable extends React.Component {
@@ -78,8 +78,11 @@ export default class DiffTable extends React.Component {
         <td>
           <h4>
             {entry.key}
-            <HorizontalBar data={data} options={compareChartOptions} height={40}>
-            </HorizontalBar>
+            <Bar
+              data={data}
+              options={{...compareChartOptions, indexAxis: 'y'}}
+              height={40}>
+            </Bar>
           </h4>
         </td>
         <td>

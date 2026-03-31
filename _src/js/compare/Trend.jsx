@@ -5,19 +5,30 @@ import {keys, set} from 'd3-collection';
 import {asTick} from './utils.jsx';
 
 const chartOpts = {
-  legend: {
-    display: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      callbacks: {
+        label: context => {
+          // display as currency in millions
+          const label = context.dataset.label;
+          return `${label}: ${asTick(context.parsed.y / 1000000)}M`;
+        },
+      },
+    },
   },
   scales: {
-    xAxes: [{
+    x: {
       ticks: {
         autoSkip: false,
       },
-    }],
-    yAxes: [{
-      scaleLabel: {
+    },
+    y: {
+      title: {
         display: true,
-        labelString: 'Amount (in millions)'
+        text: 'Amount (in millions)'
       },
       ticks: {
         beginAtZero: true,
@@ -26,15 +37,6 @@ const chartOpts = {
           const num = (value / 1000000).toLocaleString('en');
           return `\$${num}M`;
         },
-      },
-    }],
-  },
-  tooltips: {
-    callbacks: {
-      label: (item, data) => {
-        // display as currency in millions
-        const label = data.datasets[item.datasetIndex].label;
-        return `${label}: ${asTick(item.yLabel / 1000000)}M`;
       },
     },
   },

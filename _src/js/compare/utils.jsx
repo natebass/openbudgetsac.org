@@ -1,5 +1,15 @@
 import React from 'react';
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Tooltip,
+} from 'chart.js';
 import {format} from 'd3-format';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export const asTick = format('$,.1f');
 
@@ -14,26 +24,27 @@ export const BUDGET_TYPES = {
 };
 
 export const compareChartOptions = {
-  legend: {
-    display: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      callbacks: {
+        label: context => {
+          const label = context.dataset.label;
+          return `${label}: ${asTick(context.parsed.x / 1000000)}M`;
+        },
+      },
+    },
   },
   scales: {
-    xAxes: [{
+    x: {
       ticks: {
         beginAtZero: true,
         callback: value => {
           // display as currency in millions
           return `${asTick(value / 1000000)}M`;
         },
-      },
-    }]
-  },
-  tooltips: {
-    callbacks: {
-      label: (item, data) => {
-        // display as currency in millions
-        const label = data.datasets[item.datasetIndex].label;
-        return `${label}: ${asTick(item.xLabel / 1000000)}M`;
       },
     },
   },

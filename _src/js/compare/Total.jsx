@@ -1,8 +1,6 @@
 import React from 'react';
-import {HorizontalBar} from 'react-chartjs-2';
-import {entries} from 'd3-collection';
-import {asTick, asDiff, DiffStyled, compareChartOptions} from './utils';
-import Spinner from 'react-spinkit';
+import {Bar} from 'react-chartjs-2';
+import {DiffStyled, compareChartOptions} from './utils';
 
 export default class Total extends React.Component {
   constructor(props) {
@@ -12,7 +10,7 @@ export default class Total extends React.Component {
   render() {
     const totals = this.props.data;
     if (!totals.length || totals.some(record => !record)) {
-      return <Spinner spinnerName="wave" noFadeIn/>
+      return <div className="text-muted">Loading totals...</div>
     }
 
     let diff = totals[0].total - totals[1].total;
@@ -35,7 +33,10 @@ export default class Total extends React.Component {
         <DiffStyled diff={diff} colors={this.props.diffColors} usePct={this.props.usePct}>
         </DiffStyled>
       </h2>
-      <HorizontalBar data={data} height={25} options={compareChartOptions}></HorizontalBar>
+      <Bar
+        data={data}
+        height={25}
+        options={{...compareChartOptions, indexAxis: 'y'}}></Bar>
     </div>
   }
 }

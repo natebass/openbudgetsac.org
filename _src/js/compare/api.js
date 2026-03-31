@@ -64,7 +64,7 @@ export function fetchTotals() {
         // 2 digit year before the decimal, transformed type number after
         return +`${year}.${type}`;
       });
-      return d3.descending(indexA, indexB);
+      return descending(indexA, indexB);
     });
     return data;
   });

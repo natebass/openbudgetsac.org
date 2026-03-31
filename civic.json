@@ -1,0 +1,49 @@
+{
+  "name": "Open Budget: Sacramento",
+  "status": "Production",
+  "tags": [
+    "civic-tech",
+    "budget",
+    "transparency",
+    "open-data",
+    "visualization",
+    "sacramento"
+  ],
+  "contact": {
+    "name": "Open Sacramento",
+    "email": "hello@opensac.org",
+    "url": "https://opensac.org/"
+  },
+  "description": "Fiscal transparency and visualization website for exploring the City of Sacramento budget.",
+  "homepage": "https://openbudgetsac.org/",
+  "id": "https://open.dc.gov/civic.json/specification.html",
+  "license": "MIT",
+  "repository": "https://github.com/code4sac/openbudgetsac.org",
+  "geography": [
+    "Sacramento, California",
+    "United States"
+  ],
+  "links": [
+    "https://linktr.ee/opensacorg",
+    "https://www.meetup.com/code4sac/",
+    "https://github.com/opensacorg",
+    "https://github.com/code4sac/openbudgetsac.org/",
+    "https://x.com/opensacorg",
+    "https://bsky.app/profile/opensacorg.bsky.social",
+    "https://mastodon.social/@opensacorg",
+    "https://www.linkedin.com/company/opensacorg",
+    "https://www.facebook.com/opensacorg"
+  ],
+  "partners": [
+    {
+      "name": "Open Sacramento",
+      "email": "hello@opensac.org",
+      "url": "https://opensac.org/"
+    },
+    {
+      "name": "OpenOakland",
+      "url": "https://openoakland.org/"
+    }
+  ],
+  "type": "website"
+}

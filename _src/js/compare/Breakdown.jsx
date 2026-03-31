@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import Spinner from 'react-spinkit';
 
 import DiffTable from './DiffTable.jsx';
 import Trend from './Trend.jsx';
@@ -21,11 +20,11 @@ export default class SpendingByDept extends React.Component {
     this.fetchData(this.props.years);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     // TODO: do a better comparison;
     // this works by reference and fires every time
-    if (this.props.years !== nextProps.years) {
-      this.fetchData(nextProps.years);
+    if (this.props.years !== prevProps.years) {
+      this.fetchData(this.props.years);
     }
   }
 
@@ -47,7 +46,7 @@ export default class SpendingByDept extends React.Component {
   // TODO: special state when there are no differences?
   render () {
     if (this.state.pending) {
-      return <Spinner spinnerName="wave"/>
+      return <div className="text-muted">Loading breakdown...</div>
     }
     return <div>
       <Trend data={this.state.budgets} colors={this.props.colors}
