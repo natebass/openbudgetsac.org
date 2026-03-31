@@ -5,6 +5,7 @@ node_modules/
 tmp/
 _src/js/dist/
 build/
+_site/
 yarn.lock
 .sass-cache/release
 _treemap/Approved.*.json
@@ -13,4 +14,3 @@ _treemap/Approved.*.json
 .idea/
 
 *:Zone.Identifier
-
