@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "axios": "^1.14.1",
+    "axios": "^1.14.0",
     "chart.js": "^4.5.1",
     "core-js": "^3.49.0",
     "d3-array": "^3.2.4",
@@ -19,7 +19,8 @@
     "react-spinkit": "^3.0.0"
   },
   "scripts": {
-    "serve": "npm run build && npx @11ty/eleventy --serve --port=8011",
+    "prod": "npm run build && npx @11ty/eleventy --serve --port=8011",
+    "serve": "npx @11ty/eleventy --serve --port=8011",
     "watch": "npx webpack --config webpack.config.js --watch",
     "build": "npx webpack --config webpack.config.js",
     "build-css": "dart-sass --style=compressed css/main.scss styles/main.css"
