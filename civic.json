@@ -16,7 +16,7 @@
   },
   "description": "Fiscal transparency and visualization website for exploring the City of Sacramento budget.",
   "homepage": "https://openbudgetsac.org/",
-  "id": "https://open.dc.gov/civic.json/specification.html",
+  "id": "https://opensac.org/projects/openbudgetsac.org",
   "license": "MIT",
   "repository": "https://github.com/code4sac/openbudgetsac.org",
   "geography": [
@@ -42,6 +42,7 @@
     },
     {
       "name": "OpenOakland",
+      "email": "steering@openoakland.org",
       "url": "https://openoakland.org/"
     }
   ],

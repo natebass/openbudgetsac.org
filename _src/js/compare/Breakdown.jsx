@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import DiffTable from './DiffTable.jsx';
 import Trend from './Trend.jsx';

@@ -8,7 +8,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPassthroughCopy("data");
   eleventyConfig.addPassthroughCopy("images");
-  eleventyConfig.setTemplateFormats(["css", "html", "pug"]);
+  // eleventyConfig.setTemplateFormats(["css", "html", "pug"]);
+  eleventyConfig.setTemplateFormats(["css", "html", "pug", "jade"]);
 
   return {
     dir: {
