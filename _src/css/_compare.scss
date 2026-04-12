@@ -2,7 +2,7 @@
   padding-left: 1em;
 }
 
-// TODO: why isn't this set in bootstrap?
+// Force full-width button rows for list-group button items.
 button.list-group-item {
   width: 100%;
   text-align: left;
@@ -32,7 +32,8 @@ button.list-group-item {
 .choose-budget {
   display: inline-block;
   vertical-align: top;
-  width: 330px;
+  width: 100%;
+  max-width: 330px;
   border-bottom: 2px solid currentColor;
 
   .Select {
@@ -68,5 +69,65 @@ button.list-group-item {
     &-option {
       @extend .h5;
     }
+  }
+}
+
+.compare-title {
+  margin-bottom: 16px;
+
+  &__label,
+  &__connector {
+    display: inline-block;
+  }
+
+  &__budget {
+    margin-top: 6px;
+  }
+}
+
+@media (max-width: 767px) {
+  .compare-title {
+    line-height: 1.3;
+
+    &__label,
+    &__connector,
+    &__budget {
+      display: block;
+    }
+
+    &__connector {
+      margin: 6px 0;
+    }
+  }
+
+  .choose-budget {
+    max-width: 100%;
+  }
+}
+
+.compare-app {
+  .nav.nav-pills > li > button[role='tab'] {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    padding: 10px 15px;
+    text-align: left;
+    color: $link-color;
+  }
+
+  .nav.nav-pills > li > button[role='tab']:hover,
+  .nav.nav-pills > li > button[role='tab']:focus {
+    text-decoration: none;
+    background-color: $nav-link-hover-bg;
+  }
+
+  .nav.nav-pills > li.active > button[role='tab'],
+  .nav.nav-pills > li.active > button[role='tab']:hover,
+  .nav.nav-pills > li.active > button[role='tab']:focus {
+    color: $nav-pills-active-link-hover-color;
+    background-color: $nav-pills-active-link-hover-bg;
   }
 }

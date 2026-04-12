@@ -1,50 +1,41 @@
+/* eslint-disable camelcase, eqeqeq, no-tabs, no-shadow-restricted-names, no-use-before-define, no-var, no-prototype-builtins, no-unused-vars */
 var ob = ob || {}
 
-;(function(namespace, undefined) {
-	namespace.fusion = function(api_key, table_id) {
-		return {
-			key: api_key,
-			table: table_id,
+;(function (namespace, undefined) {
+  function isSafeIdentifier (value) {
+    return typeof value === 'string' && /^[A-Za-z0-9_. -]+$/.test(value)
+  }
 
-			url: function(hierarchy, sum) {
-				/* quote columns */
-				var columns = hierarchy.map(function(x) { return "'" + x + "'"; });
+  namespace.fusion = function (api_key, table_id) {
+    return {
+      key: api_key,
+      table: table_id,
 
-				/* build query */
-				var query = 'SELECT ' + columns.join(',');
-				if (sum) { query += ',Sum(' + sum + ')'; }
-				query += ' FROM ' + this.table + ' GROUP BY ' + columns.join(',');
+      url: function (hierarchy, sum) {
+        if (!Array.isArray(hierarchy) || !hierarchy.every(isSafeIdentifier)) {
+          throw new Error('Unsafe hierarchy fields passed to fusion.url')
+        }
+        if (sum && !isSafeIdentifier(sum)) {
+          throw new Error('Unsafe sum field passed to fusion.url')
+        }
 
-				/* encode query */
-				query = encodeURIComponent(query);
+        // Fusion Tables SQL requires single-quoted column names.
+        const columns = hierarchy.map(function (x) { return "'" + x + "'" })
 
-				/* build url */
-				var url = 'https://www.googleapis.com/fusiontables/v1/';
-				url += 'query?sql=' + query;
-				url += '&key=' + this.key;
-				return url;
-			},
-		};
-	}
-})(ob);
+        // Build a grouped aggregate query for the treemap hierarchy.
+        let query = 'SELECT ' + columns.join(',')
+        if (sum) { query += ',Sum(' + sum + ')' }
+        query += ' FROM ' + this.table + ' GROUP BY ' + columns.join(',')
 
-/* test
-var x = ob.fusion(
-		'AIzaSyCnWo1USrkSKnN6oy02tNeWfg6aFSg0OI8',
-		'1V2R7lsdg-GTbGOZ_h_DrGOa-Gfqk1PGA9h_n5zwU'
-		);
-console.log(
-	x.url(
-			['Fund Description', 'Department', 'Division'],
-			'Amount'
-		)
-);
+        // Encode once so user-provided identifiers cannot break URL structure.
+        query = encodeURIComponent(query)
 
-x.key = 'xxxxx'
-console.log(
-	x.url(
-			['Fund Description', 'Department', 'Division'],
-			'Amount'
-		)
-);
-*/
+        // Keep this endpoint for backward compatibility with archived datasets.
+        let url = 'https://www.googleapis.com/fusiontables/v1/'
+        url += 'query?sql=' + query
+        url += '&key=' + this.key
+        return url
+      }
+    }
+  }
+})(ob)

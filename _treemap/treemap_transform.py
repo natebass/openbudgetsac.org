@@ -142,14 +142,15 @@ def transform_group_to_files(df, group, grouping_headers, amount_header):
     2. Construction of an easily traversable dictionary tree
     3. Transformation of the dictionary tree into the D3.js treemap format
     '''
-    # compte the filters argument for reducing the dataframe
+    # Build filter arguments from grouping headers and configured values.
     filters = {key: val for key, val in zip(grouping_headers, group["values"])}
 
-    # reduce the dataframe (store data in .csv for diagnostic purposes TODO comment out)
+    # Reduce the DataFrame to the requested group slice.
+    # Keep optional CSV output commented out for local debugging only.
     reduced_df = filter_df(df, **filters)
     # reduced_df.to_csv(group['filename']+'.csv', index=False)
 
-    # begin with a blank dictionary
+    # Start with an empty dictionary-based tree.
     tree_dict = dict()
 
     # construct the tree leveraging dictionary starting at the top
@@ -176,7 +177,7 @@ def transform_group_to_files(df, group, grouping_headers, amount_header):
                 revenue=float(pvt[amount_header][idx] * (1.0 if group['values'][0] == 'R' else 0))
             )
 
-    # write the data transformed into D3.js treemap format into the filename specified in the group
+    # Write transformed data in the D3 treemap JSON shape.
     json.dump(transform_branch_to_branch(tree_dict), open(group['filename'],'w'))
 
 

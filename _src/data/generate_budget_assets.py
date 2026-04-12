@@ -46,9 +46,10 @@ def generate_compare_assets(rows):
     totals = json.loads(totals_path.read_text(encoding="utf-8"))
 
     existing_years = {entry["fiscal_year_range"] for entry in totals}
-    compare_years = sorted(
-        {row["Fiscal_Year"] for row in rows if row["Fiscal_Year"]} - {f"20{y[-2:]}" for y in existing_years}
-    )
+    # Only generate missing fiscal years so reruns stay idempotent.
+    source_years = {row["Fiscal_Year"] for row in rows if row["Fiscal_Year"]}
+    known_years = {f"20{year[-2:]}" for year in existing_years}
+    compare_years = sorted(source_years - known_years)
 
     for calendar_year in compare_years:
         fiscal_year = fy_label(calendar_year)
@@ -76,24 +77,39 @@ def generate_compare_assets(rows):
             COMPARE_DIR / "fiscal-years-expenses" / "depts" / f"{fiscal_year}.json",
             sort_rows(expense_by_dept, "department", calendar_year),
         )
+        expense_category_path = (
+            COMPARE_DIR
+            / "fiscal-years-expenses"
+            / "account-cats"
+            / f"{fiscal_year}.json"
+        )
         write_json(
-            COMPARE_DIR / "fiscal-years-expenses" / "account-cats" / f"{fiscal_year}.json",
+            expense_category_path,
             sort_rows(expense_by_cat, "account_category", calendar_year),
         )
         write_json(
             COMPARE_DIR / "fiscal-years-revenue" / "depts" / f"{fiscal_year}.json",
             sort_rows(revenue_by_dept, "department", calendar_year),
         )
+        revenue_category_path = (
+            COMPARE_DIR
+            / "fiscal-years-revenue"
+            / "account-cats"
+            / f"{fiscal_year}.json"
+        )
         write_json(
-            COMPARE_DIR / "fiscal-years-revenue" / "account-cats" / f"{fiscal_year}.json",
+            revenue_category_path,
             sort_rows(revenue_by_cat, "account_category", calendar_year),
         )
 
+        # Preserve the historical totals.json shape consumed by compare pages.
         totals.append(
             {
                 "budget_type": "1",
                 "fiscal_year_range": fiscal_year,
-                "total": str(int(round(sum(float(row["Amount"] or 0) for row in expenses)))),
+                "total": str(
+                    int(round(sum(float(row["Amount"] or 0) for row in expenses)))
+                ),
                 "general_fund": str(
                     int(
                         round(
@@ -137,6 +153,7 @@ def build_tree(rows, hierarchy, budget_type):
             group_items = grouped[key]
             amount = sum(float(row["Amount"] or 0) for row in group_items)
             children = None
+            # Recurse until the configured hierarchy depth is exhausted.
             if index + 1 < len(hierarchy):
                 children = build_level(group_items, index + 1)
             nodes.append(make_tree_node(key, amount, budget_type, children))
@@ -147,18 +164,25 @@ def build_tree(rows, hierarchy, budget_type):
 
 
 def generate_tree_assets(rows):
+    # Limit generation to currently supported fiscal-year tree outputs.
     wanted_years = {"2025", "2026"}
     for calendar_year in wanted_years:
         fiscal_year = fy_label(calendar_year)
         expense_rows = [
             row
             for row in rows
-            if row["Fiscal_Year"] == calendar_year and row["ExpenseRevenue"] in EXPENSE_VALUES
+            if (
+                row["Fiscal_Year"] == calendar_year
+                and row["ExpenseRevenue"] in EXPENSE_VALUES
+            )
         ]
         revenue_rows = [
             row
             for row in rows
-            if row["Fiscal_Year"] == calendar_year and row["ExpenseRevenue"] in REVENUE_VALUES
+            if (
+                row["Fiscal_Year"] == calendar_year
+                and row["ExpenseRevenue"] in REVENUE_VALUES
+            )
         ]
 
         expense_tree = build_tree(

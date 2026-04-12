@@ -5,23 +5,23 @@ How To Create a New Budget Treemap Visualization Webpage
 Creating Treemap Data Files
 ------------------------------
 
-To create the treemap data files perform the following steps:
+To create treemap data files, follow these steps:
 
-1. Save the budget in a commma-seperated-value (CSV) format.
+1. Save the budget in comma-separated values (CSV) format.
 	> File > Save As...
 2. Create or edit a configuration file.
 	> To view an existing configuration file, open the config.json
 	
-	> The configuration file controls how the budget data is parsed. It tells the parser the header names, how to group data in the budget, the hierarchy ordering, and the output filenames. Generally, you'll only have to update the years if you're updating an existing configuration file for consitent budget format.
+	> The configuration file controls how the budget data is parsed. It tells the parser the header names, how to group data in the budget, the hierarchy order, and the output filenames. In most cases, you only need to update the years when using an existing configuration file with a consistent budget format.
 
 	> See [Appendix: Data Processing Configuration File Details](#dataconfigappendix) for more information about the configuration file.
 
-3. Run the data processing [python](https://www.python.org/) script
+3. Run the data processing [Python](https://www.python.org/) script.
 	> In the terminal:
 		
 		$ python treemap_process_data.py config.json budget.csv
 
-	> If your confused, try the --help option
+	> If you are confused, try the `--help` option.
 
 		$ python treemap_process_data.py --help
 		usage: treemap_process_data.py [-h] configuration budget
@@ -53,7 +53,7 @@ Appendix
 The configuration file controls how the budget data is parsed. It tells the 
 parser the header names, how to group data in the budget, the hierarchy 
 ordering, and the output filenames. Generally, you'll only have to update the
-years if you're updating an existing configuration file for consitent budget format.
+years if you're updating an existing configuration file with a consistent budget format.
 
 Example:
 
@@ -110,7 +110,7 @@ Description of fields:
 * amount\_type\_header
 	> The column header which denotes whether the amount is a revenue or expense.
 * account\_types
-	> The column headers of the different accounts types (only "revenue" and "expense" are supported).
+	> The column headers of the different account types (only "revenue" and "expense" are supported).
 
 		"account_types": {
 			"expense": expense_column_header,
@@ -128,16 +128,15 @@ Description of fields:
 
 		"groups" : { 
 			"values": [value, ...],
-			"hierarcy": [column_header, ...],
+			"hierarchy": [column_header, ...],
 			"filename": group_filename
 		}
 
 	> * values
-	>	> A list of values that describe this group.  These must conincide with the values found in the grouping\_headers.
+	>	> A list of values that describe this group. These must coincide with the values found in the grouping\_headers.
 
 	> * hierarchy
 	> 	> A list of column headers that control the order in which budget items are summarized.
 	
 	> * filename
 	>	> The output filename for that group.
-

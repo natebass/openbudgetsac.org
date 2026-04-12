@@ -1,113 +1,323 @@
 # Open Budget: Sacramento
 
+> Open Budget: Sacramento transforms City budget data into clear, accessible, and civic-minded visualizations so residents can understand where money comes from, where it goes, and how it changes over time.
+
+[![Website](https://img.shields.io/badge/site-openbudgetsac.org-0A66C2?logo=google-chrome&logoColor=white)](https://openbudgetsac.org/)
+[![Node.js](https://img.shields.io/badge/node-22.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Eleventy](https://img.shields.io/badge/Eleventy-3.1.5-222222?logo=11ty&logoColor=white)](https://www.11ty.dev/)
+[![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react&logoColor=000)](https://react.dev/)
+[![Webpack](https://img.shields.io/badge/Webpack-5.105.4-8DD6F9?logo=webpack&logoColor=000)](https://webpack.js.org/)
+[![Jest](https://img.shields.io/badge/Jest-30.2.0-C21325?logo=jest&logoColor=white)](https://jestjs.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.txt)
+
+## Table of Contents
+<!-- vim-markdown-toc GFM -->
+
+* [Background](#background)
+* [Install](#install)
+* [Usage](#usage)
+* [Source Tree](#source-tree)
+* [Total Features](#total-features)
+* [Recent Feature Changes](#recent-feature-changes)
+* [Tech Stack](#tech-stack)
+* [List of Dependences](#list-of-dependences)
+* [Outstanding Concerns / Issues / TODOs](#outstanding-concerns--issues--todos)
+* [Contributing](#contributing)
+* [Maintainers](#maintainers)
+* [License](#license)
+
+<!-- vim-markdown-toc -->
+
+## Background
+Open Budget: Sacramento is a production civic-tech website for fiscal transparency. The project combines static pages, historical budget visualizations, and a modern React comparison workflow. It is maintained by community contributors affiliated with Open Sacramento.
+
+Core goals:
+- Make public budget data easier to understand.
+- Support both high-level and detailed exploration.
+- Keep the site lightweight, testable, and contributor-friendly.
+
+## Install
+
+### Prerequisites
+- [Node.js 22.x](https://nodejs.org/) (matches Docker + CI)
+- [npm](https://www.npmjs.com/)
+- Optional: [Docker](https://www.docker.com/)
+- Optional (data scripts): [Python 3](https://www.python.org/) + [pandas](https://pandas.pydata.org/)
+
+### Local setup
+```bash
+# from repository root
+cd _src
+npm ci --include=dev
+npm run build-css
+npm run serve
+```
+
+Site will be available at `http://localhost:8011`.
+
+### Docker setup
+```bash
+# from repository root
+docker compose up --build
+```
+
+This launches only the website container at `http://localhost:8011`.
+
+Optional Docker test targets:
+```bash
+# full Docker test target (lint + unit coverage + a11y + e2e)
+docker compose --profile test build test
+
+# parallel verification target
+docker compose --profile test build test-parallel
+```
+
+## Usage
+From `_src/`:
+
+```bash
+npm run serve                # eleventy dev server
+npm run watch                # webpack watch for compare app
+npm run build                # production compare bundle
+npm run build-css            # compile Sass
+npm run lint                 # standard + eslint
+npm run test                 # lint + unit coverage + a11y + e2e
+npm run test:e2e             # preflight + e2e against local server
+npm run test:docker          # Docker-optimized full suite (coverage + a11y + e2e)
+npm run perf:report          # compare bundle size budgets
+npm run bench                # benchmark suite
+```
+
+For details on performance work and 3G-focused optimization history, see [`_src/PERFORMANCE.md`](_src/PERFORMANCE.md).
+
+## CI/CD
+
+- CI workflow (`.github/workflows/ci.yml`) validates:
+  - npm checks (lint, unit coverage, a11y, perf, bench, Eleventy build)
+  - E2E with a prebuilt frontend bundle via `npm run test:e2e:nobuild`
+  - Docker targets:
+    - `docker compose build site` (runtime/default website image)
+    - `docker build --target test .` (full Docker-optimized test suite)
+    - `docker build --target verify-parallel .` (parallel verification target)
+- Deploy workflow (`.github/workflows/deploy.yml`) builds static files from `_src` and publishes to GitHub Pages.
+
+## Source Tree
+```text
+openbudgetsac.org/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── deploy.yml
+├── _src/                         # primary development workspace
+│   ├── __tests__/                # e2e tests
+│   ├── bench/                    # benchmark harness
+│   ├── css/                      # Sass + legacy vendor CSS assets
+│   ├── data/                     # compare/flow/tree data + Python scripts
+│   ├── images/                   # static images
+│   ├── js/
+│   │   ├── compare/              # React comparison app
+│   │   ├── old/                  # legacy OpenSpending scripts
+│   │   └── dist/                 # built bundles
+│   ├── partials/                 # shared Pug partials/layouts
+│   ├── templates/                # legacy template pages
+│   ├── test/                     # test utilities (preflight, static server, perf)
+│   ├── package.json
+│   ├── jest.config.cjs
+│   ├── webpack.config.js
+│   └── PERFORMANCE.md
+├── _treemap/                     # treemap data processing utilities
+├── Dockerfile
+├── docker-compose.yml
+├── civic.json
+└── LICENSE.txt
+```
+
+## Total Features
+
+### Website and content features
+- Public-facing civic information pages (`what-we-do`, `who-we-are`, `news`, `contact`, `discuss`, `feedback`, and guides).
+- Budget process and visualization landing pages.
+- Legacy/historical budget pages covering multiple fiscal cycles.
+
+### Budget visualization features
+- **Overview** flow visualization for single-year, source-to-use budget movement.
+- **Detail** treemap/breakdown pages for department/fund/category drill-down.
+- **Comparison** React app for side-by-side year comparisons.
+- Historical visualization pages retained for continuity and archive value.
+
+### Compare page features (`_src/js/compare/`)
+- Dual budget-year selection with intelligent defaults.
+- Change display modes: percentage and dollars.
+- Breakdown tabs:
+  - Spending by Department
+  - Spending by Category
+  - Revenue by Department
+  - Revenue by Category
+- Accessible chart/table rendering and runtime a11y checks in development.
+- Constrained-mode behavior for small screens/low-bandwidth/low-memory devices.
+
+### Performance and quality features
+- Production-mode webpack builds for compare bundle.
+- Automated bundle-size budget reporting (`npm run perf:report`).
+- Linting via Standard + ESLint.
+- Unit + accessibility tests via Jest.
+- E2E verification via Puppeteer with Linux dependency preflight checks.
+- Benchmarks via `bench-node`.
+- CI pipeline for lint/test/build/perf/bench and Docker target validation.
+- GitHub Pages deployment pipeline.
+
+### Data tooling features
+- Python CSV splitting utility for flow inputs.
+- Python budget-asset generation for compare/tree datasets.
+- Treemap data tooling under `_treemap/`.
+
+## Tech Stack
+
+### Core platform
+
+| Tool | Version | Badge | Link |
+| --- | --- | --- | --- |
+| Node.js | `22.x` | ![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?logo=node.js&logoColor=white) | https://nodejs.org/ |
+| npm | bundled with Node 22 | ![npm](https://img.shields.io/badge/npm-package%20manager-CB3837?logo=npm&logoColor=white) | https://www.npmjs.com/ |
+| Eleventy | `^3.1.5` | ![11ty](https://img.shields.io/badge/Eleventy-3.1.5-222222?logo=11ty&logoColor=white) | https://www.11ty.dev/ |
+| Pug | `^3.0.4` | ![Pug](https://img.shields.io/badge/Pug-3.0.4-A86454?logo=pug&logoColor=white) | https://pugjs.org/ |
+| Webpack | `^5.105.4` | ![Webpack](https://img.shields.io/badge/Webpack-5.105.4-8DD6F9?logo=webpack&logoColor=000) | https://webpack.js.org/ |
+| Dart Sass | `^1.25.0` | ![Sass](https://img.shields.io/badge/Sass-1.25.0-CC6699?logo=sass&logoColor=white) | https://sass-lang.com/ |
+
+### Frontend app + data libraries
+
+| Library | Version | Badge | Link |
+| --- | --- | --- | --- |
+| React | `^19.2.4` | ![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react&logoColor=000) | https://react.dev/ |
+| React DOM | `^19.2.4` | ![React](https://img.shields.io/badge/React%20DOM-19.2.4-61DAFB?logo=react&logoColor=000) | https://react.dev/ |
+| Axios | `^1.14.0` | ![Axios](https://img.shields.io/badge/Axios-1.14.0-5A29E4?logo=axios&logoColor=white) | https://axios-http.com/ |
+| Chart.js | `^4.5.1` | ![Chart.js](https://img.shields.io/badge/Chart.js-4.5.1-FF6384?logo=chartdotjs&logoColor=white) | https://www.chartjs.org/ |
+| react-chartjs-2 | `^5.3.1` | ![Chart.js](https://img.shields.io/badge/react--chartjs--2-5.3.1-FF6384?logo=react&logoColor=white) | https://react-chartjs-2.js.org/ |
+| react-bootstrap | `^2.10.10` | ![Bootstrap](https://img.shields.io/badge/React%20Bootstrap-2.10.10-7952B3?logo=bootstrap&logoColor=white) | https://react-bootstrap.github.io/ |
+| react-select | `^5.10.2` | ![React Select](https://img.shields.io/badge/react--select-5.10.2-2684FF?logo=react&logoColor=white) | https://react-select.com/home |
+| d3-array | `^3.2.4` | ![D3](https://img.shields.io/badge/D3-3.2.4-F9A03C?logo=d3.js&logoColor=white) | https://d3js.org/ |
+| d3-collection | `^1.0.7` | ![D3](https://img.shields.io/badge/D3%20Collection-1.0.7-F9A03C?logo=d3.js&logoColor=white) | https://d3js.org/ |
+| d3-color | `^3.1.0` | ![D3](https://img.shields.io/badge/D3%20Color-3.1.0-F9A03C?logo=d3.js&logoColor=white) | https://d3js.org/ |
+| d3-format | `^3.1.2` | ![D3](https://img.shields.io/badge/D3%20Format-3.1.2-F9A03C?logo=d3.js&logoColor=white) | https://d3js.org/ |
+| d3-interpolate | `^3.0.1` | ![D3](https://img.shields.io/badge/D3%20Interpolate-3.0.1-F9A03C?logo=d3.js&logoColor=white) | https://d3js.org/ |
+| d3-scale-chromatic | `^3.1.0` | ![D3](https://img.shields.io/badge/D3%20Scale%20Chromatic-3.1.0-F9A03C?logo=d3.js&logoColor=white) | https://d3js.org/ |
+
+### Testing, linting, CI tooling
+
+| Tool | Version | Badge | Link |
+| --- | --- | --- | --- |
+| Jest | `^30.2.0` | ![Jest](https://img.shields.io/badge/Jest-30.2.0-C21325?logo=jest&logoColor=white) | https://jestjs.io/ |
+| Testing Library | `^16.3.0` | ![Testing Library](https://img.shields.io/badge/Testing%20Library-16.3.0-E33332?logo=testinglibrary&logoColor=white) | https://testing-library.com/ |
+| jest-axe | `^10.0.0` | ![axe](https://img.shields.io/badge/jest--axe-10.0.0-5A0FC8) | https://github.com/nickcolley/jest-axe |
+| Puppeteer | `^24.26.1` | ![Puppeteer](https://img.shields.io/badge/Puppeteer-24.26.1-40B5A4?logo=puppeteer&logoColor=white) | https://pptr.dev/ |
+| ESLint | `^8.57.1` | ![ESLint](https://img.shields.io/badge/ESLint-8.57.1-4B32C3?logo=eslint&logoColor=white) | https://eslint.org/ |
+| Standard JavaScript | `^17.1.2` | ![StandardJS](https://img.shields.io/badge/JavaScript%20Style-Standard-F3DF49?logo=javascript&logoColor=000) | https://standardjs.com/ |
+| start-server-and-test | `^2.1.2` | ![start-server-and-test](https://img.shields.io/badge/start--server--and--test-2.1.2-00C853) | https://github.com/bahmutov/start-server-and-test |
+| GitHub Actions | workflow | ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white) | https://docs.github.com/actions |
+
+## List of Dependences
+All dependencies required for active development are listed below.
+
+### JavaScript runtime dependencies (`_src/package.json`)
+- `axios@^1.14.0`
+- `chart.js@^4.5.1`
+- `core-js@^3.49.0`
+- `d3-array@^3.2.4`
+- `d3-collection@^1.0.7`
+- `d3-color@^3.1.0`
+- `d3-format@^3.1.2`
+- `d3-interpolate@^3.0.1`
+- `d3-scale-chromatic@^3.1.0`
+- `dart-sass@^1.25.0`
+- `pug@^3.0.4`
+- `react@^19.2.4`
+- `react-bootstrap@^2.10.10`
+- `react-chartjs-2@^5.3.1`
+- `react-dom@^19.2.4`
+- `react-select@^5.10.2`
+- `react-spinkit@^3.0.0`
+
+### JavaScript dev/test/build dependencies (`_src/package.json`)
+- `@11ty/eleventy@^3.1.5`
+- `@11ty/eleventy-plugin-pug@^1.0.0`
+- `@axe-core/react@^4.11.1`
+- `@babel/cli@^7.28.6`
+- `@babel/core@^7.29.0`
+- `@babel/preset-env@^7.29.2`
+- `@babel/preset-react@^7.28.5`
+- `@babel/register@^7.28.6`
+- `@testing-library/jest-dom@^6.9.1`
+- `@testing-library/react@^16.3.0`
+- `babel-jest@^30.2.0`
+- `babel-loader@^10.1.1`
+- `bench-node@^0.14.0`
+- `css-loader@^7.1.4`
+- `eslint@^8.57.1`
+- `eslint-plugin-jest@^28.13.5`
+- `eslint-plugin-react@^7.37.5`
+- `eslint-plugin-react-hooks@^7.0.0`
+- `jest@^30.2.0`
+- `jest-axe@^10.0.0`
+- `jest-environment-jsdom@^30.2.0`
+- `puppeteer@^24.26.1`
+- `standard@^17.1.2`
+- `start-server-and-test@^2.1.2`
+- `style-loader@^4.0.0`
+- `webpack@^5.105.4`
+- `webpack-cli@^7.0.2`
+
+### Python/data dependencies
+- `_src/data/split_csv.py` and `_src/data/generate_budget_assets.py` require:
+  - `pandas` (also listed in `_treemap/requirements.txt`)
+
+### System dependencies (for Puppeteer E2E on Linux)
+The E2E preflight checks and Docker test targets rely on shared libraries including:
+- `libasound2`, `libatk1.0-0`, `libatk-bridge2.0-0`, `libcups2`, `libdbus-1-3`
+- `libdrm2`, `libgbm1`, `libgtk-3-0`, `libnspr4`, `libnss3`
+- `libpango-1.0-0`, `libx11-6`, `libx11-xcb1`, `libxcb1`, `libxext6`
+- `libxcomposite1`, `libxdamage1`, `libxfixes3`, `libxkbcommon0`, `libxrandr2`, `libxss1`
+- `ca-certificates`, `fonts-liberation`, `xdg-utils`
+
+Authoritative locations:
+- [`_src/test/e2e-preflight.js`](_src/test/e2e-preflight.js)
+- [`Dockerfile`](Dockerfile)
+
+## Outstanding Concerns / Issues / TODOs
+No first-party `TODO`/`FIXME` markers are found in active codebase. However, the following items are known technical concerns to track:
+
+| Concern | Context | Location |
+| --- | --- | --- |
+| E2E tests require Linux Chromium shared libraries | `npm run test:e2e` will fail on hosts missing required runtime libs until dependencies are installed. | [`_src/test/e2e-preflight.js`](_src/test/e2e-preflight.js) |
+| Compare bundle remains above Webpack’s default warning threshold | Performance has improved significantly, but bundle size still exceeds 244 KiB default warning level. | [`_src/PERFORMANCE.md` lines 75-77](_src/PERFORMANCE.md) |
+| Large source images still impact strict 3G targets | Optional optimization work remains for modern image formats and responsive variants. | [`_src/PERFORMANCE.md` lines 78-79](_src/PERFORMANCE.md) |
+| Legacy OpenSpending/jQuery treemap path is still in production code | Historical widget path increases maintenance burden and modernization effort. | [`_src/js/old/treemap.js`](_src/js/old/treemap.js) |
+| Historical page copy contains dated “pending” notices from 2016 | Content is factually historical, but appears stale/confusing if read as current status. | [`_src/2016-17-adjusted-budget-flow.jade:10`](_src/2016-17-adjusted-budget-flow.jade), [`_src/2016-17-adjusted-budget-tree.jade:10`](_src/2016-17-adjusted-budget-tree.jade) |
 
 ## Contributing
+Contributions are welcome, but please consult with the Open Sacramento community first.
 
-If you are looking for a starter development task to get your feet wet with our codebase, any of our Issues tagged [help wanted](https://github.com/code4sac/openbudgetsac.org/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) might be a good fit.
+- For starter tasks, browse issues labeled `help wanted`.
+- For larger architectural changes, open an issue and discuss approach first.
+- Keep changes simple, focused, tested, and documented.
 
-Some of the other Issues are larger and require some deeper design or architectural work; if one of those catches your eye, you'll probably want to talk with us for some more context and background. Comment on the Issue, and if possible, catch up with us at one of [Open Sacramento's Monthly Action Nights](https://opensac.org/).
+Typical workflow:
+1. Fork the repository.
+2. Create a feature branch.
+3. Work in `_src/`.
+4. Run lint/tests locally.
+5. Open a pull request against `main`.
 
+Useful commands from `_src/`:
+```bash
+npm run lint
+npm run test:unit:coverage
+npm run test:a11y
+npm run test:e2e
+npm run perf:report
+```
 
-## Developing Locally
+## Maintainers
+- [Open Sacramento](https://opensac.org/) (`hello@opensac.org`)
 
-### Run with Docker
-To use Docker as a cross-platform container, run `docker compose up --build` and view the page in your browser at `localhost:8011`. It is required to rerun the command after making changes to see the effects.
-
-### Quick Start Guide for Unix-based systems (macOS, Linux, BSD, or WSL)
-
-1. Sign into GitHub with your account and fork this repository.
-2. Clone the fork onto your machine and navigate to the new folder.
-3. While still in the root directory of the local repository, create a new folder called `build`. This folder will be ignored by Git, which is our version control system for this project.
-4. Navigate to the `_src/` folder which has a local path of `root/_src/`, which is where all development work takes place.
-5. Install dependencies with `npm install` into the command-line.
-6. Incorpate your CSS changes by running `npm run build-css` into the command-line.
-7. Serve the website by entering `npx @11ty/eleventy --serve --port=8011` into the command-line.
-
-Congratulations! Your local copy of Open Budget Sacramento's website should now be running at `http://localhost:8011`. That means you are ready to contribute to the codebase of Open Budget Sacramento. You will probably want to open a new terminal window to re-gain access to the command line.
-
-- Please note that after editing a SASS file you should run `npm run build-css`, like in Step #6, from the `_src/` folder in order to incorporate your changes into the CSS.
-
-### Eleventy
-
-This site is built with [Eleventy](https://11ty.dev), a JavaScript-based static site generator that parses Markdown, Pug, and other template languages and runs on Node.js. That means you can reproduce our site locally with minimal setup!
-
-In order for Eleventy to work, you will need these software libraries and tools installed globally:
-
-- [Node (Required)](http://nodejs.org/download/), as it is required for Eleventy to work.
-- [NPM (Required)](https://npmjs.com) or [Yarn (Required)](https://yarnpkg.com/en/), as either one of the package managers are required for Eleventy to work, although NPM is preferred.
-- [NVM (Optional)](https://github.com/nvm-sh/nvm/blob/master/README.md), as it is very handy for downloading, updating, and switching between various versions of NPM.
-- **Linux/WSL tip (Optional):** Install Node via [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (e.g., `nvm install 22 && nvm use 22`) so that `node`/`npm` come from your Linux package manager, not `/mnt/c/...`. If you previously installed with Window's `npm`, then delete `node_modules` and `package-lock.json` in `_src/` before running `npm install --legacy-peer-deps` and also `npx @11ty/eleventy --serve --port=8011`.
-
-
-### Install & Run Eleventy in `_src/`
-
-Once you have the NPM/Yarm package manager installed, you can install Eleventy and the other dependencies listed in `package.json`. Enter the `npm install` command into the command-line from the `_src/` folder, where the Eleventy configuration file, `.eleventy.js`, lives.
-
-This command usually runs without a glitch, but if you run into trouble, please check your version of node. The latest version of node that we can confirm works with our set-up is **v24.14.1** (Krypton LTS).
-
-To start Eleventy, simply enter the following command `npx @11ty/eleventy --serve --port=8011`.
-
-- Please note that you may choose any network port on your system that is open; 8011 is just a suggestion.
-
-
-## Frontend Stack
-
-This project is coded with, among other things, the following front-end libraries:
-
-- [Bootstrap](http://getbootstrap.com/), a CSS framework.
-- [D3](https://d3js.org), a data visualization library for JavaScript.
-- [Pug](https://pugjs.org/api/getting-started.html), a JavaScript-friendly HTML templating language.
-- [React](https://facebook.github.io/react/), a rendering library for JavaScript.
-- [Sass](https://sass-lang.com/), a CSS preprocessor.
-
-## Creating & Editing Pages
-
-- Please note that it is your responsibility to keep your fork of the repository up-to-date with changes made by others who are working on the project. Doing this diligently should go a long way towards protecting you from confusing Git merge conflicts.
-- All development activity occurs in `_src/`. The root folder is only for the compiled program output for deployment.
-- Page content is inserted into the `content` block. If you are updating data, be sure you understand it deeply along with how it will be consumed.
-- In many cases, you will simply create or update a `.pug` file when making changes to the website, which Eleventy will turn into HTML. If you are making another type of change, you may need to reference the excellent Pug documentation.
-- If your page uses custom page-specific CSS, add it to a new `.scss` partial and import it into the main stylesheet. Please note to adhere to the project conventions by following the same CSS namespaces as everyone else.
-
-
-### Additional Instructions for "flow" Diagram Pages
-
-1. Flow pages are built off a template; As necessary, copy one of the `*-budget-flow.pug` pages and update the content blocks.
-2. Data files must be placed in the `data/flow` directory. Follow the naming convention seen there or your files will not load properly. You will also need to point your page at the appropriate files as seen in the `get_datafiles` content block.
-3. The following columns are required in your valid datafiles and their names should be normalized as seen here. Other columns should be removed, so to minimize the data download.
-   - `budget_year`
-   - `department`
-   - `fund_code`
-   - `account_type` (this should be the Expense/Revenue column, if there are duplicate names)
-   - `account_category`
-   - `amount`
-
-### Additional Instructions for Treemap Diagram Pages
-
-1. Treemap pages are built off a template; As necessary, copy one of the `*-budget-tree.pug` pages and update the content blocks.
-2. Instructions for generating the necessary data files can be found [here](_treemap/README.md). Add them to the `data/tree/` directory following the naming convention seen in the existing files.
-3. Update the `datafiles` content block with the appropriate metadata and file path for the data files you generated.
-
-### Additional Instructions for the Compare Page
-
-1. The Compare page is a React application. The source files are in `_src/js/compare/` and are are bundled with [Webpack](https://webpack.js.org/).
-1. When developing on the Compare page, run `yarn` to install all the necessary Node dependencies and `yarn run watch` to watch the source files for changes and rebuild the asset bundles accordingly.
-
-
-## Publishing Changes
-
-Make changes and review them on your local development site. If everything looks good, push your changes to your personal fork and merge the commit(s) into your main branch. Finally, issue a pull request and we will take it from there!
-
-### Issuing a Pull Request
-
-1. Create a pull request from your forked repository to the main branch of the upstream project.
-2. Tell an administator of the upstream repository that your work is ready for review. Your changes will ideally then be reviewed, tested, and (if everything looks good) pushed into the master branch.
-3. Changes pushed to the main branch of the (original) repository will use GitHub Actions to trigger a continuous integration/continuous deployment (CI/CD) process that (among other things):
-    a. Runs WebPack for the Compare page.
-    b. Builds static files with Eleventy.
-    c. Deploys the updated website files to GitHub Pages, where the changes will be published [here](https://openbudgetsac.org/).
-
-- Please note that after editing a SASS file, you should run `npm run build-css` from the `_src/` folder to incorporate your changes into CSS.
-
-### Additional Instructions for Data Filtering
-
-To get the data for each Fiscal Year from the Sacramento City budget's spreadsheet, in `_src/data`, run the command `python split_csv.py City_of_Sacramento_Approved_Budgets.csv Fiscal_Year _src/data/flow --txf fy_suffix`. Also, in `_src/js/flow.js` and `_src/adopted-budget-flow.pug`, then add an extra case for `FY26` similar to `FY25`, all using the Fiscal Year 2026 (FY2026) as an example.
+## License
+[MIT](./LICENSE.txt)

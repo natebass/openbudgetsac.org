@@ -1,59 +1,125 @@
-import React from 'react';
+import React from 'react'
 
-import DiffTable from './DiffTable.jsx';
-import Trend from './Trend.jsx';
-import {fetchBreakdownData} from './api.js'
-import {BUDGET_TYPES} from './utils.jsx';
+import DiffTable from './DiffTable.jsx'
+import Trend from './Trend.jsx'
+import { fetchBreakdownData } from './api.js'
+
+function areSameYears (currentYears, previousYears) {
+  if (!Array.isArray(currentYears) || !Array.isArray(previousYears) || currentYears.length !== previousYears.length) {
+    return false
+  }
+  return currentYears.every((year, index) => {
+    const prevYear = previousYears[index]
+    if (!year && !prevYear) {
+      return true
+    }
+    if (!year || !prevYear) {
+      return false
+    }
+    return year.fiscal_year_range === prevYear.fiscal_year_range &&
+      String(year.budget_type) === String(prevYear.budget_type)
+  })
+}
 
 export default class SpendingByDept extends React.Component {
+  /**
+   * Initializes breakdown state.
+   *
+   * @param {object} props React component props.
+   */
   constructor (props) {
-    super(props);
+    super(props)
     this.state = {
       budgets: [],
       pending: true,
-    };
-    this.fetchData = this.fetchData.bind(this);
+      error: null
+    }
+    this.activeFetchId = 0
+    this.fetchData = this.fetchData.bind(this)
   }
 
+  /**
+   * Loads data after mount.
+   *
+   * @returns {void}
+   */
   componentDidMount () {
-    this.fetchData(this.props.years);
+    this.fetchData(this.props.years)
   }
 
-  componentDidUpdate(prevProps) {
-    // TODO: do a better comparison;
-    // this works by reference and fires every time
-    if (this.props.years !== prevProps.years) {
-      this.fetchData(this.props.years);
+  /**
+   * Refetches when selected years change.
+   *
+   * @param {object} prevProps Previous props.
+   * @returns {void}
+   */
+  componentDidUpdate (prevProps) {
+    if (!areSameYears(this.props.years, prevProps.years) ||
+      this.props.type !== prevProps.type ||
+      this.props.dimension !== prevProps.dimension) {
+      this.fetchData(this.props.years)
     }
   }
 
+  /**
+   * Fetches breakdown data for selected year objects.
+   *
+   * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} years Year records.
+   * @returns {void}
+   */
   fetchData (years) {
-    this.setState({pending: true})
-    // if there aren't valid year objects,
-    // the component state will remain pending
-    // until another fetch is initiated with valid years
+    this.activeFetchId += 1
+    const currentFetchId = this.activeFetchId
+    this.setState({ pending: true, error: null })
     if (years && years.every(year => !!year)) {
-      const yearNames = years.map(year => year.fiscal_year_range);
-      const yearTypes = years.map(year => year.budget_type);
+      const yearNames = years.map(year => year.fiscal_year_range)
+      const yearTypes = years.map(year => year.budget_type)
       fetchBreakdownData(yearNames, yearTypes, this.props.type, this.props.dimension)
-      .then(budgets => {
-        this.setState({budgets, pending: false});
-      });
+        .then((budgets) => {
+          if (currentFetchId !== this.activeFetchId) {
+            return
+          }
+          this.setState({ budgets, pending: false, error: null })
+        })
+        .catch((error) => {
+          if (currentFetchId !== this.activeFetchId) {
+            return
+          }
+          console.error('Failed loading comparison breakdown', error)
+          this.setState({ budgets: [], pending: false, error: 'Unable to load this breakdown right now. Try selecting a different year pair or refreshing the page.' })
+        })
     }
   }
 
-  // TODO: special state when there are no differences?
+  /**
+   * Renders loading state or chart/table breakdowns.
+   *
+   * @returns {JSX.Element} Breakdown content.
+   */
   render () {
     if (this.state.pending) {
-      return <div className="text-muted">Loading breakdown...</div>
+      return <div className='text-muted' role='status' aria-live='polite'>Loading breakdown...</div>
     }
-    return <div>
-      <Trend data={this.state.budgets} colors={this.props.colors}
-        years={this.props.years}/>
-      <DiffTable data={this.state.budgets} years={this.props.years}
-        colors={this.props.colors} diffColors={this.props.diffColors}
-        usePct={this.props.usePct}></DiffTable>
-    </div>
+    if (this.state.error) {
+      return <div className='alert alert-warning' role='alert'>{this.state.error}</div>
+    }
 
+    return (
+      <div>
+        <Trend
+          data={this.state.budgets} colors={this.props.colors}
+          years={this.props.years}
+          compactMode={this.props.compactMode}
+          constrainedMode={this.props.constrainedMode}
+        />
+        <DiffTable
+          data={this.state.budgets} years={this.props.years}
+          colors={this.props.colors} diffColors={this.props.diffColors}
+          usePct={this.props.usePct}
+          compactMode={this.props.compactMode}
+          constrainedMode={this.props.constrainedMode}
+        />
+      </div>
+    )
   }
 }

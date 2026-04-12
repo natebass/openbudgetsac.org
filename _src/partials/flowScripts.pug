@@ -1,7 +1,16 @@
+script(src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.5/d3.min.js', charset='utf-8')
 script(src='../js/sankey.js', charset='utf-8')
 script(src='../js/flow.js', charset='utf-8')
 script(src='../js/budget-glossary.js', charset='utf-8')
 script.
+    function showFlowStatus(message, isError){
+      var status = d3.select('#hover_description');
+      status
+        .attr('role', isError ? 'alert' : 'status')
+        .attr('aria-live', isError ? 'assertive' : 'polite')
+        .text(message);
+    }
+
     // process filenames to generate display names
     var filenameNodelist = document.querySelectorAll("input.filename-data");
     // credit: https://stackoverflow.com/questions/3199588/fastest-way-to-convert-javascript-nodelist-to-array
@@ -39,6 +48,7 @@ script.
         ;
 
     // run once to initially populate the chart
+    showFlowStatus('Loading chart data…', false);
     drawFlow();
 
     function drawFlow(){
@@ -48,10 +58,12 @@ script.
 
         d3.csv("../data/flow/" + filename, function(error, data){
             if (error) {
-                console.log('error', error);
+                console.error('Unable to load flow chart data for file: ' + filename, error);
+                showFlowStatus('Unable to load chart data for ' + fy + '. Please try another fiscal year or refresh the page.', true);
                 return false;
             }
             var final_data = data_wrangle(data, fy);
             do_with_budget(final_data);
+            showFlowStatus('Showing chart for ' + fy + '.', false);
         });
     }
