@@ -39,9 +39,9 @@
     .intro.col-md-8
       block title
 
-      p Select year and account (revenues or expenses). Click on a fund to see the departments that receive its funding. Click on that department to see its spending or revenue.
+      p(data-i18n='tree.intro1') Select year and account (revenues or expenses). Click on a fund to see the departments that receive its funding. Click on that department to see its spending or revenue.
 
-      p The <strong>General Fund</strong> — roughly 40% of Sacramento's total budget -- is decided by a <a href="https://www.capradio.org/articles/2023/04/24/how-does-the-sacramento-city-budget-work-heres-what-you-need-to-know/">budget process</a> that includes private and public meetings, surveys, and negotiations. The other 60% of the budget comes from taxes, ballot measures, grants, fees, and other sources.
+      p(data-i18n-html='tree.intro2Html') The <strong>General Fund</strong> — roughly 40% of Sacramento's total budget -- is decided by a <a href="https://www.capradio.org/articles/2023/04/24/how-does-the-sacramento-city-budget-work-heres-what-you-need-to-know/">budget process</a> that includes private and public meetings, surveys, and negotiations. The other 60% of the budget comes from taxes, ballot measures, grants, fees, and other sources.
 
   .row
     .col-sm-12
@@ -60,7 +60,7 @@
   section#comments
     .row
       .col-md-8
-        h4 Comments
+        h4(data-i18n='common.comments') Comments
         #disqus_thread
 
 block disqus_config
@@ -78,7 +78,8 @@ script(type='text/javascript').
   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 noscript
-  | Please enable JavaScript to view the
+  span(data-i18n='common.pleaseEnableJs') Please enable JavaScript to view the
+  |  
   a(href='http://disqus.com/?ref_noscript') comments powered by Disqus.
 
 script(src='/js/palette.js', charset='utf-8')

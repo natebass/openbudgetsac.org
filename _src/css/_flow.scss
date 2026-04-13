@@ -9,6 +9,7 @@
 #hover_description {
   position: absolute;
   opacity: 0;
+  pointer-events: none;
   padding: 8px;
   background-color: #dfdfdf;
   visibility: hidden;

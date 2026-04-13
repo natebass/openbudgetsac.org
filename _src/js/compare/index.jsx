@@ -4,9 +4,9 @@ import Select from 'react-select'
 import { schemeSet2 as colors } from 'd3-scale-chromatic'
 
 import Total from './Total.jsx'
-import { BUDGET_TYPES } from './utils.jsx'
 import { fetchTotals } from './api.js'
 import Breakdown from './Breakdown.jsx'
+import { t } from './i18n.js'
 
 const styles = [{ color: colors[0] }, { color: colors[1] }]
 const diffColors = {
@@ -14,6 +14,11 @@ const diffColors = {
   pos: '#4daf4a'
 }
 
+/**
+ * Gets get connection.
+ *
+ * @returns {any} Function result.
+ */
 function getConnection () {
   if (typeof navigator === 'undefined') {
     return null
@@ -21,6 +26,11 @@ function getConnection () {
   return navigator.connection || navigator.mozConnection || navigator.webkitConnection || null
 }
 
+/**
+ * Builds derive performance flags.
+ *
+ * @returns {any} Function result.
+ */
 function derivePerformanceFlags () {
   if (typeof window === 'undefined') {
     return { compactMode: false, constrainedMode: false }
@@ -51,9 +61,14 @@ function derivePerformanceFlags () {
  * @returns {{value:number,label:string}} Select option.
  */
 function getBudgetOption (record, index) {
+  const budgetTypeLabels = {
+    1: t('budgetType.adopted'),
+    2: t('budgetType.adjusted'),
+    3: t('budgetType.proposed')
+  }
   return {
     value: index,
-    label: `${record.fiscal_year_range} ${BUDGET_TYPES[record.budget_type]}`
+    label: `${record.fiscal_year_range} ${budgetTypeLabels[record.budget_type]}`
   }
 }
 
@@ -120,7 +135,7 @@ class Compare extends React.Component {
       const budgetChoices = totals.map(getBudgetOption)
       const defaultChoices = getBudgetDefaults(budgetChoices)
       if (!defaultChoices[0] || !defaultChoices[1]) {
-        this.setState({ loading: false, error: 'No budget years available.' })
+        this.setState({ loading: false, error: t('error.noBudgetYears') })
         return
       }
       const budget1Choice = defaultChoices[0].value
@@ -147,7 +162,7 @@ class Compare extends React.Component {
       console.error('Failed loading compare totals', error)
       this.setState({
         loading: false,
-        error: 'Unable to load comparison data right now. Please refresh the page or try again in a moment.'
+        error: t('error.compareDataUnavailable')
       })
     })
   }
@@ -277,7 +292,7 @@ class Compare extends React.Component {
    */
   render () {
     if (this.state.loading) {
-      return <div className='text-muted' role='status' aria-live='polite'>Loading comparison data...</div>
+      return <div className='text-muted' role='status' aria-live='polite'>{t('loading.comparisonData')}</div>
     }
     if (this.state.error) {
       return <div className='alert alert-warning' role='alert'>{this.state.error}</div>
@@ -304,25 +319,25 @@ class Compare extends React.Component {
     const breakdowns = [
       {
         key: 'spendDept',
-        label: 'Spending by Department',
+        label: t('compare.breakdowns.spendDept'),
         type: 'spending',
         dimension: 'department'
       },
       {
         key: 'spendCat',
-        label: 'Spending by Category',
+        label: t('compare.breakdowns.spendCat'),
         type: 'spending',
         dimension: 'category'
       },
       {
         key: 'revDept',
-        label: 'Revenue by Department',
+        label: t('compare.breakdowns.revDept'),
         type: 'revenue',
         dimension: 'department'
       },
       {
         key: 'revCat',
-        label: 'Revenue by Category',
+        label: t('compare.breakdowns.revCat'),
         type: 'revenue',
         dimension: 'category'
       }
@@ -334,35 +349,35 @@ class Compare extends React.Component {
     return (
       <div className='compare-app'>
         {this.state.constrainedMode
-          ? <p className='text-muted small'>Low-bandwidth mode is on to reduce data and battery use.</p>
+          ? <p className='text-muted small'>{t('mode.lowBandwidth')}</p>
           : null}
         <div className='row'>
           <div className='col-sm-10'>
             <h1 className='compare-title'>
-              <span className='compare-title__label'>Compare</span>
+              <span className='compare-title__label'>{t('compare.title.compare')}</span>
               <span style={styles[0]} className='choose-budget compare-title__budget'>
-                <span id='compareBudgetYearALabel' className='sr-only'>First budget year</span>
+                <span id='compareBudgetYearALabel' className='sr-only'>{t('compare.budgetYear.first')}</span>
                 <Select
                   options={this.state.budget1Options}
                   value={budget1Selected}
                   onChange={this.handleSelectBudget1}
                   inputId='compareBudgetYearA'
                   aria-labelledby='compareBudgetYearALabel'
-                  aria-label='Select first budget year'
+                  aria-label={t('compare.budgetYear.selectFirst')}
                   isSearchable={false}
                   isClearable={false}
                 />
               </span>{' '}
-              <span className='compare-title__connector'>with</span>{' '}
+              <span className='compare-title__connector'>{t('compare.title.with')}</span>{' '}
               <span style={styles[1]} className='choose-budget compare-title__budget'>
-                <span id='compareBudgetYearBLabel' className='sr-only'>Second budget year</span>
+                <span id='compareBudgetYearBLabel' className='sr-only'>{t('compare.budgetYear.second')}</span>
                 <Select
                   options={this.state.budget2Options}
                   value={budget2Selected}
                   onChange={this.handleSelectBudget2}
                   inputId='compareBudgetYearB'
                   aria-labelledby='compareBudgetYearBLabel'
-                  aria-label='Select second budget year'
+                  aria-label={t('compare.budgetYear.selectSecond')}
                   isSearchable={false}
                   isClearable={false}
                 />
@@ -371,15 +386,15 @@ class Compare extends React.Component {
           </div>
           <div className='col-sm-2'>
             <div className='form-group'>
-              <label htmlFor='changeTypeControl'>Show changes as:</label>
+              <label htmlFor='changeTypeControl'>{t('compare.showChangesAs')}</label>
               <select
                 className='form-control'
                 id='changeTypeControl'
                 value={this.state.changeType}
                 onChange={this.handleChangeType}
               >
-                <option value='pct'>percentage</option>
-                <option value='usd'>dollars</option>
+                <option value='pct'>{t('compare.changeType.percentage')}</option>
+                <option value='usd'>{t('compare.changeType.dollars')}</option>
               </select>
             </div>
           </div>
@@ -391,15 +406,15 @@ class Compare extends React.Component {
               usePct={usePct}
               constrainedMode={this.state.constrainedMode}
             />
-            <h2>Budget breakdowns</h2>
+            <h2>{t('compare.breakdowns.title')}</h2>
             <p>
-              Get more detail on where money came from and how it was spent.
+              {t('compare.breakdowns.description')}
             </p>
           </div>
         </div>
         <div className='row'>
           <div className='col-sm-3'>
-            <ul className='nav nav-pills nav-stacked' role='tablist' aria-label='Budget breakdown views'>
+            <ul className='nav nav-pills nav-stacked' role='tablist' aria-label={t('compare.breakdowns.navLabel')}>
               {breakdowns.map(item => (
                 <li
                   key={item.key}

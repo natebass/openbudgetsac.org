@@ -14,17 +14,32 @@ const REPORTERS = {
   chart: chartReport
 }
 
+/**
+ * Gets get reporter.
+ *
+ * @returns {any} Function result.
+ */
 function getReporter () {
   const reporterName = (process.env.BENCH_REPORTER || 'text').toLowerCase()
   return REPORTERS[reporterName] || textReport
 }
 
+/**
+ * Builds create context.
+ *
+ * @returns {any} Function result.
+ */
 function createContext () {
   return {
     compareUtils: require('../js/compare/utils.jsx')
   }
 }
 
+/**
+ * Runs load suite registrars.
+ *
+ * @returns {any} Function result.
+ */
 function loadSuiteRegistrars () {
   const suitesDir = path.resolve(__dirname, 'suites')
   return fs.readdirSync(suitesDir)
@@ -40,6 +55,11 @@ function loadSuiteRegistrars () {
     })
 }
 
+/**
+ * Runs run.
+ *
+ * @returns {any} Function result.
+ */
 async function run () {
   const suite = new Suite({
     reporter: getReporter(),

@@ -4,10 +4,39 @@ const width = 1140 - margin.left - margin.right
 const height = 630 - margin.top - margin.bottom
 
 const formatNumber = d3.format(',.0f')
-const format = function (d) {
+const format = /**
+ * Builds format.
+ *
+ * @param {any} d Input value.
+ * @returns {any} Function result.
+ */
+function (d) {
   return '$' + formatNumber(d)
 }
+
+const i18nT = /**
+ * Runs i18n t.
+ *
+ * @param {any} key Input value.
+ * @param {any} fallback Input value.
+ * @param {any} vars Input value.
+ * @returns {any} Function result.
+ */
+function (key, fallback, vars) {
+  if (window.obI18n && typeof window.obI18n.t === 'function') {
+    return window.obI18n.t(key, fallback, vars)
+  }
+  if (!vars) {
+    return fallback
+  }
+  return fallback.replace(/\{\{(\w+)\}\}/g, function (_full, name) {
+    return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : ''
+  })
+}
 /* exported data_wrangle, data_wrangle_v1, do_with_budget */
+const hoverDescription = d3.select('#hover_description')
+let hoverRaf = null
+let pendingHoverPosition = null
 
 const svg = d3
   .select('#chart')
@@ -17,13 +46,13 @@ const svg = d3
 
 svg
   .append('text')
-  .text('Revenues')
+  .text(i18nT('flow.revenues', 'Revenues'))
   .attr('y', margin.top * 0.6)
   .attr('x', margin.left)
 
 svg
   .append('text')
-  .text('Expenses')
+  .text(i18nT('flow.expenses', 'Expenses'))
   .attr('y', margin.top * 0.6)
   .attr('x', margin.left + width)
   .attr('text-anchor', 'end')
@@ -203,7 +232,21 @@ const exp_order = [
  * @param {string[]} fields_arr Ordered values.
  * @returns {(a:string, b:string) => number} Comparator.
  */
-const sort_by = fields_arr => (a, b) => fields_arr.indexOf(a) - fields_arr.indexOf(b)
+const sort_by = (fields_arr) => {
+  const rank = fields_arr.reduce((acc, field, index) => {
+    acc[field] = index
+    return acc
+  }, {})
+
+  return (a, b) => {
+    const rankA = Object.prototype.hasOwnProperty.call(rank, a) ? rank[a] : Number.MAX_SAFE_INTEGER
+    const rankB = Object.prototype.hasOwnProperty.call(rank, b) ? rank[b] : Number.MAX_SAFE_INTEGER
+    if (rankA === rankB) {
+      return d3.ascending(a, b)
+    }
+    return rankA - rankB
+  }
+}
 /**
  * Creates fund bucket accessor for grouped keys.
  *
@@ -218,7 +261,7 @@ const fundKey = (fund_field, general_fund) => d => d[fund_field] == general_fund
  * @param {string} amount_field Amount field name.
  * @returns {(v:Array<object>) => object} Rollup reducer.
  */
-const rollupFn = amount_field => v => ({ ...v, total: d3.sum(v, d => +d[amount_field]) })
+const rollupFn = amount_field => v => ({ total: d3.sum(v, d => +d[amount_field]) })
 /**
  * Maps grouped records into sankey nodes/links.
  *
@@ -227,15 +270,17 @@ const rollupFn = amount_field => v => ({ ...v, total: d3.sum(v, d => +d[amount_f
  * @param {number} offset Node index offset.
  * @returns {{nodes:Array<object>,links:Array<object>}} Partial graph.
  */
+const flatten = nested => nested.reduce((acc, row) => acc.concat(row), [])
+
 const generateNodesAndLinks = (data, type, offset) => ({
   nodes: data.map(kv => ({ name: kv.key, type })),
-  links: data.map((kv, i) =>
+  links: flatten(data.map((kv, i) =>
     kv.values.map((kv2) => ({
       [type === 'revenue' ? 'source' : 'target']: i + offset,
       value: kv2.values.total,
       [type === 'revenue' ? 'target' : 'source']: kv2.key === 'General Fund' ? 0 : 1
     }))
-  ).flat()
+  ))
 })
 
 /**
@@ -258,7 +303,17 @@ function data_wrangle_v1 (dataset, category_field, department_field, expense_fie
     { name: 'Non-discretionary funds', type: 'fund', order: 1 }
   ]
 
-  const rev = dataset.filter(v => v[expense_field] == revenue_value)
+  const rev = []
+  const exp = []
+  for (let i = 0; i < dataset.length; i++) {
+    const row = dataset[i]
+    if (row[expense_field] == revenue_value) {
+      rev.push(row)
+    } else if (row[expense_field] == expense_value) {
+      exp.push(row)
+    }
+  }
+
   const revcats = d3
     .nest()
     .key(d => d[category_field])
@@ -268,7 +323,6 @@ function data_wrangle_v1 (dataset, category_field, department_field, expense_fie
     .entries(rev)
   const rev_data = generateNodesAndLinks(revcats, 'revenue', nodes.length)
 
-  const exp = dataset.filter(v => v[expense_field] == expense_value)
   const expdivs = d3
     .nest()
     .key(d => d[department_field])
@@ -300,6 +354,24 @@ function do_with_budget (data) {
   const path = sankey.link()
 
   sankey.nodes(data.nodes).links(data.links).layout(0)
+
+  const scheduleHoverPosition = function () {
+    if (!pendingHoverPosition || hoverRaf) {
+      return
+    }
+
+    hoverRaf = window.requestAnimationFrame(function () {
+      hoverRaf = null
+      if (!pendingHoverPosition) {
+        return
+      }
+      hoverDescription.style({
+        top: (pendingHoverPosition.y - 10) + 'px',
+        left: (pendingHoverPosition.x + 10) + 'px'
+      })
+      pendingHoverPosition = null
+    })
+  }
 
   const link = chart
     .append('g')
@@ -333,23 +405,36 @@ function do_with_budget (data) {
     })
     .on('mouseover', function (d) {
       d3.select(this).classed('highlight', true)
-      d3.select('#hover_description')
+      hoverDescription
         .classed('show', true)
         .text(
           d.source.name + ' → ' + d.target.name + ': ' + format(d.value)
         )
     })
-    .on('mousemove', function (d) {
-      d3.select('#hover_description').style({
-        top: d3.event.y - 10 + $(window).scrollTop() + 'px',
-        left: d3.event.x + 10 + 'px'
-      })
+    .on('mousemove', function () {
+      const evt = d3.event || window.event || {}
+      const eventX = typeof evt.pageX === 'number'
+        ? evt.pageX
+        : (typeof evt.clientX === 'number' ? evt.clientX + window.pageXOffset : 0)
+      const eventY = typeof evt.pageY === 'number'
+        ? evt.pageY
+        : (typeof evt.clientY === 'number' ? evt.clientY + window.pageYOffset : 0)
+      pendingHoverPosition = {
+        x: eventX,
+        y: eventY
+      }
+      scheduleHoverPosition()
     })
     .on('mouseout', function () {
       d3.select(this).classed('highlight', function () {
         return d3.select(this).classed('click')
       })
-      d3.select('#hover_description').classed('show', false)
+      pendingHoverPosition = null
+      if (hoverRaf) {
+        window.cancelAnimationFrame(hoverRaf)
+        hoverRaf = null
+      }
+      hoverDescription.classed('show', false)
     })
 
   const node = chart

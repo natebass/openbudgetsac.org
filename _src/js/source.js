@@ -2,11 +2,24 @@
 var ob = ob || {}
 
 ;(function (namespace, undefined) {
-  function isSafeIdentifier (value) {
+    /**
+   * Checks whether is safe identifier.
+   *
+   * @param {any} value Input value.
+   * @returns {any} Function result.
+   */
+function isSafeIdentifier (value) {
     return typeof value === 'string' && /^[A-Za-z0-9_. -]+$/.test(value)
   }
 
-  namespace.fusion = function (api_key, table_id) {
+  namespace.fusion =   /**
+   * Runs fusion.
+   *
+   * @param {any} api_key Input value.
+   * @param {any} table_id Input value.
+   * @returns {any} Function result.
+   */
+function (api_key, table_id) {
     return {
       key: api_key,
       table: table_id,

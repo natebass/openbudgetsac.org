@@ -5,6 +5,8 @@
  * Source repository: https://github.com/allmarkedup/jQuery-URL-Parser
  * Licensed under an MIT-style license. See https://github.com/allmarkedup/jQuery-URL-Parser/blob/master/LICENSE for details.
  */
+// This is a legacy third-party parser that older pages still load.
+// Do not refactor logic here unless you can verify old query-string behavior end to end.
 
 ;(function (factory) {
   if (typeof define === 'function' && define.amd) {
@@ -38,13 +40,22 @@
   const aliases = { anchor: 'fragment' } // aliases for backward compatibility
 
   const parser = {
+    // `strict` follows URL spec rules more closely.
     strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/, // less intuitive, more accurate to the specs
+    // `loose` is more forgiving for informal URLs but less standards-compliant.
     loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/ // more intuitive, fails on relative paths and deviates from specs
   }
 
   const isint = /^[0-9]+$/
 
-  function parseUri (url, strictMode) {
+    /**
+   * Gets parse uri.
+   *
+   * @param {any} url Input value.
+   * @param {any} strictMode Input value.
+   * @returns {any} Function result.
+   */
+function parseUri (url, strictMode) {
     const str = decodeURI(url)
     const res = parser[strictMode || false ? 'strict' : 'loose'].exec(str)
     const uri = { attr: {}, param: {}, seg: {} }
@@ -68,13 +79,26 @@
     return uri
   }
 
-  function getAttrName (elm) {
+    /**
+   * Gets get attr name.
+   *
+   * @param {any} elm Input value.
+   * @returns {any} Function result.
+   */
+function getAttrName (elm) {
     const tn = elm.tagName
     if (typeof tn !== 'undefined') return tag2attr[tn.toLowerCase()]
     return tn
   }
 
-  function promote (parent, key) {
+    /**
+   * Runs promote.
+   *
+   * @param {any} parent Input value.
+   * @param {any} key Input value.
+   * @returns {any} Function result.
+   */
+function promote (parent, key) {
     if (parent[key].length === 0) {
       parent[key] = {}
       return parent[key]
@@ -85,7 +109,16 @@
     return t
   }
 
-  function parse (parts, parent, key, val) {
+    /**
+   * Gets parse.
+   *
+   * @param {any} parts Input value.
+   * @param {any} parent Input value.
+   * @param {any} key Input value.
+   * @param {any} val Input value.
+   * @returns {any} Function result.
+   */
+function parse (parts, parent, key, val) {
     let part = parts.shift()
     if (!part) {
       if (isArray(parent[key])) {
@@ -119,7 +152,15 @@
     }
   }
 
-  function merge (parent, key, val) {
+    /**
+   * Runs merge.
+   *
+   * @param {any} parent Input value.
+   * @param {any} key Input value.
+   * @param {any} val Input value.
+   * @returns {any} Function result.
+   */
+function merge (parent, key, val) {
     if (~key.indexOf(']')) {
       const parts = key.split('[')
       parse(parts, parent, 'base', val)
@@ -134,7 +175,13 @@
     return parent
   }
 
-  function parseString (str) {
+    /**
+   * Gets parse string.
+   *
+   * @param {any} str Input value.
+   * @returns {any} Function result.
+   */
+function parseString (str) {
     return reduce(String(str).split(/&|;/), function (ret, pair) {
       try {
         pair = decodeURIComponent(pair.replace(/\+/g, ' '))
@@ -156,7 +203,15 @@
     }, { base: {} }).base
   }
 
-  function set (obj, key, val) {
+    /**
+   * Sets set.
+   *
+   * @param {any} obj Input value.
+   * @param {any} key Input value.
+   * @param {any} val Input value.
+   * @returns {any} Function result.
+   */
+function set (obj, key, val) {
     const v = obj[key]
     if (undefined === v) {
       obj[key] = val
@@ -167,7 +222,13 @@
     }
   }
 
-  function lastBraceInKey (str) {
+    /**
+   * Runs last brace in key.
+   *
+   * @param {any} str Input value.
+   * @returns {any} Function result.
+   */
+function lastBraceInKey (str) {
     const len = str.length
     let brace
     let c
@@ -179,7 +240,14 @@
     }
   }
 
-  function reduce (obj, accumulator) {
+    /**
+   * Runs reduce.
+   *
+   * @param {any} obj Input value.
+   * @param {any} accumulator Input value.
+   * @returns {any} Function result.
+   */
+function reduce (obj, accumulator) {
     let i = 0
     const l = obj.length >> 0
     let curr = arguments[2]
@@ -190,11 +258,23 @@
     return curr
   }
 
-  function isArray (vArg) {
+    /**
+   * Checks whether is array.
+   *
+   * @param {any} vArg Input value.
+   * @returns {any} Function result.
+   */
+function isArray (vArg) {
     return Object.prototype.toString.call(vArg) === '[object Array]'
   }
 
-  function keys (obj) {
+    /**
+   * Runs keys.
+   *
+   * @param {any} obj Input value.
+   * @returns {any} Function result.
+   */
+function keys (obj) {
     const keys = []
     for (const prop in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, prop)) keys.push(prop)
@@ -202,7 +282,14 @@
     return keys
   }
 
-  function purl (url, strictMode) {
+    /**
+   * Runs purl.
+   *
+   * @param {any} url Input value.
+   * @param {any} strictMode Input value.
+   * @returns {any} Function result.
+   */
+function purl (url, strictMode) {
     if (arguments.length === 1 && url === true) {
       strictMode = true
       url = undefined
@@ -254,7 +341,13 @@
   }
 
   if (typeof $ !== 'undefined') {
-    $.fn.url = function (strictMode) {
+    $.fn.url =     /**
+     * Runs url.
+     *
+     * @param {any} strictMode Input value.
+     * @returns {any} Function result.
+     */
+function (strictMode) {
       let url = ''
       if (this.length) {
         url = $(this).attr(getAttrName(this[0])) || ''

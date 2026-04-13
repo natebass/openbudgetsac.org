@@ -36,7 +36,10 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
-        run: npm ci --include=dev
+        run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
+
+      - name: i18n unit smoke tests (site + compare)
+        run: npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand
 
       - name: Build frontend bundle
         run: npm run build
@@ -44,8 +47,16 @@ jobs:
       - name: Build CSS
         run: npm run build-css
 
+      - name: Generate JSDoc docs
+        run: npm run docs:jsdoc
+
       - name: Build site with Eleventy
         run: npx @11ty/eleventy
+
+      - name: Verify i18n assets in built site
+        run: |
+          test -f build/js/i18n-site.js
+          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

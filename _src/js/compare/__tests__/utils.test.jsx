@@ -1,7 +1,6 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react'
 
-import { DiffStyled, asDiff } from '../utils.jsx'
+import { DiffStyled, asDiff, getSortedBudgetKeys } from '../utils.jsx'
 
 describe('compare utils', () => {
   test('asDiff handles sentinel values', () => {
@@ -11,6 +10,15 @@ describe('compare utils', () => {
   test('asDiff formats percentage and dollar values', () => {
     expect(asDiff(0.125, true)).toBe('+12.50%')
     expect(asDiff(1250, false)).toBe('+$1,250')
+  })
+
+  test('getSortedBudgetKeys merges and sorts keys from both records', () => {
+    expect(
+      getSortedBudgetKeys([
+        { Fire: 100, Police: 90 },
+        { Water: 30, Fire: 80 }
+      ])
+    ).toEqual(['Fire', 'Police', 'Water'])
   })
 
   test('DiffStyled applies positive and negative colors', () => {

@@ -28,13 +28,16 @@ jobs:
           cache-dependency-path: _src/package-lock.json
 
       - name: Install dependencies
-        run: npm ci --include=dev
+        run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
 
       - name: Lint
         run: npm run lint
 
       - name: Unit tests with coverage
         run: npm run test:unit:coverage
+
+      - name: i18n unit smoke tests (site + compare)
+        run: npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand
 
       - name: Accessibility tests
         run: npm run test:a11y
@@ -45,11 +48,19 @@ jobs:
       - name: Benchmarks (JSON)
         run: npm run bench:json
 
+      - name: Generate JSDoc docs
+        run: npm run docs:jsdoc
+
       - name: Build CSS
         run: npm run build-css
 
       - name: Build site with Eleventy
         run: npx @11ty/eleventy
+
+      - name: Verify i18n assets in built site
+        run: |
+          test -f build/js/i18n-site.js
+          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" build
 
   validate-e2e:
     name: Validate E2E (Puppeteer)
@@ -70,7 +81,7 @@ jobs:
           cache-dependency-path: _src/package-lock.json
 
       - name: Install dependencies
-        run: npm ci --include=dev
+        run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
 
       - name: Install Chromium runtime dependencies
         run: |
@@ -81,6 +92,8 @@ jobs:
             libasound2 \
             libatk-bridge2.0-0 \
             libatk1.0-0 \
+            libatspi2.0-0 \
+            libcairo2 \
             libcups2 \
             libdbus-1-3 \
             libdrm2 \
@@ -101,6 +114,9 @@ jobs:
             libxrandr2 \
             libxss1 \
             xdg-utils
+
+      - name: Install Chromium browser for Puppeteer
+        run: PUPPETEER_SKIP_DOWNLOAD=false npx puppeteer browsers install chrome
 
       - name: Build frontend bundle
         run: npm run build

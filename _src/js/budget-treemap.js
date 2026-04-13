@@ -3,7 +3,33 @@ var ob = ob || {}
 ob.display = ob.display || {}
 
 ;(function (namespace, undefined) {
-  function escapeHtml (value) {
+    /**
+   * Runs i18n t.
+   *
+   * @param {any} key Input value.
+   * @param {any} fallback Input value.
+   * @param {any} vars Input value.
+   * @returns {any} Function result.
+   */
+function i18nT (key, fallback, vars) {
+    if (window.obI18n && typeof window.obI18n.t === 'function') {
+      return window.obI18n.t(key, fallback, vars)
+    }
+    if (!vars) {
+      return fallback
+    }
+    return fallback.replace(/\{\{(\w+)\}\}/g, function (_full, name) {
+      return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : ''
+    })
+  }
+
+    /**
+   * Runs escape html.
+   *
+   * @param {any} value Input value.
+   * @returns {any} Function result.
+   */
+function escapeHtml (value) {
     return String(value == null ? '' : value)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -13,10 +39,10 @@ ob.display = ob.display || {}
   }
 
   /**
-	 * Creates the composed budget treemap experience (treemap + table + controls).
-	 *
-	 * @returns {object} Budget treemap API.
-	 */
+   * Creates the composed budget treemap experience (treemap + table + controls).
+   *
+   * @returns {object} Budget treemap API.
+   */
   namespace.budget_treemap = function () {
     let _url = null
     let _treemap = null
@@ -54,6 +80,10 @@ ob.display = ob.display || {}
     let _dropdown_selector = '#dropdown'
     let _title_selector = '#title'
     let _breadcrumbs_selector = '#breadcrumbs'
+    let _spreadsheet_element = null
+    let _treemap_element = null
+    let _dropdown_element = null
+    const _dataset_cache = {}
     /* layout settings */
     const _layout = {
       width: 800,
@@ -192,6 +222,36 @@ ob.display = ob.display || {}
       }
     }
 
+    function _ensure_elements () {
+      if (!_spreadsheet_element) {
+        _spreadsheet_element = d3.select(_spreadsheet_selector)
+      }
+      if (!_treemap_element) {
+        _treemap_element = d3.select(_treemap_selector)
+      }
+      if (!_dropdown_element) {
+        _dropdown_element = d3.select(_dropdown_selector)
+      }
+    }
+
+    function _load_data (url, callback) {
+      if (Object.prototype.hasOwnProperty.call(_dataset_cache, url)) {
+        window.setTimeout(function () {
+          callback(null, _dataset_cache[url])
+        }, 0)
+        return
+      }
+
+      d3.json(url, function (errOrData, maybeData) {
+        const error = arguments.length > 1 ? errOrData : null
+        const data = arguments.length > 1 ? maybeData : errOrData
+        if (!error && data) {
+          _dataset_cache[url] = data
+        }
+        callback(error, data)
+      })
+    }
+
     return {
       width: function () {
         if (arguments.length) {
@@ -328,14 +388,20 @@ ob.display = ob.display || {}
       },
 
       /**
-       * Loads data and initializes composed treemap UI widgets.
-       *
-       * @returns {void}
-       */
+         * Loads data and initializes composed treemap UI widgets.
+         *
+         * @returns {void}
+         */
       create: function () {
         /* Handle browser back/forward navigation by reloading the active node. */
         const self = this
-        window.onhashchange = function (e) {
+        window.onhashchange =         /**
+         * Runs onhashchange.
+         *
+         * @param {any} e Input value.
+         * @returns {any} Function result.
+         */
+function (e) {
           const hash = window.location.hash.replace('#', '')
           // Ignore hash updates we triggered ourselves during normal transitions.
           if (hash != _hash.expected()) {
@@ -345,19 +411,22 @@ ob.display = ob.display || {}
 
         /* create initial color palette */
         const _color_stack = ob.palette.stack().palette(d3.scale.ordinal().range(_palette))
-        this._create_dropdown()
+        _ensure_elements()
+        if (!_dropdown || _dropdown.empty()) {
+          this._create_dropdown()
+        } else {
+          this._sync_dropdown_selection()
+        }
 
         /* create and configure the tooltip */
         const _tooltip = ob.display.tooltip().html(_tooltip_function)
 
         /* call d3 to load the budget data, and then display the data
-        * after it has loaded */
-        d3.json(_url, function (errOrData, maybeData) {
-          const error = arguments.length > 1 ? errOrData : null
-          const data = arguments.length > 1 ? maybeData : errOrData
+          * after it has loaded */
+        _load_data(_url, function (error, data) {
           if (error || !data) {
             console.error('Unable to load treemap data', error || new Error('No data returned'))
-            d3.select(_title_selector).text('Unable to load data')
+            d3.select(_title_selector).text(i18nT('treemap.unableLoadData', 'Unable to load data'))
             return
           }
 
@@ -430,7 +499,7 @@ ob.display = ob.display || {}
           })
 
           _spreadsheet = ob.display.spreadsheet()
-            .element(d3.select(_spreadsheet_selector))
+            .element(_spreadsheet_element)
             .width(_layout.width)
             .value(function (d) {
               /* D3 treemap drops zero-area nodes. Use a tiny floor so rows remain visible. */
@@ -468,16 +537,15 @@ ob.display = ob.display || {}
                     .style('display', 'table-row')
                 }
                 if (j == (_max_spreadsheet_rows + 1)) {
-                  const spreadsheet_element = d3.select(_spreadsheet_selector)
-                  spreadsheet_element.append('button')
+                  _spreadsheet_element.append('button')
                     .attr('class', 'btn btn-default')
                     .attr('id', 'more')
-                    .text('Show more')
+                    .text(i18nT('treemap.showMore', 'Show more'))
                     .on('click', function () {
-                      spreadsheet_element.selectAll('tr')
+                      _spreadsheet_element.selectAll('tr')
                         .style('visibility', 'visible')
                         .style('display', 'table-row')
-                      spreadsheet_element.select('#more').remove()
+                      _spreadsheet_element.select('#more').remove()
                     })
                 }
               }
@@ -553,7 +621,7 @@ ob.display = ob.display || {}
               _treemap.colors(_color_stack.palette())
             })
             .data(root)
-            .display(d3.select(_treemap_selector), node)
+            .display(_treemap_element, node)
           /* Clicking a table row triggers the matching treemap transition. */
           _spreadsheet.on('click', _treemap.transition)
 
@@ -573,19 +641,27 @@ ob.display = ob.display || {}
       _create_dropdown: function () {
         const self = this
         const values = []
+        _ensure_elements()
         for (const key in _config.dropdown_values) {
           if (_config.dropdown_values.hasOwnProperty(key)) {
             values.push(key)
           }
         }
+        _dropdown_element.selectAll('.dropdown').remove()
         /* add dropdown */
-        _dropdown = d3.select(_dropdown_selector)
+        _dropdown = _dropdown_element
           .selectAll('#selector')
           .data(values)
           .enter()
           .append('div')
           .attr('class', 'col-sm-6 dropdown')
           .text(function (d) {
+            if (d === 'Year') {
+              return i18nT('treemap.dropdown.year', 'Year')
+            }
+            if (d === 'Account') {
+              return i18nT('treemap.dropdown.account', 'Account')
+            }
             return d
           })
           .append('select')
@@ -611,14 +687,29 @@ ob.display = ob.display || {}
       },
 
       /**
+         * Applies current dropdown choice values to existing dropdown controls.
+         *
+         * @returns {void}
+         */
+      _sync_dropdown_selection: function () {
+        if (!_dropdown || _dropdown.empty()) {
+          return
+        }
+        _dropdown.property('value', function (d) {
+          return _config.dropdown_choice[d]
+        })
+      },
+
+      /**
        * Rebuilds the visualization based on current configuration.
        *
        * @returns {void}
        */
       refresh: function () {
-        d3.select(_spreadsheet_selector).select('svg').remove()
-        d3.select(_treemap_selector).select('svg').remove()
-        d3.select(_dropdown_selector).selectAll('.dropdown').remove()
+        _ensure_elements()
+        _spreadsheet_element.select('table').remove()
+        _spreadsheet_element.select('#more').remove()
+        _treemap_element.select('svg').remove()
         this.url(_config.url())
         this.create()
       }

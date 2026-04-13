@@ -1,9 +1,8 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
-import { keys, set } from 'd3-collection'
-import { ascending, descending } from 'd3-array'
 
-import { DiffStyled, asDollars, compareChartOptions } from './utils'
+import { DiffStyled, asDollars, compareChartOptions, getSortedBudgetKeys } from './utils'
+import { t } from './i18n.js'
 
 export default class DiffTable extends React.Component {
   /**
@@ -62,21 +61,24 @@ export default class DiffTable extends React.Component {
    * @returns {JSX.Element} Sorted diff table.
    */
   render () {
-    const sortFunc = this.state.sortBy === 'diff' ? descending : ascending
+    const sortFunc = this.state.sortBy === 'diff'
+      ? (a, b) => {
+          if (a === b) {
+            return 0
+          }
+          return a > b ? -1 : 1
+        }
+      : (a, b) => {
+          if (a === b) {
+            return 0
+          }
+          return a < b ? -1 : 1
+        }
     const isLimitedMode = this.props.constrainedMode || this.props.compactMode
     const showRowCharts = !isLimitedMode
     const defaultVisibleRows = isLimitedMode ? 20 : Infinity
 
-    // get list of all possible keys from both budgets
-    const allKeys = set()
-    keys(this.props.data[0]).forEach((key) => {
-      allKeys.add(key)
-    })
-    keys(this.props.data[1]).forEach((key) => {
-      allKeys.add(key)
-    })
-
-    const diffEntries = allKeys.values().map((key) => {
+    const diffEntries = getSortedBudgetKeys(this.props.data).map((key) => {
       const res = {
         key,
         value: this.props.data[0][key],
@@ -118,8 +120,7 @@ export default class DiffTable extends React.Component {
         ...compareChartOptions,
         indexAxis: 'y',
         animation: false,
-        normalized: true,
-        maintainAspectRatio: false
+        normalized: true
       }
 
       return (
@@ -134,7 +135,7 @@ export default class DiffTable extends React.Component {
                     options={chartOptions}
                     height={40}
                     role='img'
-                    aria-label={`Comparison chart for ${entry.key}`}
+                    aria-label={t('compare.chartAria.row', { item: entry.key })}
                   />
                   )
                 : (
@@ -160,28 +161,28 @@ export default class DiffTable extends React.Component {
       <div>
         <table className='table'>
           <caption className='sr-only'>
-            Budget item differences and sort controls
+            {t('diffTable.caption')}
           </caption>
           <thead>
             <tr>
               <th scope='col' colSpan='2' className='form-horizontal'>
                 <div className='form-group'>
-                  <label className='col-sm-3 col-sm-offset-6 control-label' htmlFor='diffSortControl'>sort by: </label>
+                  <label className='col-sm-3 col-sm-offset-6 control-label' htmlFor='diffSortControl'>{t('diffTable.sortBy')} </label>
                   <div className='col-sm-3'>
                     <select
                       className='form-control' id='diffSortControl'
                       value={this.state.sortBy} onChange={this.handleSortChange}
                     >
-                      <option value='diff'>amount</option>
-                      <option value='key'>name</option>
+                      <option value='diff'>{t('diffTable.sortAmount')}</option>
+                      <option value='key'>{t('diffTable.sortName')}</option>
                     </select>
                   </div>
                 </div>
               </th>
             </tr>
             <tr>
-              <th scope='col'>Budget Item</th>
-              <th scope='col'>Difference</th>
+              <th scope='col'>{t('diffTable.budgetItem')}</th>
+              <th scope='col'>{t('diffTable.difference')}</th>
             </tr>
           </thead>
           <tbody>
@@ -195,7 +196,7 @@ export default class DiffTable extends React.Component {
               className='btn btn-default btn-sm'
               onClick={this.handleShowAllRows}
             >
-              Show all rows
+              {t('diffTable.showAllRows')}
             </button>
             )
           : null}

@@ -1,6 +1,13 @@
 const path = require('path')
 
-module.exports = (env, argv) => {
+module.exports = /**
+ * Runs exports.
+ *
+ * @param {any} env Input value.
+ * @param {any} argv Input value.
+ * @returns {any} Function result.
+ */
+(env, argv) => {
   const mode = argv && argv.mode ? argv.mode : 'production'
   const isProduction = mode === 'production'
 

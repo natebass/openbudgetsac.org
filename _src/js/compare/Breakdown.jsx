@@ -3,7 +3,15 @@ import React from 'react'
 import DiffTable from './DiffTable.jsx'
 import Trend from './Trend.jsx'
 import { fetchBreakdownData } from './api.js'
+import { t } from './i18n.js'
 
+/**
+ * Runs are same years.
+ *
+ * @param {any} currentYears Input value.
+ * @param {any} previousYears Input value.
+ * @returns {any} Function result.
+ */
 function areSameYears (currentYears, previousYears) {
   if (!Array.isArray(currentYears) || !Array.isArray(previousYears) || currentYears.length !== previousYears.length) {
     return false
@@ -86,7 +94,7 @@ export default class SpendingByDept extends React.Component {
             return
           }
           console.error('Failed loading comparison breakdown', error)
-          this.setState({ budgets: [], pending: false, error: 'Unable to load this breakdown right now. Try selecting a different year pair or refreshing the page.' })
+          this.setState({ budgets: [], pending: false, error: t('error.breakdownUnavailable') })
         })
     }
   }
@@ -98,7 +106,7 @@ export default class SpendingByDept extends React.Component {
    */
   render () {
     if (this.state.pending) {
-      return <div className='text-muted' role='status' aria-live='polite'>Loading breakdown...</div>
+      return <div className='text-muted' role='status' aria-live='polite'>{t('loading.breakdown')}</div>
     }
     if (this.state.error) {
       return <div className='alert alert-warning' role='alert'>{this.state.error}</div>

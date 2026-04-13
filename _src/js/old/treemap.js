@@ -1,7 +1,15 @@
+// Legacy treemap runtime for archived OpenSpending pages.
+// Keep behavior stable unless you can verify all legacy routes end to end.
 OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
 
 (function ($) {
-  function escapeHtml (value) {
+    /**
+   * Runs escape html.
+   *
+   * @param {any} value Input value.
+   * @returns {any} Function result.
+   */
+function escapeHtml (value) {
     return String(value == null ? '' : value)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -10,7 +18,13 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
       .replace(/'/g, '&#39;')
   }
 
-  function safeNavigate (rawUrl) {
+    /**
+   * Runs safe navigate.
+   *
+   * @param {any} rawUrl Input value.
+   * @returns {any} Function result.
+   */
+function safeNavigate (rawUrl) {
     try {
       const parsed = new URL(rawUrl, window.location.origin)
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
@@ -22,7 +36,15 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
     }
   }
 
-  OpenSpending.Treemap = function (elem, context, state) {
+  OpenSpending.Treemap =   /**
+   * Runs treemap.
+   *
+   * @param {any} elem Input value.
+   * @param {any} context Input value.
+   * @param {any} state Input value.
+   * @returns {any} Function result.
+   */
+function (elem, context, state) {
     const self = this
 
     const resources = [
@@ -59,7 +81,13 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
     }, context)
     self.state = state
 
-    this.configure = function (endConfigure) {
+    this.configure =     /**
+     * Runs configure.
+     *
+     * @param {any} endConfigure Input value.
+     * @returns {any} Function result.
+     */
+function (endConfigure) {
       self.$qb.empty()
       self.qbWidget = new OpenSpending.Widgets.QueryBuilder(
         self.$qb, self.update, endConfigure, self.context, [
@@ -90,7 +118,13 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
       )
     }
 
-    this.update = function (state) {
+    this.update =     /**
+     * Sets update.
+     *
+     * @param {any} state Input value.
+     * @returns {any} Function result.
+     */
+function (state) {
       self.state = state
       self.state.drilldowns = self.state.drilldowns || [self.state.drilldown]
       self.state.cuts = self.state.cuts || {}
@@ -122,15 +156,30 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
       }
     }
 
-    this.getDownloadURL = function () {
+    this.getDownloadURL =     /**
+     * Gets get download url.
+     *
+     * @returns {any} Function result.
+     */
+function () {
       return self.aggregator.getCSVURL()
     }
 
-    this.serialize = function () {
+    this.serialize =     /**
+     * Runs serialize.
+     *
+     * @returns {any} Function result.
+     */
+function () {
       return self.state
     }
 
-    this.init = function () {
+    this.init =     /**
+     * Runs init.
+     *
+     * @returns {any} Function result.
+     */
+function () {
       self.$e = elem
       self.$e.before('<div class="treemap-qb"></div>')
       self.$qb = elem.prev()
@@ -138,12 +187,25 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
       self.update(state)
     }
 
-    this.setDataFromAggregator = function (dataset, data) {
+    this.setDataFromAggregator =     /**
+     * Sets set data from aggregator.
+     *
+     * @param {any} dataset Input value.
+     * @param {any} data Input value.
+     * @returns {any} Function result.
+     */
+function (dataset, data) {
       self.currency = data.currency
       self.setNode(data)
     }
 
-    this.setNode = function (node) {
+    this.setNode =     /**
+     * Sets set node.
+     *
+     * @param {any} node Input value.
+     * @returns {any} Function result.
+     */
+function (node) {
       let needsColorization = true
       self.total = node.amount
       self.data = {
@@ -173,7 +235,13 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
       self.draw()
     }
 
-    this.drilldown = function (tile) {
+    this.drilldown =     /**
+     * Runs drilldown.
+     *
+     * @param {any} tile Input value.
+     * @returns {any} Function result.
+     */
+function (tile) {
       if (!tile.data.node.children.length) {
         self.context.click(tile)
       } else {
@@ -181,7 +249,12 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
       }
     }
 
-    this.autoColorize = function () {
+    this.autoColorize =     /**
+     * Runs auto colorize.
+     *
+     * @returns {any} Function result.
+     */
+function () {
       const nodes = self.data.children.length
       const colors = OpenSpending.Utils.getColorPalette(nodes)
       for (let i = 0; i < nodes; i++) {
@@ -189,7 +262,12 @@ OpenSpending = 'OpenSpending' in window ? OpenSpending : {};
       }
     }
 
-    this.draw = function () {
+    this.draw =     /**
+     * Runs draw.
+     *
+     * @returns {any} Function result.
+     */
+function () {
       self.$e.empty()
       if (!self.data.children.length) {
         $(self.$e).hide()

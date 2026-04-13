@@ -5,9 +5,9 @@
 [![Website](https://img.shields.io/badge/site-openbudgetsac.org-0A66C2?logo=google-chrome&logoColor=white)](https://openbudgetsac.org/)
 [![Node.js](https://img.shields.io/badge/node-22.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Eleventy](https://img.shields.io/badge/Eleventy-3.1.5-222222?logo=11ty&logoColor=white)](https://www.11ty.dev/)
-[![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react&logoColor=000)](https://react.dev/)
-[![Webpack](https://img.shields.io/badge/Webpack-5.105.4-8DD6F9?logo=webpack&logoColor=000)](https://webpack.js.org/)
-[![Jest](https://img.shields.io/badge/Jest-30.2.0-C21325?logo=jest&logoColor=white)](https://jestjs.io/)
+[![React](https://img.shields.io/badge/React-19.2.5-61DAFB?logo=react&logoColor=000)](https://react.dev/)
+[![Webpack](https://img.shields.io/badge/Webpack-5.106.1-8DD6F9?logo=webpack&logoColor=000)](https://webpack.js.org/)
+[![Jest](https://img.shields.io/badge/Jest-30.3.0-C21325?logo=jest&logoColor=white)](https://jestjs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.txt)
 
 ## Table of Contents
@@ -16,11 +16,11 @@
 * [Background](#background)
 * [Install](#install)
 * [Usage](#usage)
+* [CI/CD](#cicd)
 * [Source Tree](#source-tree)
 * [Total Features](#total-features)
-* [Recent Feature Changes](#recent-feature-changes)
 * [Tech Stack](#tech-stack)
-* [List of Dependences](#list-of-dependences)
+* [List of Dependencies](#list-of-dependencies)
 * [Outstanding Concerns / Issues / TODOs](#outstanding-concerns--issues--todos)
 * [Contributing](#contributing)
 * [Maintainers](#maintainers)
@@ -80,56 +80,84 @@ npm run serve                # eleventy dev server
 npm run watch                # webpack watch for compare app
 npm run build                # production compare bundle
 npm run build-css            # compile Sass
+npm run docs:jsdoc           # generate Markdown JSDoc inventory in _src/docs/jsdoc
 npm run lint                 # standard + eslint
 npm run test                 # lint + unit coverage + a11y + e2e
 npm run test:e2e             # preflight + e2e against local server
 npm run test:docker          # Docker-optimized full suite (coverage + a11y + e2e)
+npm run verify:all:parallel  # run lint/tests/e2e in parallel (used by Docker verify-parallel target)
 npm run perf:report          # compare bundle size budgets
 npm run bench                # benchmark suite
+npm run probe:memory         # RSS memory probe for serve command (writes JSON report)
+npm run probe:memory:csv     # convert serve JSON memory report to CSV
+npm run probe:memory:watch   # RSS memory probe for webpack watch command (writes JSON report)
+npm run probe:memory:watch:csv # convert watch JSON memory report to CSV
+npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand # i18n smoke tests
 ```
 
-For details on performance work and 3G-focused optimization history, see [`_src/PERFORMANCE.md`](_src/PERFORMANCE.md).
+ESLint is now on flat config via [`_src/eslint.config.cjs`](_src/eslint.config.cjs) (`.eslintrc` has been removed).
+
+For performance baselines and guardrails, see [`PERFORMANCE.md`](PERFORMANCE.md) and [`_src/PERFORMANCE.md`](_src/PERFORMANCE.md).
+
+Memory profiling outputs:
+- Serve probe JSON report: `_src/test/memory-serve-report.json`
+- Serve probe CSV report: `_src/test/memory-serve-report.csv`
+- Watch probe JSON report: `_src/test/memory-watch-report.json`
+- Watch probe CSV report: `_src/test/memory-watch-report.csv`
 
 ## CI/CD
 
 - CI workflow (`.github/workflows/ci.yml`) validates:
-  - npm checks (lint, unit coverage, a11y, perf, bench, Eleventy build)
+  - npm checks (lint, i18n unit smoke, unit coverage, a11y, perf, bench, JSDoc docs generation, Eleventy build)
+  - dependency installs with Puppeteer browser download disabled for non-E2E jobs (`PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev`)
+  - built-site i18n sanity checks (`build/js/i18n-site.js` and localized markup wiring in generated HTML)
+  - explicit Chromium browser install for E2E (`npx puppeteer browsers install chrome`) after Linux shared-library provisioning
   - E2E with a prebuilt frontend bundle via `npm run test:e2e:nobuild`
   - Docker targets:
     - `docker compose build site` (runtime/default website image)
     - `docker build --target test .` (full Docker-optimized test suite)
     - `docker build --target verify-parallel .` (parallel verification target)
-- Deploy workflow (`.github/workflows/deploy.yml`) builds static files from `_src` and publishes to GitHub Pages.
+- Deploy workflow (`.github/workflows/deploy.yml`) runs i18n smoke tests, generates JSDoc docs, builds static files from `_src`, validates i18n assets in output, and publishes to GitHub Pages.
 
 ## Source Tree
 ```text
 openbudgetsac.org/
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml
-│       └── deploy.yml
-├── _src/                         # primary development workspace
-│   ├── __tests__/                # e2e tests
-│   ├── bench/                    # benchmark harness
-│   ├── css/                      # Sass + legacy vendor CSS assets
-│   ├── data/                     # compare/flow/tree data + Python scripts
-│   ├── images/                   # static images
+│       ├── ci.yml                  # testing-based deployment config
+│       └── deploy.yml              # server-based deployment config
+├── PERFORMANCE.md                  # repository-level performance summary + guardrails
+├── _src/                           # primary development workspace
+│   ├── __tests__/                  # e2e tests
+│   ├── bench/                      # benchmark harness
+│   ├── css/                        # Sass + legacy vendor CSS assets
+│   ├── data/                       # compare/flow/tree data + Python scripts
+│   ├── images/                     # static images
 │   ├── js/
-│   │   ├── compare/              # React comparison app
-│   │   ├── old/                  # legacy OpenSpending scripts
-│   │   └── dist/                 # built bundles
-│   ├── partials/                 # shared Pug partials/layouts
-│   ├── templates/                # legacy template pages
-│   ├── test/                     # test utilities (preflight, static server, perf)
+│   │   ├── compare/                # React comparison app
+│   │   │   └── i18n.js             # compare-page i18n catalog + language resolution
+│   │   ├── i18n-site.js            # site-wide i18n runtime (legacy + modern templates)
+│   │   ├── old/                    # legacy OpenSpending scripts
+│   │   └── dist/                   # built bundles
+│   ├── docs/
+│   │   └── jsdoc/                  # generated JSDoc Markdown index + per-file docs
+│   ├── partials/                   # shared Pug partials/layouts
+│   ├── scripts/
+│   │   └── generate-jsdoc-docs.mjs # JSDoc Markdown generator (npm run docs:jsdoc)
+│   ├── templates/                  # legacy template pages
+│   ├── test/                       # test utilities (preflight, static server, perf, RSS memory probe + CSV conversion)
+│   │   ├── memory-probe.js         # process-tree RSS sampler for launch commands (JSON report)
+│   │   └── memory-report-to-csv.js # converts memory probe JSON timeline into CSV
+│   ├── eslint.config.cjs           # ESLint v10 flat configuration
 │   ├── package.json
 │   ├── jest.config.cjs
 │   ├── webpack.config.js
 │   └── PERFORMANCE.md
-├── _treemap/                     # treemap data processing utilities
-├── Dockerfile
-├── docker-compose.yml
-├── civic.json
-└── LICENSE.txt
+├── _treemap/                       # treemap data processing utilities
+├── Dockerfile                      # normal Docker config
+├── docker-compose.yml              # Docker compose config
+├── civic.json                      # civic-tech documentation
+└── LICENSE.txt                     # MIT License text
 ```
 
 ## Total Features
@@ -148,6 +176,7 @@ openbudgetsac.org/
 ### Compare page features (`_src/js/compare/`)
 - Dual budget-year selection with intelligent defaults.
 - Change display modes: percentage and dollars.
+- Built-in i18n for American English (`en-US`) and Latin American Spanish (`es-419`).
 - Breakdown tabs:
   - Spending by Department
   - Spending by Category
@@ -156,9 +185,18 @@ openbudgetsac.org/
 - Accessible chart/table rendering and runtime a11y checks in development.
 - Constrained-mode behavior for small screens/low-bandwidth/low-memory devices.
 
+### Internationalization features
+- Site-wide and compare-page localization support for American English (`en-US`) and Latin American Spanish (`es-419`).
+- Resolution order for locale selection: `lang` query parameter, local storage (`ob.locale`), `<html lang>`, then browser language.
+- Runtime propagation of selected locale to internal links so page transitions keep language state.
+- `data-i18n`, `data-i18n-html`, `data-i18n-title`, and `data-i18n-aria-label` support across navigation, compare UI text, and legacy flow/tree labels.
+- Dedicated unit tests for compare and site runtime locale behavior (`i18n.test.js`, `siteI18n.test.js`).
+
 ### Performance and quality features
 - Production-mode webpack builds for compare bundle.
 - Automated bundle-size budget reporting (`npm run perf:report`).
+- RSS memory probe tooling for startup/watch diagnostics (`npm run probe:memory`, `npm run probe:memory:watch`).
+- CSV export utility for memory timelines (`npm run probe:memory:csv`, `npm run probe:memory:watch:csv`).
 - Linting via Standard + ESLint.
 - Unit + accessibility tests via Jest.
 - E2E verification via Puppeteer with Linux dependency preflight checks.
@@ -181,16 +219,16 @@ openbudgetsac.org/
 | npm | bundled with Node 22 | ![npm](https://img.shields.io/badge/npm-package%20manager-CB3837?logo=npm&logoColor=white) | https://www.npmjs.com/ |
 | Eleventy | `^3.1.5` | ![11ty](https://img.shields.io/badge/Eleventy-3.1.5-222222?logo=11ty&logoColor=white) | https://www.11ty.dev/ |
 | Pug | `^3.0.4` | ![Pug](https://img.shields.io/badge/Pug-3.0.4-A86454?logo=pug&logoColor=white) | https://pugjs.org/ |
-| Webpack | `^5.105.4` | ![Webpack](https://img.shields.io/badge/Webpack-5.105.4-8DD6F9?logo=webpack&logoColor=000) | https://webpack.js.org/ |
+| Webpack | `^5.106.1` | ![Webpack](https://img.shields.io/badge/Webpack-5.106.1-8DD6F9?logo=webpack&logoColor=000) | https://webpack.js.org/ |
 | Dart Sass | `^1.25.0` | ![Sass](https://img.shields.io/badge/Sass-1.25.0-CC6699?logo=sass&logoColor=white) | https://sass-lang.com/ |
 
 ### Frontend app + data libraries
 
 | Library | Version | Badge | Link |
 | --- | --- | --- | --- |
-| React | `^19.2.4` | ![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react&logoColor=000) | https://react.dev/ |
-| React DOM | `^19.2.4` | ![React](https://img.shields.io/badge/React%20DOM-19.2.4-61DAFB?logo=react&logoColor=000) | https://react.dev/ |
-| Axios | `^1.14.0` | ![Axios](https://img.shields.io/badge/Axios-1.14.0-5A29E4?logo=axios&logoColor=white) | https://axios-http.com/ |
+| React | `^19.2.5` | ![React](https://img.shields.io/badge/React-19.2.5-61DAFB?logo=react&logoColor=000) | https://react.dev/ |
+| React DOM | `^19.2.5` | ![React](https://img.shields.io/badge/React%20DOM-19.2.5-61DAFB?logo=react&logoColor=000) | https://react.dev/ |
+| Axios | `^1.15.0` | ![Axios](https://img.shields.io/badge/Axios-1.15.0-5A29E4?logo=axios&logoColor=white) | https://axios-http.com/ |
 | Chart.js | `^4.5.1` | ![Chart.js](https://img.shields.io/badge/Chart.js-4.5.1-FF6384?logo=chartdotjs&logoColor=white) | https://www.chartjs.org/ |
 | react-chartjs-2 | `^5.3.1` | ![Chart.js](https://img.shields.io/badge/react--chartjs--2-5.3.1-FF6384?logo=react&logoColor=white) | https://react-chartjs-2.js.org/ |
 | react-bootstrap | `^2.10.10` | ![Bootstrap](https://img.shields.io/badge/React%20Bootstrap-2.10.10-7952B3?logo=bootstrap&logoColor=white) | https://react-bootstrap.github.io/ |
@@ -206,20 +244,20 @@ openbudgetsac.org/
 
 | Tool | Version | Badge | Link |
 | --- | --- | --- | --- |
-| Jest | `^30.2.0` | ![Jest](https://img.shields.io/badge/Jest-30.2.0-C21325?logo=jest&logoColor=white) | https://jestjs.io/ |
-| Testing Library | `^16.3.0` | ![Testing Library](https://img.shields.io/badge/Testing%20Library-16.3.0-E33332?logo=testinglibrary&logoColor=white) | https://testing-library.com/ |
+| Jest | `^30.3.0` | ![Jest](https://img.shields.io/badge/Jest-30.3.0-C21325?logo=jest&logoColor=white) | https://jestjs.io/ |
+| Testing Library | `^16.3.2` | ![Testing Library](https://img.shields.io/badge/Testing%20Library-16.3.2-E33332?logo=testinglibrary&logoColor=white) | https://testing-library.com/ |
 | jest-axe | `^10.0.0` | ![axe](https://img.shields.io/badge/jest--axe-10.0.0-5A0FC8) | https://github.com/nickcolley/jest-axe |
-| Puppeteer | `^24.26.1` | ![Puppeteer](https://img.shields.io/badge/Puppeteer-24.26.1-40B5A4?logo=puppeteer&logoColor=white) | https://pptr.dev/ |
-| ESLint | `^8.57.1` | ![ESLint](https://img.shields.io/badge/ESLint-8.57.1-4B32C3?logo=eslint&logoColor=white) | https://eslint.org/ |
+| Puppeteer | `^24.40.0` | ![Puppeteer](https://img.shields.io/badge/Puppeteer-24.40.0-40B5A4?logo=puppeteer&logoColor=white) | https://pptr.dev/ |
+| ESLint | `^10.2.0` | ![ESLint](https://img.shields.io/badge/ESLint-10.2.0-4B32C3?logo=eslint&logoColor=white) | https://eslint.org/ |
 | Standard JavaScript | `^17.1.2` | ![StandardJS](https://img.shields.io/badge/JavaScript%20Style-Standard-F3DF49?logo=javascript&logoColor=000) | https://standardjs.com/ |
-| start-server-and-test | `^2.1.2` | ![start-server-and-test](https://img.shields.io/badge/start--server--and--test-2.1.2-00C853) | https://github.com/bahmutov/start-server-and-test |
+| start-server-and-test | `^3.0.2` | ![start-server-and-test](https://img.shields.io/badge/start--server--and--test-3.0.2-00C853) | https://github.com/bahmutov/start-server-and-test |
 | GitHub Actions | workflow | ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white) | https://docs.github.com/actions |
 
-## List of Dependences
+## List of Dependencies
 All dependencies required for active development are listed below.
 
 ### JavaScript runtime dependencies (`_src/package.json`)
-- `axios@^1.14.0`
+- `axios@^1.15.0`
 - `chart.js@^4.5.1`
 - `core-js@^3.49.0`
 - `d3-array@^3.2.4`
@@ -230,10 +268,10 @@ All dependencies required for active development are listed below.
 - `d3-scale-chromatic@^3.1.0`
 - `dart-sass@^1.25.0`
 - `pug@^3.0.4`
-- `react@^19.2.4`
+- `react@^19.2.5`
 - `react-bootstrap@^2.10.10`
 - `react-chartjs-2@^5.3.1`
-- `react-dom@^19.2.4`
+- `react-dom@^19.2.5`
 - `react-select@^5.10.2`
 - `react-spinkit@^3.0.0`
 
@@ -246,24 +284,26 @@ All dependencies required for active development are listed below.
 - `@babel/preset-env@^7.29.2`
 - `@babel/preset-react@^7.28.5`
 - `@babel/register@^7.28.6`
+- `@eslint-react/eslint-plugin@^4.2.3`
+- `@eslint/js@^10.0.1`
 - `@testing-library/jest-dom@^6.9.1`
-- `@testing-library/react@^16.3.0`
-- `babel-jest@^30.2.0`
+- `@testing-library/react@^16.3.2`
+- `babel-jest@^30.3.0`
 - `babel-loader@^10.1.1`
 - `bench-node@^0.14.0`
 - `css-loader@^7.1.4`
-- `eslint@^8.57.1`
-- `eslint-plugin-jest@^28.13.5`
-- `eslint-plugin-react@^7.37.5`
-- `eslint-plugin-react-hooks@^7.0.0`
-- `jest@^30.2.0`
+- `eslint@^10.2.0`
+- `eslint-plugin-jest@^29.15.2`
+- `eslint-plugin-react-hooks@7.1.0-canary-fef12a01-20260413`
+- `globals@^17.5.0`
+- `jest@^30.3.0`
 - `jest-axe@^10.0.0`
-- `jest-environment-jsdom@^30.2.0`
-- `puppeteer@^24.26.1`
+- `jest-environment-jsdom@^30.3.0`
+- `puppeteer@^24.40.0`
 - `standard@^17.1.2`
-- `start-server-and-test@^2.1.2`
+- `start-server-and-test@^3.0.2`
 - `style-loader@^4.0.0`
-- `webpack@^5.105.4`
+- `webpack@^5.106.1`
 - `webpack-cli@^7.0.2`
 
 ### Python/data dependencies
@@ -272,7 +312,7 @@ All dependencies required for active development are listed below.
 
 ### System dependencies (for Puppeteer E2E on Linux)
 The E2E preflight checks and Docker test targets rely on shared libraries including:
-- `libasound2`, `libatk1.0-0`, `libatk-bridge2.0-0`, `libcups2`, `libdbus-1-3`
+- `libasound2`, `libatk1.0-0`, `libatk-bridge2.0-0`, `libatspi2.0-0`, `libcairo2`, `libcups2`, `libdbus-1-3`
 - `libdrm2`, `libgbm1`, `libgtk-3-0`, `libnspr4`, `libnss3`
 - `libpango-1.0-0`, `libx11-6`, `libx11-xcb1`, `libxcb1`, `libxext6`
 - `libxcomposite1`, `libxdamage1`, `libxfixes3`, `libxkbcommon0`, `libxrandr2`, `libxss1`
@@ -288,8 +328,8 @@ No first-party `TODO`/`FIXME` markers are found in active codebase. However, the
 | Concern | Context | Location |
 | --- | --- | --- |
 | E2E tests require Linux Chromium shared libraries | `npm run test:e2e` will fail on hosts missing required runtime libs until dependencies are installed. | [`_src/test/e2e-preflight.js`](_src/test/e2e-preflight.js) |
-| Compare bundle remains above Webpack’s default warning threshold | Performance has improved significantly, but bundle size still exceeds 244 KiB default warning level. | [`_src/PERFORMANCE.md` lines 75-77](_src/PERFORMANCE.md) |
-| Large source images still impact strict 3G targets | Optional optimization work remains for modern image formats and responsive variants. | [`_src/PERFORMANCE.md` lines 78-79](_src/PERFORMANCE.md) |
+| Compare bundle remains above Webpack’s default warning threshold | Performance has improved significantly, but bundle size still exceeds 244 KiB default warning level. | [`PERFORMANCE.md`](PERFORMANCE.md) |
+| Large source images still impact strict 3G targets | Optional optimization work remains for modern image formats and responsive variants. | [`PERFORMANCE.md`](PERFORMANCE.md) |
 | Legacy OpenSpending/jQuery treemap path is still in production code | Historical widget path increases maintenance burden and modernization effort. | [`_src/js/old/treemap.js`](_src/js/old/treemap.js) |
 | Historical page copy contains dated “pending” notices from 2016 | Content is factually historical, but appears stale/confusing if read as current status. | [`_src/2016-17-adjusted-budget-flow.jade:10`](_src/2016-17-adjusted-budget-flow.jade), [`_src/2016-17-adjusted-budget-tree.jade:10`](_src/2016-17-adjusted-budget-tree.jade) |
 

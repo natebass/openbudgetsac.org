@@ -1,8 +1,50 @@
 script(src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.5/d3.min.js', charset='utf-8')
-script(src='../js/sankey.js', charset='utf-8')
-script(src='../js/flow.js', charset='utf-8')
-script(src='../js/budget-glossary.js', charset='utf-8')
+script(src='/js/sankey.js', charset='utf-8')
+script(src='/js/flow.js', charset='utf-8')
+script(src='/js/budget-glossary.js', charset='utf-8')
 script.
+    var flowFilenameAliases = {
+      'FY13-14__adopted.csv': 'FY14.csv',
+      'FY14-15__adopted.csv': 'FY15.csv',
+      'FY14-15__adjusted.csv': 'FY15.csv',
+      'FY15-16__adopted.csv': 'FY16.csv',
+      'FY16-17__adopted.csv': 'FY17.csv',
+      'FY15-16__proposed.csv': 'FY16.csv',
+      'FY16-17__proposed.csv': 'FY17.csv',
+      'FY16-17__adjusted.csv': 'FY17.csv',
+      'FY17-18__proposed.csv': 'FY18.csv',
+      'FY18-19__proposed.csv': 'FY19.csv'
+    };
+
+    function resolveFlowFilename(filename){
+      if (!filename) {
+        return '';
+      }
+      if (flowFilenameAliases[filename]) {
+        return flowFilenameAliases[filename];
+      }
+      if (/^FY\d{2}\.csv$/.test(filename)) {
+        return filename;
+      }
+      var legacyMatch = filename.match(/^FY(\d{2})-\d{2}(?:__[\w-]+)?\.csv$/);
+      if (legacyMatch) {
+        return 'FY' + legacyMatch[1] + '.csv';
+      }
+      return filename;
+    }
+
+    function flowI18nT(key, fallback, vars){
+      if (window.obI18n && typeof window.obI18n.t === 'function') {
+        return window.obI18n.t(key, fallback, vars);
+      }
+      if (!vars) {
+        return fallback;
+      }
+      return fallback.replace(/\{\{(\w+)\}\}/g, function(_, name){
+        return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : '';
+      });
+    }
+
     function showFlowStatus(message, isError){
       var status = d3.select('#hover_description');
       status
@@ -34,7 +76,8 @@ script.
       return sortYear !== 0 ? sortYear : sortType;
     });
 
-    d3.select("#fy.form-control").selectAll('option')
+    var fySelect = d3.select("#fy.form-control");
+    fySelect.selectAll('option')
         .data(datafiles)
         .enter()
         .append('option')
@@ -43,27 +86,33 @@ script.
             .text(function(d){return d.displayName;})
             ;
 
-    d3.select("#fy.form-control")
+    fySelect
         .on('change', drawFlow)
         ;
 
     // run once to initially populate the chart
-    showFlowStatus('Loading chart data…', false);
+    showFlowStatus(flowI18nT('flow.loadingChartData', 'Loading chart data...'), false);
     drawFlow();
 
     function drawFlow(){
+        var fyNode = fySelect.node();
+        if (!fyNode || !fyNode.value) {
+            showFlowStatus(flowI18nT('flow.unableLoadChartData', 'Unable to load chart data for {{fy}}. Please try another fiscal year or refresh the page.', { fy: 'unknown year' }), true);
+            return false;
+        }
         // get currently selected value
-        var filename = d3.select('#fy.form-control')[0][0].value;
-        var fy = filename.split('__')[0];
+        var rawFilename = fyNode.value;
+        var filename = resolveFlowFilename(rawFilename);
+        var fy = filename.slice(0, -4);
 
-        d3.csv("../data/flow/" + filename, function(error, data){
+        d3.csv("/data/flow/" + filename, function(error, data){
             if (error) {
-                console.error('Unable to load flow chart data for file: ' + filename, error);
-                showFlowStatus('Unable to load chart data for ' + fy + '. Please try another fiscal year or refresh the page.', true);
+                console.error('Unable to load flow chart data for file: ' + filename + ' (selected: ' + rawFilename + ')', error);
+                showFlowStatus(flowI18nT('flow.unableLoadChartData', 'Unable to load chart data for {{fy}}. Please try another fiscal year or refresh the page.', { fy: fy }), true);
                 return false;
             }
             var final_data = data_wrangle(data, fy);
             do_with_budget(final_data);
-            showFlowStatus('Showing chart for ' + fy + '.', false);
+            showFlowStatus(flowI18nT('flow.showingChartFor', 'Showing chart for {{fy}}.', { fy: fy }), false);
         });
     }

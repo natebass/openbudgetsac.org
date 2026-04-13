@@ -2,7 +2,12 @@
 var ob = ob || {}
 
 ;(function (namespace, undefined) {
-  namespace.hash = function () {
+  namespace.hash =   /**
+   * Checks whether hash.
+   *
+   * @returns {any} Function result.
+   */
+function () {
     let _s = '.'
 
     return {

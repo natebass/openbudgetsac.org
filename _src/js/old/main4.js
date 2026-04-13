@@ -102,7 +102,7 @@ $(function () {
       } else {
         // If the node doesn't have children we notify the user
         // This can be made more beautiful
-        alert("That's as low as we go.")
+        alert((window.obI18n && window.obI18n.t) ? window.obI18n.t('old.alert.cannotDigDeeper', "Sorry, we can't dig deeper") : "Sorry, we can't dig deeper")
       }
     }
   }

@@ -6,6 +6,12 @@ const bundlePath = path.resolve(__dirname, '../js/dist/compare.bundle.js')
 const rawBudgetBytes = Number(process.env.PERF_BUDGET_COMPARE_RAW || 500 * 1024)
 const gzipBudgetBytes = Number(process.env.PERF_BUDGET_COMPARE_GZIP || 170 * 1024)
 
+/**
+ * Builds format bytes.
+ *
+ * @param {any} value Input value.
+ * @returns {any} Function result.
+ */
 function formatBytes (value) {
   if (value < 1024) {
     return `${value} B`
@@ -16,6 +22,12 @@ function formatBytes (value) {
   return `${(value / (1024 * 1024)).toFixed(2)} MiB`
 }
 
+/**
+ * Runs fail.
+ *
+ * @param {any} message Input value.
+ * @returns {any} Function result.
+ */
 function fail (message) {
   console.error(`\n[perf] ${message}\n`)
   process.exit(1)

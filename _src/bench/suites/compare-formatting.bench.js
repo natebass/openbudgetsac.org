@@ -1,4 +1,11 @@
-module.exports = function registerCompareFormattingSuite (suite, context) {
+module.exports = /**
+ * Runs exports.
+ *
+ * @param {any} suite Input value.
+ * @param {any} context Input value.
+ * @returns {any} Function result.
+ */
+function registerCompareFormattingSuite (suite, context) {
   const { asDiff } = context.compareUtils
 
   let sink = 0

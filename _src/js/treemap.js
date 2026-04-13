@@ -230,7 +230,15 @@ ob.display = ob.display || {}
       })
 
       /* create transition function for transitions */
-      disp.transition = function (d, i, direction) {
+      disp.transition =       /**
+       * Runs transition.
+       *
+       * @param {any} d Input value.
+       * @param {any} i Input value.
+       * @param {any} direction Input value.
+       * @returns {any} Function result.
+       */
+function (d, i, direction) {
         if (_transitioning || !d) return
         if (!d.children) return
         _transitioning = true

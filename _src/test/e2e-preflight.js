@@ -26,11 +26,22 @@ const PACKAGE_HINTS = {
   'libxrandr.so.2': 'libxrandr2'
 }
 
+/**
+ * Runs fail.
+ *
+ * @param {any} message Input value.
+ * @returns {any} Function result.
+ */
 function fail (message) {
   console.error(`\n[preflight:e2e] ${message}\n`)
   process.exit(1)
 }
 
+/**
+ * Gets resolve chrome path.
+ *
+ * @returns {any} Function result.
+ */
 function resolveChromePath () {
   if (process.env.PUPPETEER_EXECUTABLE_PATH) {
     return process.env.PUPPETEER_EXECUTABLE_PATH
@@ -54,6 +65,12 @@ function resolveChromePath () {
   }
 }
 
+/**
+ * Gets parse missing libraries.
+ *
+ * @param {any} lddOutput Input value.
+ * @returns {any} Function result.
+ */
 function parseMissingLibraries (lddOutput) {
   return lddOutput
     .split('\n')
@@ -62,6 +79,12 @@ function parseMissingLibraries (lddOutput) {
     .map((line) => line.split('=>')[0].trim())
 }
 
+/**
+ * Builds build install hints.
+ *
+ * @param {any} missingLibraries Input value.
+ * @returns {any} Function result.
+ */
 function buildInstallHints (missingLibraries) {
   const packages = [...new Set(missingLibraries.map((lib) => PACKAGE_HINTS[lib]).filter(Boolean))]
 
@@ -75,6 +98,11 @@ function buildInstallHints (missingLibraries) {
   ].join('\n')
 }
 
+/**
+ * Runs run.
+ *
+ * @returns {any} Function result.
+ */
 function run () {
   if (process.platform !== 'linux') {
     console.log(`[preflight:e2e] Skipping OS dependency check on ${process.platform}.`)

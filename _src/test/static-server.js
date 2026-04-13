@@ -23,6 +23,12 @@ const CONTENT_TYPES = {
   '.woff2': 'font/woff2'
 }
 
+/**
+ * Sets set security headers.
+ *
+ * @param {any} res Input value.
+ * @returns {any} Function result.
+ */
 function setSecurityHeaders (res) {
   res.setHeader('X-Content-Type-Options', 'nosniff')
   res.setHeader('X-Frame-Options', 'DENY')
@@ -32,10 +38,22 @@ function setSecurityHeaders (res) {
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
 }
 
+/**
+ * Builds build etag.
+ *
+ * @param {any} stat Input value.
+ * @returns {any} Function result.
+ */
 function buildEtag (stat) {
   return `W/"${stat.size}-${Math.floor(stat.mtimeMs)}"`
 }
 
+/**
+ * Checks whether is text response.
+ *
+ * @param {any} contentType Input value.
+ * @returns {any} Function result.
+ */
 function isTextResponse (contentType) {
   return contentType.startsWith('text/') || contentType.includes('javascript') || contentType.includes('json') || contentType.includes('svg')
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import { DiffStyled, compareChartOptions } from './utils'
+import { t } from './i18n.js'
 
 export default class Total extends React.Component {
   /**
@@ -11,7 +12,7 @@ export default class Total extends React.Component {
   render () {
     const totals = this.props.data
     if (!totals.length || totals.some(record => !record)) {
-      return <div className='text-muted' role='status' aria-live='polite'>Loading totals...</div>
+      return <div className='text-muted' role='status' aria-live='polite'>{t('loading.totals')}</div>
     }
 
     let diff = totals[0].total - totals[1].total
@@ -34,7 +35,6 @@ export default class Total extends React.Component {
       ...compareChartOptions,
       animation: false,
       normalized: true,
-      maintainAspectRatio: false,
       plugins: {
         ...compareChartOptions.plugins,
         tooltip: {
@@ -51,7 +51,7 @@ export default class Total extends React.Component {
 
     return (
       <div>
-        <h2>Total Change:
+        <h2>{t('compare.totalChange')}
           <DiffStyled
             diff={diff} colors={this.props.diffColors} usePct={this.props.usePct}
           />
@@ -62,7 +62,7 @@ export default class Total extends React.Component {
           height={25}
           options={{ ...totalChartOptions, indexAxis: 'y' }}
           role='img'
-          aria-label='Comparison chart of total budget amounts by selected fiscal years'
+          aria-label={t('compare.chartAria.total')}
         />
       </div>
     )

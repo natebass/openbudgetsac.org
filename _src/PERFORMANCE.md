@@ -1,79 +1,73 @@
-# Performance Audit and 3G Readiness
+# Performance Audit and Runtime Guardrails
 
-Date: April 11, 2026
-Scope: Frontend load-path and runtime responsiveness without changing business logic.
+Date: April 13, 2026  
+Scope: Frontend load path, runtime responsiveness, localization overhead, and CI regression controls.
 
-## Issues Identified
+## Baseline Improvements Already Landed
 
-1. The React compare bundle was built in Webpack development mode.
-- Impact: significantly larger JavaScript payload and slower parse/execute time on slow mobile CPUs.
-- Evidence: `_src/js/dist/compare.bundle.js` was `2,569,415` bytes before this change.
+1. Production compare bundle output (`webpack --mode production`) replaced development-mode output.
+2. D3 loading was narrowed to flow/tree pages instead of being globally loaded across every page.
+3. Legacy global scripts were deferred to reduce render blocking.
+4. Image loading hints were improved (`loading='lazy'`, `decoding='async'`, `fetchpriority='high'` on the first critical image).
+5. Static-server behavior for local testing added ETag and gzip support.
 
-2. D3 was loaded globally in the base layout for every page.
-- Impact: unnecessary JS download/parse cost on pages that do not render D3 charts.
+## i18n-Related Performance Notes
 
-3. Core legacy libraries were render-blocking in `<head>`.
-- Impact: slower first paint and delayed interactivity on high-latency mobile connections.
+1. Site-wide i18n now runs through `_src/js/i18n-site.js`.
+- Locale resolution order is deterministic (`lang` query param, localStorage, `<html lang>`, browser locale).
+- Translation application is selector-driven (`data-i18n*`) and runs once on init plus locale changes.
+- Internal links are rewritten with `lang=<locale>` to avoid extra locale negotiation work after navigation.
 
-4. Homepage and footer images did not use modern lazy/decode hints.
-- Impact: unnecessary network contention on mobile during initial page load.
+2. Compare-page i18n now runs through `_src/js/compare/i18n.js`.
+- Compare labels/loading/errors/chart ARIA strings are locale-backed.
+- Fallback language remains `en-US` to avoid missing-copy runtime crashes.
 
-5. Local static test server did not use cache validators or gzip.
-- Impact: repeated test/page loads transferred more bytes than necessary.
+3. Legacy flow/treemap components now consume i18n keys for status/error labels and key UI controls.
+- This prevents copy drift between React and non-React pages while adding negligible runtime overhead.
 
-## Changes Implemented
+## Current Measured Compare Bundle Result
 
-1. Production bundling for compare app
-- Updated Webpack config to use explicit mode via CLI and produce optimized output in production mode.
-- Updated npm scripts:
-  - `build` now uses `--mode production`.
-  - `watch` now uses `--mode development`.
-
-2. Reduced global JavaScript footprint
-- Removed global D3 load from base layout.
-- Added D3 only to chart pages (`flowScripts` and `treeScripts`) where it is required.
-
-3. Improved critical rendering path
-- Added `defer` to global jQuery/jQuery-migrate/Bootstrap scripts while preserving execution order.
-- Added font preconnect + DNS prefetch hints.
-- Moved Google Fonts stylesheet into `<head>` with `display=swap`.
-
-4. Image loading optimizations
-- Added `loading='lazy'` and `decoding='async'` for non-critical images.
-- Kept the first homepage visualization image prioritized with `fetchpriority='high'`.
-
-5. Better static-serving behavior for low-bandwidth environments
-- Added ETag + conditional request handling (`304`).
-- Added cache headers (revalidate for HTML, cache window for static assets).
-- Added gzip compression for text-like responses when supported by the client.
-
-6. Ongoing regression guard
-- Added `npm run perf:report` and `test/perf-report.js` to enforce compare bundle size budgets.
-
-## Measured Result
-
-Compare bundle (`_src/js/dist/compare.bundle.js`):
-- Before: `2,569,415` bytes (~2.45 MiB)
-- After: `491,445` bytes (~480 KiB)
+File: `_src/js/dist/compare.bundle.js`
+- Before optimization pass: `2,569,415` bytes (~2.45 MiB)
+- After optimization pass: `491,445` bytes (~480 KiB)
 - Gzip: `159,906` bytes (~156 KiB)
 
-This is an ~80.9% reduction in raw transfer size for the compare bundle.
+Reduction: ~80.9% raw size decrease from the pre-optimization baseline.
 
-## Verification Commands
+## Regression Guardrails
 
 Run from `_src/`:
 
 - `npm run perf:report`
 - `npm run bench`
 - `npm run lint`
-- `npm run test:unit`
+- `npm run test:unit:coverage`
 - `npm run test:a11y`
 - `npm run test:e2e:preflight`
+- `npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand`
 
-## Remaining Risk / Follow-up (Optional)
+Memory profiling helpers:
+- `npm run probe:memory`
+- `npm run probe:memory:csv`
+- `npm run probe:memory:watch`
+- `npm run probe:memory:watch:csv`
 
-1. Compare bundle is still above Webpack's default 244 KiB warning threshold.
-- Optional next step: route-level or component-level code splitting for heavy compare subviews.
+## CI/CD Enforcement
 
-2. Some source images are still large for strict 3G targets.
-- Optional next step: generate modern WebP/AVIF derivatives and serve responsive `srcset` variants.
+The workflows in `.github/workflows/` now enforce:
+- lint + coverage + a11y + perf + bench
+- i18n unit smoke tests (compare + site runtime)
+- Eleventy build + i18n asset sanity checks in generated output
+- Puppeteer E2E validation with explicit Chromium dependencies
+- Docker build target validation for `test` and `verify-parallel`
+
+## Remaining Risks / Follow-up
+
+1. Compare bundle still exceeds Webpack’s default 244 KiB warning threshold.
+- Follow-up: evaluate route/component level code splitting for compare subviews.
+
+2. Large source images still affect strict 3G scenarios.
+- Follow-up: add responsive `srcset` plus WebP/AVIF variants.
+
+3. i18n currently supports two locales only (`en-US`, `es-419`).
+- Follow-up: add extraction/lint tooling to prevent untranslated key drift as more locales are added.

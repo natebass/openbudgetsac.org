@@ -8,6 +8,7 @@ import {
   Tooltip
 } from 'chart.js'
 import { format } from 'd3-format'
+import { t } from './i18n.js'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend)
 
@@ -51,6 +52,22 @@ export const compareChartOptions = {
 }
 
 /**
+ * Returns sorted unique category keys across two budget records.
+ *
+ * @param {Array<Record<string, number>>} dataPair Two budget record objects.
+ * @returns {string[]} Sorted unique keys.
+ */
+export function getSortedBudgetKeys (dataPair) {
+  const allKeys = new Set()
+  dataPair.forEach((record) => {
+    Object.keys(record || {}).forEach((key) => {
+      allKeys.add(key)
+    })
+  })
+  return Array.from(allKeys).sort()
+}
+
+/**
  * Formats a numeric diff as either percentage or dollars.
  *
  * @param {number} value Diff value.
@@ -61,7 +78,7 @@ export function asDiff (value, usePct) {
   // special handling for sentinel values
   switch (value) {
     case Infinity:
-      return 'Newly Added'
+      return t('diff.newlyAdded')
     default:
       break
   }

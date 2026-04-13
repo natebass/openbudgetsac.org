@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { descending } from 'd3-array'
 
 const API_BASE = '/data/compare'
 
@@ -18,10 +17,51 @@ const dimensionKeys = {
   category: 'account_category'
 }
 const REQUEST_TIMEOUT_MS = 15000
+const SAFE_YEAR_RE = /^FY\d{2}$/i
 
+/**
+ * Checks whether is safe breakdown key.
+ *
+ * @param {any} value Input value.
+ * @returns {any} Function result.
+ */
+function isSafeBreakdownKey (value) {
+  return typeof value === 'string' &&
+    value.length > 0 &&
+    value !== '__proto__' &&
+    value !== 'prototype' &&
+    value !== 'constructor'
+}
+
+/**
+ * Gets get totals sort index.
+ *
+ * @param {any} record Input value.
+ * @returns {any} Function result.
+ */
+function getTotalsSortIndex (record) {
+  const year = record.fiscal_year_range.slice(2, 4)
+  // Historical type IDs are not naturally ordered for UI display.
+  const type = 6 / record.budget_type
+  // Compose a sortable key like YY.T where YY dominates sort precedence.
+  return +`${year}.${type}`
+}
+
+/**
+ * Checks whether assert valid breakdown request.
+ *
+ * @param {any} years Input value.
+ * @param {any} yearTypes Input value.
+ * @param {any} type Input value.
+ * @param {any} dimension Input value.
+ * @returns {any} Function result.
+ */
 function assertValidBreakdownRequest (years, yearTypes, type, dimension) {
   if (!Array.isArray(years) || !Array.isArray(yearTypes) || years.length !== yearTypes.length || years.length === 0) {
     throw new Error('Invalid budget comparison request')
+  }
+  if (!years.every(year => typeof year === 'string' && SAFE_YEAR_RE.test(year))) {
+    throw new Error('Invalid fiscal year format')
   }
   if (!Object.prototype.hasOwnProperty.call(typePaths, type) || !Object.prototype.hasOwnProperty.call(dimensionPaths, dimension)) {
     throw new Error('Unsupported comparison dimension or type')
@@ -41,11 +81,11 @@ export function fetchBreakdownData (years, yearTypes, type, dimension) {
   assertValidBreakdownRequest(years, yearTypes, type, dimension)
   // Fetch both years in parallel so UI wait time is bounded by the slower request.
   const urls = years.map((year) => {
-    return API_BASE + typePaths[type] + dimensionPaths[dimension] + `/${year}.json`
+    return API_BASE + typePaths[type] + dimensionPaths[dimension] + `/${encodeURIComponent(year)}.json`
   })
 
-  return axios.all(urls.map((url) => axios.get(url, { timeout: REQUEST_TIMEOUT_MS }))).then(
-    axios.spread((...budgets) => {
+  return Promise.all(urls.map((url) => axios.get(url, { timeout: REQUEST_TIMEOUT_MS })))
+    .then((budgets) => {
       return budgets.map((budget, i) => {
         if (!budget || !Array.isArray(budget.data)) {
           throw new Error(`Unexpected API response format for ${urls[i]}`)
@@ -55,7 +95,7 @@ export function fetchBreakdownData (years, yearTypes, type, dimension) {
           if (String(row.budget_type) === String(yearTypes[i])) {
             // convert to object and cast totals to numbers
             const key = row[dimensionKeys[dimension]]
-            if (typeof key === 'string' && key.length > 0) {
+            if (isSafeBreakdownKey(key)) {
               acc[key] = Number.isFinite(+row.total) ? +row.total : 0
             }
           }
@@ -63,10 +103,10 @@ export function fetchBreakdownData (years, yearTypes, type, dimension) {
         }, {})
       })
     })
-  ).catch((error) => {
-    console.error('Failed to fetch compare breakdown data', error)
-    throw error
-  })
+    .catch((error) => {
+      console.error('Failed to fetch compare breakdown data', error)
+      throw error
+    })
 }
 
 /**
@@ -84,15 +124,13 @@ export function fetchTotals () {
 
     data.sort((a, b) => {
       // Sort newest fiscal years first, then keep a stable local budget-type order.
-      const [indexA, indexB] = [a, b].map((record) => {
-        const year = record.fiscal_year_range.slice(2, 4)
-        // Historical type IDs are not naturally ordered for UI display.
-        const type = 6 / record.budget_type
-        // Compose a sortable key like YY.T where YY dominates sort precedence.
-        return +`${year}.${type}`
-      })
+      const indexA = getTotalsSortIndex(a)
+      const indexB = getTotalsSortIndex(b)
 
-      return descending(indexA, indexB)
+      if (indexA === indexB) {
+        return 0
+      }
+      return indexA > indexB ? -1 : 1
     })
 
     return data

@@ -1,13 +1,12 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
-import { keys, set } from 'd3-collection'
 
-import { asTick } from './utils.jsx'
+import { asTick, getSortedBudgetKeys } from './utils.jsx'
+import { t } from './i18n.js'
 
 const chartOpts = {
   animation: false,
   normalized: true,
-  maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false
@@ -31,7 +30,7 @@ const chartOpts = {
     y: {
       title: {
         display: true,
-        text: 'Amount (in millions)'
+        text: t('trend.amountInMillions')
       },
       ticks: {
         beginAtZero: true,
@@ -52,16 +51,7 @@ export default class Trend extends React.Component {
    * @returns {JSX.Element} Trend chart component.
    */
   render () {
-    // get list of all possible keys from both budgets
-    const allKeys = set()
-    keys(this.props.data[0]).forEach((key) => {
-      allKeys.add(key)
-    })
-    keys(this.props.data[1]).forEach((key) => {
-      allKeys.add(key)
-    })
-
-    const labels = allKeys.values().sort()
+    const labels = getSortedBudgetKeys(this.props.data)
     const datasets = this.props.data.map((record, i) => {
       return {
         label: this.props.years[i].fiscal_year_range,
@@ -106,7 +96,7 @@ export default class Trend extends React.Component {
         options={responsiveChartOptions}
         height={125}
         role='img'
-        aria-label='Bar chart showing budget amounts for each category across selected fiscal years'
+        aria-label={t('compare.chartAria.trend')}
       />
     )
   }

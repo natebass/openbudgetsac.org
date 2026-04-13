@@ -16,13 +16,14 @@ html(lang='en')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js', defer)
     script(src='https://code.jquery.com/jquery-migrate-1.2.1.js', defer)
     script(src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js', defer)
+    script(src='/js/i18n-site.js', defer)
   
   block bodyClass
     // - define slug here
     - var slug = ""
 
   body(class= slug)
-    a.skip-link(href='#main-content') Skip to main content
+    a.skip-link(href='#main-content', data-i18n='ui.skipToMain') Skip to main content
     #wrapper
       nav.main-nav(role='navigation', aria-label='Primary')
         .navbar.navbar-default.navbar-fixed-top
@@ -33,9 +34,10 @@ html(lang='en')
                 data-toggle='collapse',
                 data-target='#primary-nav',
                 aria-controls='primary-nav',
-                aria-expanded='false'
+                aria-expanded='false',
+                data-i18n-aria-label='ui.toggleNavigation'
               )
-                span.sr-only Toggle navigation
+                span.sr-only(data-i18n='ui.toggleNavigation') Toggle navigation
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
@@ -46,33 +48,53 @@ html(lang='en')
 
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                    | About
+                    span(data-i18n='nav.about') About
                     b.caret
                   ul.dropdown-menu
                     li
-                      a(href='/who-we-are') Who We Are
+                      a(href='/who-we-are', data-i18n='nav.whoWeAre') Who We Are
                     li
-                      a(href='/contact') Contact Us
+                      a(href='/contact', data-i18n='nav.contactUs') Contact Us
 
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                    | Data
+                    span(data-i18n='nav.data') Data
                     b.caret
                   ul.dropdown-menu
                     li
-                      a(href='https://www.cityofsacramento.org/-/media/Corporate/Files/Finance/Budget/FY2022_23_ApprovedBudget_Revised_WEB.pdf?la=en', target='_blank', rel='noopener noreferrer') City of Sacramento Department of Finance
+                      a(
+                        href='https://www.cityofsacramento.org/-/media/Corporate/Files/Finance/Budget/FY2022_23_ApprovedBudget_Revised_WEB.pdf?la=en',
+                        target='_blank',
+                        rel='noopener noreferrer',
+                        title='City of Sacramento Department of Finance',
+                        aria-label='City of Sacramento Department of Finance'
+                      ) City of Sacramento Department of Finance
                     li
-                      a(href='https://www.cityofsacramento.org/Finance/Budget') City of Sacramento Budget  
+                      a(
+                        href='https://www.cityofsacramento.org/Finance/Budget',
+                        title='City of Sacramento Budget',
+                        aria-label='City of Sacramento Budget'
+                      ) City of Sacramento Budget
                     li
-                      a(href='https://data.cityofsacramento.org/datasets/7b8b3680603c4894bd3faaa41c986c7c_0/explore') Recent Sacramento Budget Data
+                      a(
+                        href='https://data.cityofsacramento.org/datasets/7b8b3680603c4894bd3faaa41c986c7c_0/explore',
+                        title='Recent Sacramento Budget Data',
+                        aria-label='Recent Sacramento Budget Data'
+                      ) Recent Sacramento Budget Data
 
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                    | Resources
+                    span(data-i18n='nav.resources') Resources
                     b.caret
                   ul.dropdown-menu
                     li
-                      a(href='/tools-projects') Tools and Projects
+                      a(href='/tools-projects', data-i18n='nav.toolsProjects') Tools and Projects
+
+                li
+                  label.sr-only(for='locale-selector-main', data-i18n='ui.language') Language
+                  select#locale-selector-main.form-control.input-sm(data-locale-selector, aria-label='Language', data-i18n-aria-label='ui.language')
+                    option(value='en-US', data-i18n='ui.english') English (US)
+                    option(value='es-419', data-i18n='ui.spanishLatam') Español (Latinoamérica)
 
       main#main-content(role='main', tabindex='-1')
         block content
@@ -95,18 +117,20 @@ html(lang='en')
 
             ul.list-inline
               li
-                a(href="https://twitter.com/code4sac")
-                  img(src="/images/global/twitter-icon.png" alt="twitter" loading='lazy' decoding='async')
+                a.social-link(href="https://www.x.com/opensacorg", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on X (formerly Twitter)')
+                  picture
+                    source(srcset="/images/global/x-icon.svg", type="image/svg+xml")
+                    img.social-icon(src="/images/global/twitter-icon.png" alt="X (formerly Twitter)" loading='lazy' decoding='async' width='22' height='22')
               li
-                a(href="https://github.com/code4sac/openbudgetsac.org/")
-                  img(src="/images/global/github-icon.png" alt="github" loading='lazy' decoding='async')
+                a.social-link(href="https://github.com/code4sac/openbudgetsac.org/", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on GitHub')
+                  img.social-icon(src="/images/global/github-icon.png" alt="GitHub" loading='lazy' decoding='async' width='22' height='22')
 
 
           .col-sm-3.col-md-push-3
             ul.list-unstyled
               li
-                a(href="/who-we-are") About the Project
+                a(href="/who-we-are", data-i18n='nav.aboutProject') About the Project
               li
-                a(href="https://www.meetup.com/Code4Sac/") Get Involved
+                a(href="https://www.meetup.com/Code4Sac/", data-i18n='nav.getInvolved') Get Involved
               li
-                a(href="/feedback") Give Feedback
+                a(href="/feedback", data-i18n='nav.giveFeedback') Give Feedback
