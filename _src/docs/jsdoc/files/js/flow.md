@@ -1,6 +1,6 @@
 # js/flow.js
 
-- JSDoc blocks found: 9
+- JSDoc blocks found: 10
 
 ## Block 1
 
@@ -32,6 +32,19 @@ Associated declaration: `function (key, fallback, vars) {`
 
 ## Block 3
 
+Associated declaration: `function localizeFlowLabel (label) {`
+
+```js
+/**
+ * Localizes known flow labels while preserving source values for data operations.
+ *
+ * @param {string} label Source label.
+ * @returns {string} Localized label or original value.
+ */
+```
+
+## Block 4
+
 Associated declaration: `function data_wrangle (dataset, fy) {`
 
 ```js
@@ -44,7 +57,7 @@ Associated declaration: `function data_wrangle (dataset, fy) {`
  */
 ```
 
-## Block 4
+## Block 5
 
 Associated declaration: `const sort_by = (fields_arr) => {`
 
@@ -57,7 +70,7 @@ Associated declaration: `const sort_by = (fields_arr) => {`
  */
 ```
 
-## Block 5
+## Block 6
 
 Associated declaration: `const fundKey = (fund_field, general_fund) => d => d[fund_field] == general_fund ? 'General Fund' : 'Non-discretionary funds'`
 
@@ -71,7 +84,7 @@ Associated declaration: `const fundKey = (fund_field, general_fund) => d => d[fu
  */
 ```
 
-## Block 6
+## Block 7
 
 Associated declaration: `const rollupFn = amount_field => v => ({ total: d3.sum(v, d => +d[amount_field]) })`
 
@@ -84,9 +97,9 @@ Associated declaration: `const rollupFn = amount_field => v => ({ total: d3.sum(
  */
 ```
 
-## Block 7
+## Block 8
 
-Associated declaration: `const generateNodesAndLinks = (data, type, offset) => ({`
+Associated declaration: `const flatten = nested => nested.reduce((acc, row) => acc.concat(row), [])`
 
 ```js
 /**
@@ -99,7 +112,7 @@ Associated declaration: `const generateNodesAndLinks = (data, type, offset) => (
  */
 ```
 
-## Block 8
+## Block 9
 
 Associated declaration: `function data_wrangle_v1 (dataset, category_field, department_field, expense_field, revenue_value, expense_value, fund_field, general_fund, amount_field) {`
 
@@ -120,7 +133,7 @@ Associated declaration: `function data_wrangle_v1 (dataset, category_field, depa
  */
 ```
 
-## Block 9
+## Block 10
 
 Associated declaration: `function do_with_budget (data) {`
 

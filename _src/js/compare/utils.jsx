@@ -43,7 +43,7 @@ export const compareChartOptions = {
       ticks: {
         beginAtZero: true,
         callback: (value) => {
-          // display as currency in millions
+          // Show values as currency in millions.
           return `${asTick(value / 1000000)}M`
         }
       }
@@ -75,7 +75,7 @@ export function getSortedBudgetKeys (dataPair) {
  * @returns {string} Human-readable difference string.
  */
 export function asDiff (value, usePct) {
-  // special handling for sentinel values
+  // Handle sentinel values first.
   switch (value) {
     case Infinity:
       return t('diff.newlyAdded')
@@ -83,7 +83,7 @@ export function asDiff (value, usePct) {
       break
   }
 
-  // otherwise choose the appropriate formatting
+  // Then format either as a percent or as dollars.
   if (usePct) {
     return asPct(value)
   }

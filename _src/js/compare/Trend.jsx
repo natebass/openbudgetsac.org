@@ -14,7 +14,7 @@ const chartOpts = {
     tooltip: {
       callbacks: {
         label: (context) => {
-          // display as currency in millions
+          // Show values as currency in millions.
           const label = context.dataset.label
           return `${label}: ${asTick(context.parsed.y / 1000000)}M`
         }
@@ -35,7 +35,7 @@ const chartOpts = {
       ticks: {
         beginAtZero: true,
         callback: (value) => {
-          // display as currency in millions
+          // Show values as currency in millions.
           const num = (value / 1000000).toLocaleString('en')
           return `$${num}M`
         }

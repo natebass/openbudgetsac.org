@@ -13,142 +13,142 @@ function () {
   let nodes = []
   let links = []
 
-  sankey.nodeWidth =   /**
+  sankey.nodeWidth = /**
    * Runs node width.
    *
    * @param {any} _ Input value.
    * @returns {any} Function result.
    */
 function (_) {
-    if (!arguments.length) return nodeWidth
-    nodeWidth = +_
-    return sankey
-  }
+  if (!arguments.length) return nodeWidth
+  nodeWidth = +_
+  return sankey
+}
 
-  sankey.nodePadding =   /**
+  sankey.nodePadding = /**
    * Runs node padding.
    *
    * @param {any} _ Input value.
    * @returns {any} Function result.
    */
 function (_) {
-    if (!arguments.length) return nodePadding
-    nodePadding = +_
-    return sankey
-  }
+  if (!arguments.length) return nodePadding
+  nodePadding = +_
+  return sankey
+}
 
-  sankey.nodes =   /**
+  sankey.nodes = /**
    * Runs nodes.
    *
    * @param {any} _ Input value.
    * @returns {any} Function result.
    */
 function (_) {
-    if (!arguments.length) return nodes
-    nodes = _
-    return sankey
-  }
+  if (!arguments.length) return nodes
+  nodes = _
+  return sankey
+}
 
-  sankey.links =   /**
+  sankey.links = /**
    * Runs links.
    *
    * @param {any} _ Input value.
    * @returns {any} Function result.
    */
 function (_) {
-    if (!arguments.length) return links
-    links = _
-    return sankey
-  }
+  if (!arguments.length) return links
+  links = _
+  return sankey
+}
 
-  sankey.size =   /**
+  sankey.size = /**
    * Runs size.
    *
    * @param {any} _ Input value.
    * @returns {any} Function result.
    */
 function (_) {
-    if (!arguments.length) return size
-    size = _
-    return sankey
-  }
+  if (!arguments.length) return size
+  size = _
+  return sankey
+}
 
-  sankey.layout =   /**
+  sankey.layout = /**
    * Runs layout.
    *
    * @param {any} iterations Input value.
    * @returns {any} Function result.
    */
 function (iterations) {
-    computeNodeLinks()
-    computeNodeValues()
-    computeNodeBreadths()
-    computeNodeDepths(iterations)
-    computeLinkDepths()
-    return sankey
-  }
+  computeNodeLinks()
+  computeNodeValues()
+  computeNodeBreadths()
+  computeNodeDepths(iterations)
+  computeLinkDepths()
+  return sankey
+}
 
-  sankey.relayout =   /**
+  sankey.relayout = /**
    * Runs relayout.
    *
    * @returns {any} Function result.
    */
 function () {
-    computeLinkDepths()
-    return sankey
-  }
+  computeLinkDepths()
+  return sankey
+}
 
-  sankey.link =   /**
+  sankey.link = /**
    * Runs link.
    *
    * @returns {any} Function result.
    */
 function () {
-    let curvature = 0.5
+  let curvature = 0.5
 
-        /**
+  /**
      * Runs link.
      *
      * @param {any} d Input value.
      * @returns {any} Function result.
      */
-function link (d) {
-      const x0 = d.source.x + d.source.dx
-      const x1 = d.target.x
-      const xi = d3.interpolateNumber(x0, x1)
-      const x2 = xi(curvature)
-      const x3 = xi(1 - curvature)
-      const y0 = d.source.y + d.sy + d.dy / 2
-      const y1 = d.target.y + d.ty + d.dy / 2
-      return 'M' + x0 + ',' + y0 +
+  function link (d) {
+    const x0 = d.source.x + d.source.dx
+    const x1 = d.target.x
+    const xi = d3.interpolateNumber(x0, x1)
+    const x2 = xi(curvature)
+    const x3 = xi(1 - curvature)
+    const y0 = d.source.y + d.sy + d.dy / 2
+    const y1 = d.target.y + d.ty + d.dy / 2
+    return 'M' + x0 + ',' + y0 +
            'C' + x2 + ',' + y0 +
            ' ' + x3 + ',' + y1 +
            ' ' + x1 + ',' + y1
-    }
+  }
 
-    link.curvature =     /**
+  link.curvature = /**
      * Runs curvature.
      *
      * @param {any} _ Input value.
      * @returns {any} Function result.
      */
 function (_) {
-      if (!arguments.length) return curvature
-      curvature = +_
-      return link
-    }
+  if (!arguments.length) return curvature
+  curvature = +_
+  return link
+}
 
-    return link
-  }
+  return link
+}
 
   // Populate the sourceLinks and targetLinks for each node.
   // Also, if the source and target are not objects, assume they are indices.
-    /**
+  /**
    * Runs compute node links.
    *
    * @returns {any} Function result.
    */
-function computeNodeLinks () {
+  function computeNodeLinks () {
     nodes.forEach(function (node) {
       node.sourceLinks = []
       node.targetLinks = []
@@ -164,12 +164,12 @@ function computeNodeLinks () {
   }
 
   // Compute the value (size) of each node by summing the associated links.
-    /**
+  /**
    * Runs compute node values.
    *
    * @returns {any} Function result.
    */
-function computeNodeValues () {
+  function computeNodeValues () {
     nodes.forEach(function (node) {
       node.value = Math.max(
         d3.sum(node.sourceLinks, value),
@@ -182,12 +182,12 @@ function computeNodeValues () {
   // Nodes are assigned the maximum breadth of incoming neighbors plus one;
   // nodes with no incoming links are assigned breadth zero, while
   // nodes with no outgoing links are assigned the maximum breadth.
-    /**
+  /**
    * Runs compute node breadths.
    *
    * @returns {any} Function result.
    */
-function computeNodeBreadths () {
+  function computeNodeBreadths () {
     let remainingNodes = nodes
     let nextNodes
     let x = 0
@@ -211,13 +211,13 @@ function computeNodeBreadths () {
     scaleNodeBreadths((width - nodeWidth) / (x - 1))
   }
 
-    /**
+  /**
    * Runs move sinks right.
    *
    * @param {any} x Input value.
    * @returns {any} Function result.
    */
-function moveSinksRight (x) {
+  function moveSinksRight (x) {
     nodes.forEach(function (node) {
       if (!node.sourceLinks.length) {
         node.x = x - 1
@@ -225,25 +225,25 @@ function moveSinksRight (x) {
     })
   }
 
-    /**
+  /**
    * Runs scale node breadths.
    *
    * @param {any} kx Input value.
    * @returns {any} Function result.
    */
-function scaleNodeBreadths (kx) {
+  function scaleNodeBreadths (kx) {
     nodes.forEach(function (node) {
       node.x *= kx
     })
   }
 
-    /**
+  /**
    * Runs compute node depths.
    *
    * @param {any} iterations Input value.
    * @returns {any} Function result.
    */
-function computeNodeDepths (iterations) {
+  function computeNodeDepths (iterations) {
     const nodesByBreadth = d3.nest()
       .key(function (d) { return d.x })
       .sortKeys(d3.ascending)
@@ -260,12 +260,12 @@ function computeNodeDepths (iterations) {
       resolveCollisions()
     }
 
-        /**
+    /**
      * Runs initialize node depth.
      *
      * @returns {any} Function result.
      */
-function initializeNodeDepth () {
+    function initializeNodeDepth () {
       const ky = d3.min(nodesByBreadth, function (nodes) {
         return (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value)
       })
@@ -282,13 +282,13 @@ function initializeNodeDepth () {
       })
     }
 
-        /**
+    /**
      * Runs relax left to right.
      *
      * @param {any} alpha Input value.
      * @returns {any} Function result.
      */
-function relaxLeftToRight (alpha) {
+    function relaxLeftToRight (alpha) {
       nodesByBreadth.forEach(function (nodes, breadth) {
         nodes.forEach(function (node) {
           if (node.targetLinks.length) {
@@ -298,24 +298,24 @@ function relaxLeftToRight (alpha) {
         })
       })
 
-            /**
+      /**
        * Runs weighted source.
        *
        * @param {any} link Input value.
        * @returns {any} Function result.
        */
-function weightedSource (link) {
+      function weightedSource (link) {
         return center(link.source) * link.value
       }
     }
 
-        /**
+    /**
      * Runs relax right to left.
      *
      * @param {any} alpha Input value.
      * @returns {any} Function result.
      */
-function relaxRightToLeft (alpha) {
+    function relaxRightToLeft (alpha) {
       nodesByBreadth.slice().reverse().forEach(function (nodes) {
         nodes.forEach(function (node) {
           if (node.sourceLinks.length) {
@@ -325,23 +325,23 @@ function relaxRightToLeft (alpha) {
         })
       })
 
-            /**
+      /**
        * Runs weighted target.
        *
        * @param {any} link Input value.
        * @returns {any} Function result.
        */
-function weightedTarget (link) {
+      function weightedTarget (link) {
         return center(link.target) * link.value
       }
     }
 
-        /**
+    /**
      * Gets resolve collisions.
      *
      * @returns {any} Function result.
      */
-function resolveCollisions () {
+    function resolveCollisions () {
       nodesByBreadth.forEach(function (nodes) {
         let node
         let dy
@@ -374,24 +374,24 @@ function resolveCollisions () {
       })
     }
 
-        /**
+    /**
      * Runs ascending depth.
      *
      * @param {any} a Input value.
      * @param {any} b Input value.
      * @returns {any} Function result.
      */
-function ascendingDepth (a, b) {
+    function ascendingDepth (a, b) {
       return a.y - b.y
     }
   }
 
-    /**
+  /**
    * Runs compute link depths.
    *
    * @returns {any} Function result.
    */
-function computeLinkDepths () {
+  function computeLinkDepths () {
     // Link stacking must be stable or hover targets will "jump" between renders.
     nodes.forEach(function (node) {
       node.sourceLinks.sort(ascendingTargetDepth)
@@ -409,46 +409,46 @@ function computeLinkDepths () {
       })
     })
 
-        /**
+    /**
      * Runs ascending source depth.
      *
      * @param {any} a Input value.
      * @param {any} b Input value.
      * @returns {any} Function result.
      */
-function ascendingSourceDepth (a, b) {
+    function ascendingSourceDepth (a, b) {
       return a.source.y - b.source.y
     }
 
-        /**
+    /**
      * Runs ascending target depth.
      *
      * @param {any} a Input value.
      * @param {any} b Input value.
      * @returns {any} Function result.
      */
-function ascendingTargetDepth (a, b) {
+    function ascendingTargetDepth (a, b) {
       return a.target.y - b.target.y
     }
   }
 
-    /**
+  /**
    * Runs center.
    *
    * @param {any} node Input value.
    * @returns {any} Function result.
    */
-function center (node) {
+  function center (node) {
     return node.y + node.dy / 2
   }
 
-    /**
+  /**
    * Runs value.
    *
    * @param {any} link Input value.
    * @returns {any} Function result.
    */
-function value (link) {
+  function value (link) {
     return link.value
   }
 

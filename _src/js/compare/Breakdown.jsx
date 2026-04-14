@@ -29,6 +29,10 @@ function areSameYears (currentYears, previousYears) {
   })
 }
 
+function hasCompleteYears (years) {
+  return Array.isArray(years) && years.every(Boolean)
+}
+
 export default class SpendingByDept extends React.Component {
   /**
    * Initializes breakdown state.
@@ -79,24 +83,27 @@ export default class SpendingByDept extends React.Component {
     this.activeFetchId += 1
     const currentFetchId = this.activeFetchId
     this.setState({ pending: true, error: null })
-    if (years && years.every(year => !!year)) {
-      const yearNames = years.map(year => year.fiscal_year_range)
-      const yearTypes = years.map(year => year.budget_type)
-      fetchBreakdownData(yearNames, yearTypes, this.props.type, this.props.dimension)
-        .then((budgets) => {
-          if (currentFetchId !== this.activeFetchId) {
-            return
-          }
-          this.setState({ budgets, pending: false, error: null })
-        })
-        .catch((error) => {
-          if (currentFetchId !== this.activeFetchId) {
-            return
-          }
-          console.error('Failed loading comparison breakdown', error)
-          this.setState({ budgets: [], pending: false, error: t('error.breakdownUnavailable') })
-        })
+
+    if (!hasCompleteYears(years)) {
+      return
     }
+
+    const yearNames = years.map(year => year.fiscal_year_range)
+    const yearTypes = years.map(year => year.budget_type)
+    fetchBreakdownData(yearNames, yearTypes, this.props.type, this.props.dimension)
+      .then((budgets) => {
+        if (currentFetchId !== this.activeFetchId) {
+          return
+        }
+        this.setState({ budgets, pending: false, error: null })
+      })
+      .catch((error) => {
+        if (currentFetchId !== this.activeFetchId) {
+          return
+        }
+        console.error('Failed loading comparison breakdown', error)
+        this.setState({ budgets: [], pending: false, error: t('error.breakdownUnavailable') })
+      })
   }
 
   /**

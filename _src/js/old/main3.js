@@ -1,111 +1,113 @@
 $(function () {
-  // Default drilldowns and cuts and year
-  const drilldowns = ['fund', 'department', 'unit']
+  const DEFAULT_DRILLDOWNS = ['fund', 'department', 'unit']
+  const DEFAULT_CUTS = { 'time.year': '2013' }
+  const DEFAULT_HEADER = "Mayor's Proposed Spending"
+  const ROOT_CRUMB_TITLE = 'Funds'
+  const CANNOT_DIG_DEEPER_FALLBACK = "Sorry, we can't dig deeper"
 
-  // Default year cuts
-  let cuts = { 'time.year': '2013' }
-  // Default header text
-  let headerText = "Mayor's Proposed Spending"
+  const drilldowns = DEFAULT_DRILLDOWNS.slice()
+  let cuts = Object.assign({}, DEFAULT_CUTS)
+  let headerText = DEFAULT_HEADER
 
-  // Use purl to preserve legacy behavior expected by old deep links.
-  // Purl is available here: https://github.com/allmarkedup/jQuery-URL-Parser
   const parameters = $.url().param()
-
-  // check for 'reference_years' in URL parameters
-  // argument must be formatted with four digit years, eg. 2012
-  // separate multiple years with a '+' symbol, but you need only supply one
-  // the cuts used by default would correspond to: reference_years=2013+2014
-
-  if (parameters.reference_years) {
-    // Initialize output strings, then parse year values from the URL argument.
-
-    let cutString = ''
-    headerText = ''
-    const years = parameters.reference_years.split(' ')
-    let i = 0
-
-    // loop through the list of years
-
-    $.each(years, function (index, value) {
-      // the first argument has nothing preceding it
-      if (i !== 0) {
-        // after the first, prepend the new cut and the '|' to perform and addition
-        cutString += '|time.year:'
-        headerText += ' & '
-      }
-      // add the year
-      cutString += value
-      headerText += value
-      i++
-    })
-    // apply the formatted cuts string
-    cuts = { 'time.year': cutString }
-    headerText += " Mayor's Proposed Spending"
+  const yearsSelection = buildYearSelection(parameters.reference_years, ' & ')
+  if (yearsSelection) {
+    cuts = { 'time.year': yearsSelection.cutString }
+    headerText = yearsSelection.headerText + " Mayor's Proposed Spending"
   }
 
   $('#year-header').text(headerText)
-  // Start collecting breadcrumbs. We begin with Funds (base url)
-  const path = $.url().attr('path')
-  const crumbs = [{ path, title: 'Funds' }]
 
-  // While the first drilldown is in the url parameters
-  // we move it to the cuts instead
+  const crumbs = [{ path: $.url().attr('path'), title: ROOT_CRUMB_TITLE }]
   while (drilldowns[0] in parameters) {
     const drill = drilldowns.shift()
     cuts[drill] = parameters[drill]
-    // Add crumb to our crumbs.
-    // The path is computed from the preceding crumb, then we append
-    // the new url parameter for this particular crumb
     crumbs.push({
-      path: [crumbs[crumbs.length - 1].path,
-        (crumbs.length > 1) ? '&' : '?',
-        drill, '=', parameters[drill]].join(''),
+      path: buildCrumbPath(crumbs, drill, parameters[drill]),
       title: parameters[drill]
     })
   }
 
-  // Create the links for our crumbs
-  const breadcrumbsEl = $('#breadcrumbs')
-  breadcrumbsEl.empty()
-  for (let idx = 0; idx < crumbs.length; idx++) {
-    if (idx > 0) {
-      breadcrumbsEl.append(document.createTextNode(' > '))
-    }
-    $('<a></a>')
-      .attr('href', crumbs[idx].path)
-      .text(crumbs[idx].title)
-      .appendTo(breadcrumbsEl)
-  }
+  renderBreadcrumbs(crumbs)
 
-  // Create the state from the (possibly modified) drilldowns and cuts
-  const state = {
-    drilldowns,
-    cuts
-  }
-
+  const state = { drilldowns, cuts }
   const context = {
     dataset: 'mayor_s_proposed_policy_budget_fy2013-15',
     siteUrl: 'http://openspending.org',
-    drilldown: function (node) { // Gets called on node click
-      // If the node has children we can drill more
+    drilldown: function (node) {
       if (node.data.node.children.length) {
-        // We create a new location by adding a url parameter
-        // Then we have to check if we need to add ? or &
-        // (it depends on if there are any url parameters present).
-        // The url parameter is of the form dimension=name
-        const newLocation = [window.location.href,
-          window.location.search ? '&' : '?',
-          drilldowns[0], '=',
-          encodeURIComponent(node.name)]
-        // Go to the new location
-        window.location.href = newLocation.join('')
-      } else {
-        // If the node doesn't have children we notify the user
-        // This can be made more beautiful
-        alert((window.obI18n && window.obI18n.t) ? window.obI18n.t('old.alert.cannotDigDeeper', "Sorry, we can't dig deeper") : "Sorry, we can't dig deeper")
+        window.location.href = buildDrilldownLocation(drilldowns[0], node.name)
+        return
       }
+      alert(getCannotDigDeeperMessage(CANNOT_DIG_DEEPER_FALLBACK))
     }
   }
-  // Create the Treemap
+
   window.wdg_widget = new OpenSpending.Treemap($('#treewidget13-15'), context, state)
+
+  function buildYearSelection (referenceYears, headerJoiner) {
+    if (!referenceYears) {
+      return null
+    }
+
+    let cutString = ''
+    let displayYears = ''
+    const years = referenceYears.split(' ')
+
+    $.each(years, function (index, year) {
+      if (index !== 0) {
+        cutString += '|time.year:'
+        displayYears += headerJoiner
+      }
+      cutString += year
+      displayYears += year
+    })
+
+    return {
+      cutString,
+      headerText: displayYears
+    }
+  }
+
+  function buildCrumbPath (crumbList, drill, parameterValue) {
+    return [
+      crumbList[crumbList.length - 1].path,
+      crumbList.length > 1 ? '&' : '?',
+      drill,
+      '=',
+      parameterValue
+    ].join('')
+  }
+
+  function renderBreadcrumbs (crumbList) {
+    const breadcrumbsEl = $('#breadcrumbs')
+    breadcrumbsEl.empty()
+
+    for (let index = 0; index < crumbList.length; index++) {
+      if (index > 0) {
+        breadcrumbsEl.append(document.createTextNode(' > '))
+      }
+      $('<a></a>')
+        .attr('href', crumbList[index].path)
+        .text(crumbList[index].title)
+        .appendTo(breadcrumbsEl)
+    }
+  }
+
+  function buildDrilldownLocation (nextDrilldown, nodeName) {
+    return [
+      window.location.href,
+      window.location.search ? '&' : '?',
+      nextDrilldown,
+      '=',
+      encodeURIComponent(nodeName)
+    ].join('')
+  }
+
+  function getCannotDigDeeperMessage (fallback) {
+    if (window.obI18n && typeof window.obI18n.t === 'function') {
+      return window.obI18n.t('old.alert.cannotDigDeeper', fallback)
+    }
+    return fallback
+  }
 })

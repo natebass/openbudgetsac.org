@@ -33,7 +33,7 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Unit tests with coverage
+      - name: Unit tests with coverage (CI)
         run: npm run test:unit:coverage
 
       - name: i18n unit smoke tests (site + compare)

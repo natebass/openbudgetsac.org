@@ -81,8 +81,9 @@ npm run watch                # webpack watch for compare app
 npm run build                # production compare bundle
 npm run build-css            # compile Sass
 npm run docs:jsdoc           # generate Markdown JSDoc inventory in _src/docs/jsdoc
+node scripts/add-missing-jsdoc.mjs # add missing JSDoc blocks in active first-party JS/JSX files
 npm run lint                 # standard + eslint
-npm run test                 # lint + unit coverage + a11y + e2e
+npm run test                 # lint + unit + a11y + e2e
 npm run test:e2e             # preflight + e2e against local server
 npm run test:docker          # Docker-optimized full suite (coverage + a11y + e2e)
 npm run verify:all:parallel  # run lint/tests/e2e in parallel (used by Docker verify-parallel target)
@@ -108,7 +109,7 @@ Memory profiling outputs:
 ## CI/CD
 
 - CI workflow (`.github/workflows/ci.yml`) validates:
-  - npm checks (lint, i18n unit smoke, unit coverage, a11y, perf, bench, JSDoc docs generation, Eleventy build)
+  - npm checks (lint, i18n unit smoke, unit coverage in CI, a11y, perf, bench, JSDoc docs generation, Eleventy build)
   - dependency installs with Puppeteer browser download disabled for non-E2E jobs (`PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev`)
   - built-site i18n sanity checks (`build/js/i18n-site.js` and localized markup wiring in generated HTML)
   - explicit Chromium browser install for E2E (`npx puppeteer browsers install chrome`) after Linux shared-library provisioning
@@ -143,6 +144,7 @@ openbudgetsac.org/
 │   │   └── jsdoc/                  # generated JSDoc Markdown index + per-file docs
 │   ├── partials/                   # shared Pug partials/layouts
 │   ├── scripts/
+│   │   ├── add-missing-jsdoc.mjs   # inserts generated missing JSDoc in active first-party JS/JSX files
 │   │   └── generate-jsdoc-docs.mjs # JSDoc Markdown generator (npm run docs:jsdoc)
 │   ├── templates/                  # legacy template pages
 │   ├── test/                       # test utilities (preflight, static server, perf, RSS memory probe + CSV conversion)

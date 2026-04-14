@@ -8,6 +8,40 @@ import { fetchTotals } from './api.js'
 import Breakdown from './Breakdown.jsx'
 import { t } from './i18n.js'
 
+const BUDGET_TYPE_LABEL_KEYS = {
+  1: 'budgetType.adopted',
+  2: 'budgetType.adjusted',
+  3: 'budgetType.proposed'
+}
+const BREAKDOWNS = [
+  {
+    key: 'spendDept',
+    labelKey: 'compare.breakdowns.spendDept',
+    type: 'spending',
+    dimension: 'department'
+  },
+  {
+    key: 'spendCat',
+    labelKey: 'compare.breakdowns.spendCat',
+    type: 'spending',
+    dimension: 'category'
+  },
+  {
+    key: 'revDept',
+    labelKey: 'compare.breakdowns.revDept',
+    type: 'revenue',
+    dimension: 'department'
+  },
+  {
+    key: 'revCat',
+    labelKey: 'compare.breakdowns.revCat',
+    type: 'revenue',
+    dimension: 'category'
+  }
+]
+const MOBILE_WIDTH_MAX = 767
+const LOW_MEMORY_DEVICE_MAX_GB = 2
+
 const styles = [{ color: colors[0] }, { color: colors[1] }]
 const diffColors = {
   neg: '#e41a1c',
@@ -46,8 +80,8 @@ function derivePerformanceFlags () {
   )
   const lowMemoryDevice = typeof navigator !== 'undefined' &&
     typeof navigator.deviceMemory === 'number' &&
-    navigator.deviceMemory <= 2
-  const compactMode = window.innerWidth <= 767
+    navigator.deviceMemory <= LOW_MEMORY_DEVICE_MAX_GB
+  const compactMode = window.innerWidth <= MOBILE_WIDTH_MAX
   const constrainedMode = compactMode && (lowBandwidthConnection || lowMemoryDevice)
 
   return { compactMode, constrainedMode }
@@ -61,14 +95,10 @@ function derivePerformanceFlags () {
  * @returns {{value:number,label:string}} Select option.
  */
 function getBudgetOption (record, index) {
-  const budgetTypeLabels = {
-    1: t('budgetType.adopted'),
-    2: t('budgetType.adjusted'),
-    3: t('budgetType.proposed')
-  }
+  const labelKey = BUDGET_TYPE_LABEL_KEYS[record.budget_type] || BUDGET_TYPE_LABEL_KEYS[1]
   return {
     value: index,
-    label: `${record.fiscal_year_range} ${budgetTypeLabels[record.budget_type]}`
+    label: `${record.fiscal_year_range} ${t(labelKey)}`
   }
 }
 
@@ -85,9 +115,20 @@ function getBudgetDefaults (budgets) {
   if (budgets.length === 1) {
     return [budgets[0], budgets[0]]
   }
-  // fetchTotals already sorts newest-first, so default to the latest
-  // two fiscal years available in the dataset.
+  // `fetchTotals` already sorts newest first, so default to the latest two fiscal years.
   return [budgets[0], budgets[1]]
+}
+
+function formatTotals (selectedYears) {
+  return selectedYears.map((record) => {
+    if (!record) {
+      return undefined
+    }
+    return {
+      key: record.fiscal_year_range,
+      total: record.total
+    }
+  })
 }
 
 class Compare extends React.Component {
@@ -223,9 +264,8 @@ class Compare extends React.Component {
    * @returns {void}
    */
   handleChangeType (event) {
-    const target = event.target
     this.setState({
-      changeType: target.value
+      changeType: event.target.value
     })
   }
 
@@ -271,17 +311,20 @@ class Compare extends React.Component {
    * @returns {void}
    */
   handleSelectBudget (key, otherKey, index) {
-    // No change if same selection
-    if (this.state[`${key}Choice`] === index) {
+    const selectedChoiceKey = `${key}Choice`
+    const selectedBudgetKey = key
+    const otherOptionsKey = `${otherKey}Options`
+
+    if (this.state[selectedChoiceKey] === index) {
       return
     }
 
     const otherBudgetOptions = this.state.budgetChoices.slice()
     otherBudgetOptions.splice(index, 1)
     this.setState({
-      [`${key}Choice`]: index,
-      [key]: this.state.totals[index],
-      [`${otherKey}Options`]: otherBudgetOptions
+      [selectedChoiceKey]: index,
+      [selectedBudgetKey]: this.state.totals[index],
+      [otherOptionsKey]: otherBudgetOptions
     })
   }
 
@@ -306,42 +349,13 @@ class Compare extends React.Component {
       option => option.value === this.state.budget2Choice
     ) || null
     const selectedYears = [this.state.budget1, this.state.budget2]
-    const totals = selectedYears.map((record) => {
-      if (record) {
-        return {
-          key: record.fiscal_year_range,
-          total: record.total
-        }
-      }
-      return undefined
-    })
-
-    const breakdowns = [
-      {
-        key: 'spendDept',
-        label: t('compare.breakdowns.spendDept'),
-        type: 'spending',
-        dimension: 'department'
-      },
-      {
-        key: 'spendCat',
-        label: t('compare.breakdowns.spendCat'),
-        type: 'spending',
-        dimension: 'category'
-      },
-      {
-        key: 'revDept',
-        label: t('compare.breakdowns.revDept'),
-        type: 'revenue',
-        dimension: 'department'
-      },
-      {
-        key: 'revCat',
-        label: t('compare.breakdowns.revCat'),
-        type: 'revenue',
-        dimension: 'category'
-      }
-    ]
+    const totals = formatTotals(selectedYears)
+    const breakdowns = BREAKDOWNS.map((item) => ({
+      key: item.key,
+      label: t(item.labelKey),
+      type: item.type,
+      dimension: item.dimension
+    }))
     const activeBreakdown = breakdowns.find(
       item => item.key === this.state.activeBreakdown
     ) || breakdowns[0]

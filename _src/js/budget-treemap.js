@@ -3,7 +3,7 @@ var ob = ob || {}
 ob.display = ob.display || {}
 
 ;(function (namespace, undefined) {
-    /**
+  /**
    * Runs i18n t.
    *
    * @param {any} key Input value.
@@ -11,7 +11,7 @@ ob.display = ob.display || {}
    * @param {any} vars Input value.
    * @returns {any} Function result.
    */
-function i18nT (key, fallback, vars) {
+  function i18nT (key, fallback, vars) {
     if (window.obI18n && typeof window.obI18n.t === 'function') {
       return window.obI18n.t(key, fallback, vars)
     }
@@ -23,13 +23,13 @@ function i18nT (key, fallback, vars) {
     })
   }
 
-    /**
+  /**
    * Runs escape html.
    *
    * @param {any} value Input value.
    * @returns {any} Function result.
    */
-function escapeHtml (value) {
+  function escapeHtml (value) {
     return String(value == null ? '' : value)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -69,8 +69,6 @@ function escapeHtml (value) {
       '#F07400',
       '#EDA400',
       '#009F76',
-      // '#009DB0',
-      // '#00C0D7',
       '#008F16',
       '#395BF6',
       '#690180'
@@ -84,13 +82,13 @@ function escapeHtml (value) {
     let _treemap_element = null
     let _dropdown_element = null
     const _dataset_cache = {}
-    /* layout settings */
+    /* Define layout settings. */
     const _layout = {
       width: 800,
       height: 500
     }
 
-    /* used to convert numerical data into text data */
+    /* Convert numeric values into display text. */
     const _format = {
       number: d3.format('$,d'),
       percent: d3.format('.2%')
@@ -123,7 +121,7 @@ function escapeHtml (value) {
       return v1 == v2 ? 0 : 1
     }
 
-    /* interaction */
+    /* Track interaction handlers. */
     const _on_handlers = {}
     /* Apply registered events to any object that exposes a d3-style `.on` API. */
     /**
@@ -142,7 +140,7 @@ function escapeHtml (value) {
       }
     }
 
-    /* create and configure the tooltip */
+    /* Create and configure the tooltip. */
     /**
      * Builds tooltip HTML content for treemap rectangles.
      *
@@ -195,8 +193,7 @@ function escapeHtml (value) {
         if (hash.length < 1) {
           return root
         }
-        // When part of the path is stale or missing, `spelunk` returns the
-        // deepest valid node so the page still renders instead of failing hard.
+        // When part of the path is stale or missing, `spelunk` returns the deepest valid node so the page still renders.
         return _cruncher.spelunk(
           root,
           hash.split('.'),
@@ -395,21 +392,21 @@ function escapeHtml (value) {
       create: function () {
         /* Handle browser back/forward navigation by reloading the active node. */
         const self = this
-        window.onhashchange =         /**
+        window.onhashchange = /**
          * Runs onhashchange.
          *
          * @param {any} e Input value.
          * @returns {any} Function result.
          */
 function (e) {
-          const hash = window.location.hash.replace('#', '')
-          // Ignore hash updates we triggered ourselves during normal transitions.
-          if (hash != _hash.expected()) {
-            self.refresh()
-          }
-        }
+  const hash = window.location.hash.replace('#', '')
+  // Ignore hash updates triggered by normal in-app transitions.
+  if (hash != _hash.expected()) {
+    self.refresh()
+  }
+}
 
-        /* create initial color palette */
+        /* Create the initial color palette. */
         const _color_stack = ob.palette.stack().palette(d3.scale.ordinal().range(_palette))
         _ensure_elements()
         if (!_dropdown || _dropdown.empty()) {
@@ -418,11 +415,10 @@ function (e) {
           this._sync_dropdown_selection()
         }
 
-        /* create and configure the tooltip */
+        /* Create and configure the tooltip. */
         const _tooltip = ob.display.tooltip().html(_tooltip_function)
 
-        /* call d3 to load the budget data, and then display the data
-          * after it has loaded */
+        /* Load budget data with d3, then render it after it loads. */
         _load_data(_url, function (error, data) {
           if (error || !data) {
             console.error('Unable to load treemap data', error || new Error('No data returned'))
@@ -449,8 +445,7 @@ function (e) {
               .attr('class', 'crumb')
               .on('click', function (clicked, i) {
                 if (clicked == current_node) {
-                  /* don't transition if they click on the same data that is already
-                     being display */
+                  /* Do not transition when users click the node that is already displayed. */
                   return
                 }
                 let levels = 0
@@ -466,7 +461,7 @@ function (e) {
               })
           }
 
-          /* set parent links */
+          /* Set parent links. */
           _cruncher.apply(root, function (node) {
             if (node.values) {
               node.values.forEach(function (child) {
@@ -505,7 +500,12 @@ function (e) {
               /* D3 treemap drops zero-area nodes. Use a tiny floor so rows remain visible. */
               return _get_value(d) <= 0 ? 0.001 : _get_value(d)
             })
-            .columns(['', 'Item', 'Expense', 'Revenue'])
+            .columns([
+              '',
+              i18nT('treemap.table.item', 'Item'),
+              i18nT('treemap.table.expense', 'Expense'),
+              i18nT('treemap.table.revenue', 'Revenue')
+            ])
             .column(function (d, i, elem) {
               if (i == 1) {
                 elem.attr('class', 'item').text(d)
@@ -551,18 +551,18 @@ function (e) {
               }
             })
 
-          /* apply any "on" handlers to spreadsheet */
+          /* Apply registered event handlers to the spreadsheet. */
           _apply_handlers(_spreadsheet)
 
-          /* create treemap using current color scheme */
+          /* Create the treemap with the current color scheme. */
           _treemap = ob.display.treemap()
             .colors(_color_stack.palette())
             .value(_get_value)
 
-          /* apply any "on" handlers to treemap */
+          /* Apply registered event handlers to the treemap. */
           _apply_handlers(_treemap)
 
-          /* configure treemap and display */
+          /* Configure and render the treemap. */
           _treemap.width(_layout.width)
             .height(_layout.height)
             .value(function (d) {
@@ -602,7 +602,7 @@ function (e) {
               _spreadsheet.data(d.values)
                 .display()
               d3.select(_title_selector).text(d.key)
-              /* set breadcrumbs */
+              /* Set breadcrumbs. */
               _create_breadcrumbs(d)
             })
             .on('transition', function (d, i, direction) {
@@ -625,10 +625,10 @@ function (e) {
           /* Clicking a table row triggers the matching treemap transition. */
           _spreadsheet.on('click', _treemap.transition)
 
-          /* set title */
+          /* Set the title. */
           d3.select(_title_selector).text(node.key)
 
-          /* set breadcrumbs */
+          /* Set breadcrumbs. */
           _create_breadcrumbs(node)
         })
       },
@@ -648,7 +648,7 @@ function (e) {
           }
         }
         _dropdown_element.selectAll('.dropdown').remove()
-        /* add dropdown */
+        /* Add the dropdown. */
         _dropdown = _dropdown_element
           .selectAll('#selector')
           .data(values)
@@ -673,7 +673,7 @@ function (e) {
           })
         _apply_handlers(_dropdown)
 
-        /* add options to dropdown */
+        /* Add options to the dropdown. */
         _dropdown.selectAll('option')
           .data(function (d) {
             return _config.dropdown_values[d].map(function (v) { return { key: d, value: v } })

@@ -36,7 +36,7 @@ ob.data = ob.data || {}
     function _prepare_recurse (node) {
       /* Legacy d3 partition code expects nested nodes under `values`. */
 
-      /* hold sum of child values */
+      /* Store running totals for child values. */
       const value = {
         income: 0.0,
         expense: 0.0,
@@ -52,7 +52,6 @@ ob.data = ob.data || {}
           if (isNaN(child.values)) {
             if (child.values instanceof Array) {
               /* Continue walking nested descendants. */
-              // child.children = child.values
               const child_value = _prepare_recurse(child)
               value.income += child_value.income
               value.expense += child_value.expense
@@ -64,7 +63,6 @@ ob.data = ob.data || {}
             child.expense = 0.0
             child.balance = 0.0
             const total = parseFloat(child.values)
-            /* child.value = parseFloat(child.values) */
             // Historical source files store income as negative values.
             if (total < 0.0) {
               child.income = -1.0 * total
@@ -142,7 +140,6 @@ ob.data = ob.data || {}
 
         /* Normalize structure for treemap/spreadsheet rendering. */
         const root = _prepare(nest)
-        // root.values = root.children
         return root
       },
 

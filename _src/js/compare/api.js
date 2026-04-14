@@ -18,6 +18,7 @@ const dimensionKeys = {
 }
 const REQUEST_TIMEOUT_MS = 15000
 const SAFE_YEAR_RE = /^FY\d{2}$/i
+const TYPE_SORT_WEIGHT_BASE = 6
 
 /**
  * Checks whether is safe breakdown key.
@@ -42,9 +43,18 @@ function isSafeBreakdownKey (value) {
 function getTotalsSortIndex (record) {
   const year = record.fiscal_year_range.slice(2, 4)
   // Historical type IDs are not naturally ordered for UI display.
-  const type = 6 / record.budget_type
+  const type = TYPE_SORT_WEIGHT_BASE / record.budget_type
   // Compose a sortable key like YY.T where YY dominates sort precedence.
   return +`${year}.${type}`
+}
+
+function createBreakdownUrl (year, type, dimension) {
+  return API_BASE + typePaths[type] + dimensionPaths[dimension] + `/${encodeURIComponent(year)}.json`
+}
+
+function parseNumericTotal (rawTotal) {
+  const parsed = Number(rawTotal)
+  return Number.isFinite(parsed) ? parsed : 0
 }
 
 /**
@@ -80,9 +90,7 @@ function assertValidBreakdownRequest (years, yearTypes, type, dimension) {
 export function fetchBreakdownData (years, yearTypes, type, dimension) {
   assertValidBreakdownRequest(years, yearTypes, type, dimension)
   // Fetch both years in parallel so UI wait time is bounded by the slower request.
-  const urls = years.map((year) => {
-    return API_BASE + typePaths[type] + dimensionPaths[dimension] + `/${encodeURIComponent(year)}.json`
-  })
+  const urls = years.map((year) => createBreakdownUrl(year, type, dimension))
 
   return Promise.all(urls.map((url) => axios.get(url, { timeout: REQUEST_TIMEOUT_MS })))
     .then((budgets) => {
@@ -93,10 +101,10 @@ export function fetchBreakdownData (years, yearTypes, type, dimension) {
         return budget.data.reduce((acc, row) => {
           // Budget type can be numeric or string depending on source file version.
           if (String(row.budget_type) === String(yearTypes[i])) {
-            // convert to object and cast totals to numbers
+            // Convert the matching row into a normalized numeric map entry.
             const key = row[dimensionKeys[dimension]]
             if (isSafeBreakdownKey(key)) {
-              acc[key] = Number.isFinite(+row.total) ? +row.total : 0
+              acc[key] = parseNumericTotal(row.total)
             }
           }
           return acc

@@ -276,12 +276,12 @@ function run () {
   let timeoutId = null
   let intervalId = null
 
-    /**
+  /**
    * Runs take sample.
    *
    * @returns {any} Function result.
    */
-function takeSample () {
+  function takeSample () {
     if (!child.pid) {
       return
     }
@@ -293,12 +293,12 @@ function takeSample () {
     })
   }
 
-    /**
+  /**
    * Runs stop sampling.
    *
    * @returns {any} Function result.
    */
-function stopSampling () {
+  function stopSampling () {
     if (stopped) {
       return
     }
@@ -313,12 +313,12 @@ function stopSampling () {
     }
   }
 
-    /**
+  /**
    * Runs terminate child tree.
    *
    * @returns {any} Function result.
    */
-function terminateChildTree () {
+  function terminateChildTree () {
     if (!child.pid) {
       return
     }

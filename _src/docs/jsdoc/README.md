@@ -1,6 +1,6 @@
 # JavaScript JSDoc Index
 
-Generated on 2026-04-13T19:14:23.504Z.
+Generated on 2026-04-14T03:20:47.148Z.
 
 Total files scanned: 153
 
@@ -134,9 +134,9 @@ Total files scanned: 153
 | `js/data.js` | 8 | [files/js/data.md](files/js/data.md) |
 | `js/dist/306.compare.bundle.js` | 0 | [files/js/dist/306.compare.bundle.md](files/js/dist/306.compare.bundle.md) |
 | `js/dist/compare.bundle.js` | 0 | [files/js/dist/compare.bundle.md](files/js/dist/compare.bundle.md) |
-| `js/flow.js` | 9 | [files/js/flow.md](files/js/flow.md) |
+| `js/flow.js` | 10 | [files/js/flow.md](files/js/flow.md) |
 | `js/hash.js` | 1 | [files/js/hash.md](files/js/hash.md) |
-| `js/i18n-site.js` | 9 | [files/js/i18n-site.md](files/js/i18n-site.md) |
+| `js/i18n-site.js` | 14 | [files/js/i18n-site.md](files/js/i18n-site.md) |
 | `js/old/main.js` | 0 | [files/js/old/main.md](files/js/old/main.md) |
 | `js/old/main1.js` | 0 | [files/js/old/main1.md](files/js/old/main1.md) |
 | `js/old/main2.js` | 0 | [files/js/old/main2.md](files/js/old/main2.md) |

@@ -25,7 +25,7 @@ html(lang='en')
   body(class= slug)
     a.skip-link(href='#main-content', data-i18n='ui.skipToMain') Skip to main content
     #wrapper
-      nav.main-nav(role='navigation', aria-label='Primary')
+      nav.main-nav(role='navigation', aria-label='Primary', data-i18n-aria-label='ui.primaryNavigation')
         .navbar.navbar-default.navbar-fixed-top
           .container
             .navbar-header
@@ -41,7 +41,7 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-              a.navbar-brand(href='/') Open Budget: Sacramento
+              a.navbar-brand(href='/', data-i18n='ui.siteBrand') Open Budget: Sacramento
 
             #primary-nav.navbar-collapse.collapse
               ul.nav.navbar-nav.navbar-right
@@ -67,19 +67,25 @@ html(lang='en')
                         target='_blank',
                         rel='noopener noreferrer',
                         title='City of Sacramento Department of Finance',
-                        aria-label='City of Sacramento Department of Finance'
+                        aria-label='City of Sacramento Department of Finance',
+                        data-i18n-title='links.cityFinanceDepartment',
+                        data-i18n-aria-label='links.cityFinanceDepartment'
                       ) City of Sacramento Department of Finance
                     li
                       a(
                         href='https://www.cityofsacramento.org/Finance/Budget',
                         title='City of Sacramento Budget',
-                        aria-label='City of Sacramento Budget'
+                        aria-label='City of Sacramento Budget',
+                        data-i18n-title='links.cityBudget',
+                        data-i18n-aria-label='links.cityBudget'
                       ) City of Sacramento Budget
                     li
                       a(
                         href='https://data.cityofsacramento.org/datasets/7b8b3680603c4894bd3faaa41c986c7c_0/explore',
                         title='Recent Sacramento Budget Data',
-                        aria-label='Recent Sacramento Budget Data'
+                        aria-label='Recent Sacramento Budget Data',
+                        data-i18n-title='links.recentBudgetData',
+                        data-i18n-aria-label='links.recentBudgetData'
                       ) Recent Sacramento Budget Data
 
                 li.dropdown
@@ -105,7 +111,7 @@ html(lang='en')
       .container
         .row
           .col-md-6.col-sm-9
-            p
+            p(data-i18n-html='footer.aboutProjectHtml')
               | Open Budget: Sacramento is an open-source project by#{' '}
               a(href="https://opensac.org/") Open Sacramento
               |  that seeks to help residents understand Sacramento's spending
@@ -117,13 +123,13 @@ html(lang='en')
 
             ul.list-inline
               li
-                a.social-link(href="https://www.x.com/opensacorg", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on X (formerly Twitter)')
+                a.social-link(href="https://www.x.com/opensacorg", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on X (formerly Twitter)', data-i18n-aria-label='social.x')
                   picture
                     source(srcset="/images/global/x-icon.svg", type="image/svg+xml")
-                    img.social-icon(src="/images/global/twitter-icon.png" alt="X (formerly Twitter)" loading='lazy' decoding='async' width='22' height='22')
+                    img.social-icon(src="/images/global/twitter-icon.png" alt="X (formerly Twitter)" data-i18n-alt='social.xAlt' loading='lazy' decoding='async' width='22' height='22')
               li
-                a.social-link(href="https://github.com/code4sac/openbudgetsac.org/", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on GitHub')
-                  img.social-icon(src="/images/global/github-icon.png" alt="GitHub" loading='lazy' decoding='async' width='22' height='22')
+                a.social-link(href="https://github.com/code4sac/openbudgetsac.org/", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on GitHub', data-i18n-aria-label='social.github')
+                  img.social-icon(src="/images/global/github-icon.png" alt="GitHub" data-i18n-alt='social.githubAlt' loading='lazy' decoding='async' width='22' height='22')
 
 
           .col-sm-3.col-md-push-3

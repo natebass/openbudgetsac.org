@@ -20,6 +20,9 @@ module.exports = /**
       filename: 'compare.bundle.js',
       path: path.resolve(__dirname, 'js/dist')
     },
+    performance: {
+      hints: false
+    },
     resolve: {
       extensions: ['.js', '.jsx']
     },

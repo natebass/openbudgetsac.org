@@ -1,6 +1,6 @@
 # Performance Audit and Runtime Guardrails
 
-Date: April 13, 2026  
+Date: April 14, 2026  
 Scope: Frontend load path, runtime responsiveness, localization overhead, and CI regression controls.
 
 ## Baseline Improvements Already Landed
@@ -24,6 +24,10 @@ Scope: Frontend load path, runtime responsiveness, localization overhead, and CI
 
 3. Legacy flow/treemap components now consume i18n keys for status/error labels and key UI controls.
 - This prevents copy drift between React and non-React pages while adding negligible runtime overhead.
+
+4. Webpack performance hints are disabled in `webpack.config.js`.
+- This keeps local and E2E test logs focused on failures.
+- Bundle size enforcement remains in `_src/test/perf-report.js` via explicit raw+gzip thresholds.
 
 ## Current Measured Compare Bundle Result
 
@@ -55,7 +59,7 @@ Memory profiling helpers:
 ## CI/CD Enforcement
 
 The workflows in `.github/workflows/` now enforce:
-- lint + coverage + a11y + perf + bench
+- lint + unit coverage (CI) + a11y + perf + bench
 - i18n unit smoke tests (compare + site runtime)
 - Eleventy build + i18n asset sanity checks in generated output
 - Puppeteer E2E validation with explicit Chromium dependencies
@@ -63,8 +67,8 @@ The workflows in `.github/workflows/` now enforce:
 
 ## Remaining Risks / Follow-up
 
-1. Compare bundle still exceeds Webpack’s default 244 KiB warning threshold.
-- Follow-up: evaluate route/component level code splitting for compare subviews.
+1. Compare bundle remains large despite optimization progress.
+- Follow-up: evaluate route/component-level code splitting for compare subviews.
 
 2. Large source images still affect strict 3G scenarios.
 - Follow-up: add responsive `srcset` plus WebP/AVIF variants.

@@ -78,5 +78,3 @@ function fetchDefinitions (url, options = {}) {
 }
 
 fetchDefinitions('https://oboterms-g55nbvma6a-wn.a.run.app/Overview')
-
-// prepareToAppendDefinitions();

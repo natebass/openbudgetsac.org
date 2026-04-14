@@ -33,6 +33,51 @@ function (key, fallback, vars) {
     return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : ''
   })
 }
+
+const FLOW_LABEL_KEYS = {
+  'General Fund': 'flow.labels.generalFund',
+  'General Funds': 'flow.labels.generalFunds',
+  'Non-discretionary funds': 'flow.labels.nonDiscretionaryFunds',
+  Taxes: 'flow.labels.taxes',
+  'Charges, Fees, and Services': 'flow.labels.chargesFeesServices',
+  'Miscellaneous Revenue': 'flow.labels.miscRevenue',
+  Intergovernmental: 'flow.labels.intergovernmental',
+  'Contributions from Other Funds': 'flow.labels.contributionsFromOtherFunds',
+  'Licenses and Permits': 'flow.labels.licensesPermits',
+  'Fines, Forfeitures, and  Penalties': 'flow.labels.finesForfeituresPenalties',
+  'Interest, Rents, and Concessions': 'flow.labels.interestRentsConcessions',
+  Police: 'flow.labels.police',
+  Utilities: 'flow.labels.utilities',
+  'Citywide and Community Support': 'flow.labels.citywideCommunitySupport',
+  'General Services': 'flow.labels.generalServices',
+  Fire: 'flow.labels.fire',
+  'Debt Service': 'flow.labels.debtService',
+  'Public Works': 'flow.labels.publicWorks',
+  'Human Resources': 'flow.labels.humanResources',
+  'Parks and Recreation': 'flow.labels.parksRecreation',
+  'Community Development': 'flow.labels.communityDevelopment',
+  'Convention and Cultural Services': 'flow.labels.conventionCulturalServices',
+  Finance: 'flow.labels.finance',
+  'Information Technology': 'flow.labels.informationTechnology',
+  'City Attorney': 'flow.labels.cityAttorney',
+  'Mayor/Council': 'flow.labels.mayorCouncil',
+  'City Manager': 'flow.labels.cityManager',
+  'City Treasurer': 'flow.labels.cityTreasurer',
+  'Economic Development': 'flow.labels.economicDevelopment',
+  'City Clerk': 'flow.labels.cityClerk',
+  'Non-Appropriated': 'flow.labels.nonAppropriated'
+}
+
+/**
+ * Localizes known flow labels while preserving source values for data operations.
+ *
+ * @param {string} label Source label.
+ * @returns {string} Localized label or original value.
+ */
+function localizeFlowLabel (label) {
+  const key = FLOW_LABEL_KEYS[label]
+  return key ? i18nT(key, label) : label
+}
 /* exported data_wrangle, data_wrangle_v1, do_with_budget */
 const hoverDescription = d3.select('#hover_description')
 let hoverRaf = null
@@ -62,16 +107,11 @@ const fundColors = d3.scale
   .ordinal()
   // Keep both singular and plural labels mapped to the same color.
   .domain(['General Fund', 'General Funds', 'Non-discretionary funds'])
-  .range(['#4285ff', '#4285ff', '#8249b7']) // 2020 renovation
-// .range(["#276419", "#4db029"]);
-// .range(["#276419", "#b8e186"]);
+  .range(['#4285ff', '#4285ff', '#8249b7']) // Palette updated in 2020.
 const erColors = d3.scale
   .ordinal()
   .domain(['expense', 'revenue'])
   .range(['#ff8129', '#7fc97f'])
-// .range(["#ffb36b", "#7fc97f"]);
-// .range(["#ffd92f", "#ffd92f"])
-// .range(["#c51b7d", "#8e0152"]);
 
 // Gradients encode flow direction (revenue -> fund -> expense) without extra labels.
 svg
@@ -408,7 +448,7 @@ function do_with_budget (data) {
       hoverDescription
         .classed('show', true)
         .text(
-          d.source.name + ' → ' + d.target.name + ': ' + format(d.value)
+          localizeFlowLabel(d.source.name) + ' → ' + localizeFlowLabel(d.target.name) + ': ' + format(d.value)
         )
     })
     .on('mousemove', function () {
@@ -460,7 +500,6 @@ function do_with_budget (data) {
       switch (d.type) {
         case 'fund':
           d.color = fundColors(d.name)
-          // d.color = "transparent";
           break
         default:
           d.color = erColors(d.type)
@@ -478,30 +517,30 @@ function do_with_budget (data) {
     .on('mouseover', function (d) {
       const thisnode = d3.select(this.parentNode)
 
-      //   highlight node only, not flows
+      // Highlight only the active node, not the connected flows.
       thisnode.classed('hover', true)
 
-      //   append total amount to label
+      // Append the total amount to the node label.
       thisnode
         .select('text')
         .transition()
         .text(function (d) {
-          let text = d.name
+          let text = localizeFlowLabel(d.name)
           text += ': ' + format(d.value)
           return text
         })
     })
     .on('mouseout', function (d) {
       const thisnode = d3.select(this.parentNode)
-      //   remove node highlight
+      // Remove the node highlight.
       thisnode.classed('hover', false)
-      //   remove amount from label
+      // Remove the appended amount from the node label.
       if (!thisnode.classed('highlight')) {
         thisnode
           .select('text')
           .transition()
           .text(function (d) {
-            return d.name
+            return localizeFlowLabel(d.name)
           })
       }
     })
@@ -511,7 +550,6 @@ function do_with_budget (data) {
         thisnode.classed('highlight', false)
         thisnode.classed('hover', false)
       } else {
-        //   node.classed("highlight", false);
         thisnode.classed('highlight', true)
       }
 
@@ -527,7 +565,7 @@ function do_with_budget (data) {
         .select('text')
         .transition()
         .text(function (d) {
-          let text = d.name
+          let text = localizeFlowLabel(d.name)
           if (thisnode.classed('highlight')) {
             text += ': ' + format(d.value)
           }
@@ -546,7 +584,7 @@ function do_with_budget (data) {
     .attr('text-anchor', 'end')
     .attr('transform', null)
     .text(function (d) {
-      return d.name
+      return localizeFlowLabel(d.name)
     })
     .filter(function (d) {
       return d.x < width / 2

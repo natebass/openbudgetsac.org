@@ -4,6 +4,38 @@ import { Bar } from 'react-chartjs-2'
 import { DiffStyled, asDollars, compareChartOptions, getSortedBudgetKeys } from './utils'
 import { t } from './i18n.js'
 
+function compareDesc (a, b) {
+  if (a === b) {
+    return 0
+  }
+  return a > b ? -1 : 1
+}
+
+function compareAsc (a, b) {
+  if (a === b) {
+    return 0
+  }
+  return a < b ? -1 : 1
+}
+
+function buildRowChartData (entry, years, colors) {
+  return {
+    labels: [''],
+    datasets: [
+      {
+        data: [entry.value],
+        label: years[0].fiscal_year_range,
+        backgroundColor: colors[0]
+      },
+      {
+        data: [entry.prev],
+        label: years[1].fiscal_year_range,
+        backgroundColor: colors[1]
+      }
+    ]
+  }
+}
+
 export default class DiffTable extends React.Component {
   /**
    * Initializes table sort state.
@@ -61,19 +93,7 @@ export default class DiffTable extends React.Component {
    * @returns {JSX.Element} Sorted diff table.
    */
   render () {
-    const sortFunc = this.state.sortBy === 'diff'
-      ? (a, b) => {
-          if (a === b) {
-            return 0
-          }
-          return a > b ? -1 : 1
-        }
-      : (a, b) => {
-          if (a === b) {
-            return 0
-          }
-          return a < b ? -1 : 1
-        }
+    const sortFunc = this.state.sortBy === 'diff' ? compareDesc : compareAsc
     const isLimitedMode = this.props.constrainedMode || this.props.compactMode
     const showRowCharts = !isLimitedMode
     const defaultVisibleRows = isLimitedMode ? 20 : Infinity
@@ -101,21 +121,7 @@ export default class DiffTable extends React.Component {
     const visibleEntries = this.state.showAllRows ? diffEntries : diffEntries.slice(0, defaultVisibleRows)
 
     const diffList = visibleEntries.map((entry) => {
-      const data = {
-        labels: [''],
-        datasets: [
-          {
-            data: [entry.value],
-            label: this.props.years[0].fiscal_year_range,
-            backgroundColor: this.props.colors[0]
-          },
-          {
-            data: [entry.prev],
-            label: this.props.years[1].fiscal_year_range,
-            backgroundColor: this.props.colors[1]
-          }
-        ]
-      }
+      const data = buildRowChartData(entry, this.props.years, this.props.colors)
       const chartOptions = {
         ...compareChartOptions,
         indexAxis: 'y',

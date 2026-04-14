@@ -12,13 +12,13 @@ ob.display = ob.display || {}
     let _data = null
     let _root = null
 
-    /* display elements */
+    /* Define display element references. */
     let _svg = null
     let _g = null
     let _colors = null
     let _current_display = null
 
-    /* layout settings */
+    /* Define layout settings. */
     const _margin = { top: 0, right: 0, bottom: 0, left: 0 }
     let _width = 800
     let _height = 500
@@ -28,7 +28,7 @@ ob.display = ob.display || {}
 
     let _treemap = null
 
-    /* interactions */
+    /* Track interaction handlers. */
     const _on_handlers = {}
 
     /**
@@ -49,7 +49,7 @@ ob.display = ob.display || {}
       return _width - _margin.left - _margin.right
     }
 
-    /* data settings */
+    /* Define data access settings. */
     /**
 		 * Default node value accessor.
 		 *
@@ -87,7 +87,7 @@ ob.display = ob.display || {}
       return p
     };
 
-    /* display helper functions */
+    /* Define display helper functions. */
     /**
 		 * Initializes root layout coordinates.
 		 *
@@ -142,7 +142,7 @@ ob.display = ob.display || {}
       }
     }
 
-    /* display show the treemap and writes the embedded transition function */
+    /* Render the treemap and register its transition handler. */
     /**
 		 * Displays a treemap view and prepares transitions.
 		 *
@@ -161,19 +161,19 @@ ob.display = ob.display || {}
         .attr('style', 'cursor: pointer;')
         .attr('class', 'depth')
 
-      /* add in data */
+      /* Bind child node data. */
       _g = disp.g.selectAll('g')
         .data(d.children)
         .enter().append('g')
         .on('click', function (d, i) { disp.transition(d, i, true) })
         .attr('class', 'groups')
 
-      /* transition on child click */
+      /* Enable transitions when users click child nodes. */
       _g.filter(function (d) { return d.children })
         .classed('children', true)
         .on('click', function (d, i) { disp.transition(d, i, true) })
 
-      /* write parent rectangle */
+      /* Render parent rectangles. */
       _g.append('rect')
         .attr('class', 'parent')
         .style('fill', function (d, i) { return _colors(i) })
@@ -196,7 +196,7 @@ ob.display = ob.display || {}
           }
         })
 
-      /* Adding a foreign object instead of a text object, allows for text wrapping */
+      /* Use foreignObject so labels can wrap. */
       const fo = _g.append('foreignObject')
         .call(disp.rect)
         .attr('class', 'foreignobj')
@@ -229,8 +229,8 @@ ob.display = ob.display || {}
         return _rect_text(d, i)
       })
 
-      /* create transition function for transitions */
-      disp.transition =       /**
+      /* Create the transition function for this display state. */
+      disp.transition = /**
        * Runs transition.
        *
        * @param {any} d Input value.
@@ -239,125 +239,119 @@ ob.display = ob.display || {}
        * @returns {any} Function result.
        */
 function (d, i, direction) {
-        if (_transitioning || !d) return
-        if (!d.children) return
-        _transitioning = true
-        if (_on_handlers.transition) {
-          _on_handlers.transition(d, i, direction)
-        }
-        /* these are default layout values for items that had
-				 * too small of values to be laid out by d3's treemap
-				 */
-        const small_span = { x: 0.99, dx: 0.01, y: 0.99, dy: 0.01 }
-        let span1 = d.visible ? d : small_span
-        let span2 = disp.d.visible ? disp.d : small_span
+  if (_transitioning || !d) return
+  if (!d.children) return
+  _transitioning = true
+  if (_on_handlers.transition) {
+    _on_handlers.transition(d, i, direction)
+  }
+  /* Use this fallback span for items that are too small for the treemap layout. */
+  const small_span = { x: 0.99, dx: 0.01, y: 0.99, dy: 0.01 }
+  let span1 = d.visible ? d : small_span
+  let span2 = disp.d.visible ? disp.d : small_span
 
-        if (i < -1) {
-          span1 = small_span
-          span2 = small_span
-        }
+  if (i < -1) {
+    span1 = small_span
+    span2 = small_span
+  }
 
-        /* create new display and update its coordinates */
-        const disp2 = _display(d)
-        if (direction) {
-          disp2.x.domain([
-            -1.0 * span1.x / span1.dx,
-            (1.0 - span1.x) / span1.dx
-          ])
-          disp2.y.domain([
-            -1.0 * span1.y / span1.dy,
-            (1.0 - span1.y) / span1.dy
-          ])
-        } else {
-          /* map the new display data to exist around the
-					 * currently displayed data */
-          disp2.x.domain([span2.x, span2.x + span2.dx])
-          disp2.y.domain([span2.y, span2.y + span2.dy])
-        }
-        /* Fade-in entering text. */
-        disp2.g.selectAll('text').style('fill-opacity', 0)
-        // disp2.g.selectAll("foreignObject div").style("display", "none");
+  /* Create the next display and initialize its coordinate domains. */
+  const disp2 = _display(d)
+  if (direction) {
+    disp2.x.domain([
+      -1.0 * span1.x / span1.dx,
+      (1.0 - span1.x) / span1.dx
+    ])
+    disp2.y.domain([
+      -1.0 * span1.y / span1.dy,
+      (1.0 - span1.y) / span1.dy
+    ])
+  } else {
+    /* Map the new display around the currently visible display. */
+    disp2.x.domain([span2.x, span2.x + span2.dx])
+    disp2.y.domain([span2.y, span2.y + span2.dy])
+  }
+  /* Fade-in entering text. */
+  disp2.g.selectAll('text').style('fill-opacity', 0)
 
-        /* Transition to the new view. */
-        disp2.g.selectAll('text')
-          .call(disp2.text)
-          .style('fill-opacity', 0)
-        disp2.g.selectAll('rect')
-          .call(disp2.rect)
-          .style('fill-opacity', 0)
+  /* Transition to the new view. */
+  disp2.g.selectAll('text')
+    .call(disp2.text)
+    .style('fill-opacity', 0)
+  disp2.g.selectAll('rect')
+    .call(disp2.rect)
+    .style('fill-opacity', 0)
 
-        disp2.g.selectAll('.textdiv').style('display', 'block')
-        disp2.g.selectAll('.foreignobj').call(disp2.foreign)
+  disp2.g.selectAll('.textdiv').style('display', 'block')
+  disp2.g.selectAll('.foreignobj').call(disp2.foreign)
 
-        const t1 = disp.g.transition().duration(750)
-        const t2 = disp2.g.transition().duration(750)
+  const t1 = disp.g.transition().duration(750)
+  const t2 = disp2.g.transition().duration(750)
 
-        /* update domain mappings for the state at the end of
-				 * the transition */
-        if (direction) {
-          /* map current display to extend beyond bounds */
-          disp.x.domain([span1.x, span1.x + span1.dx])
-          disp.y.domain([span1.y, span1.y + span1.dy])
-        } else {
-          /* map current display to shrink within bounds */
+  /* Update domains to match the state at transition end. */
+  if (direction) {
+    /* Expand the current display past the bounds while moving in. */
+    disp.x.domain([span1.x, span1.x + span1.dx])
+    disp.y.domain([span1.y, span1.y + span1.dy])
+  } else {
+    /* Shrink the current display to fit within bounds while moving out. */
 
-          disp.x.domain([
-            -1.0 * span2.x / span2.dx,
-            (1.0 - span2.x) / span2.dx
-          ])
-          disp.y.domain([
-            -1.0 * span2.y / span2.dy,
-            (1.0 - span2.y) / span2.dy
-          ])
-        }
-        /* set new display to take up entire square */
-        disp2.x.domain([0, 1.0])
-        disp2.y.domain([0, 1.0])
+    disp.x.domain([
+      -1.0 * span2.x / span2.dx,
+      (1.0 - span2.x) / span2.dx
+    ])
+    disp.y.domain([
+      -1.0 * span2.y / span2.dy,
+      (1.0 - span2.y) / span2.dy
+    ])
+  }
+  /* Set the new display to fill the entire square. */
+  disp2.x.domain([0, 1.0])
+  disp2.y.domain([0, 1.0])
 
-        /* Enable anti-aliasing during the transition. */
-        _svg.style('shape-rendering', null)
+  /* Enable anti-aliasing during the transition. */
+  _svg.style('shape-rendering', null)
 
-        /* Draw child nodes on top of parent nodes. */
-        if (direction) {
-          _svg.selectAll('.depth')
-            .sort(function (a, b) { return b.depth - a.depth })
-        } else {
-          _svg.selectAll('.depth')
-            .sort(function (a, b) { return a.depth - b.depth })
-        }
+  /* Draw child nodes on top of parent nodes. */
+  if (direction) {
+    _svg.selectAll('.depth')
+      .sort(function (a, b) { return b.depth - a.depth })
+  } else {
+    _svg.selectAll('.depth')
+      .sort(function (a, b) { return a.depth - b.depth })
+  }
 
-        // Transition to the new view.
-        t1.selectAll('text').call(disp.text).style('fill-opacity', 0)
-        t2.selectAll('text').call(disp2.text).style('fill-opacity', 1)
-        t1.selectAll('rect')
-          .call(disp.rect)
-          .style('fill-opacity', 0)
-          .style('stroke-opacity', 0)
-        t2.selectAll('rect')
-          .call(disp2.rect)
-          .style('fill-opacity', 1)
-          .style('stroke-opacity', 1)
+  // Transition to the new view.
+  t1.selectAll('text').call(disp.text).style('fill-opacity', 0)
+  t2.selectAll('text').call(disp2.text).style('fill-opacity', 1)
+  t1.selectAll('rect')
+    .call(disp.rect)
+    .style('fill-opacity', 0)
+    .style('stroke-opacity', 0)
+  t2.selectAll('rect')
+    .call(disp2.rect)
+    .style('fill-opacity', 1)
+    .style('stroke-opacity', 1)
 
-        t1.selectAll('.textdiv').style('display', 'none')
-        t1.selectAll('.foreignobj').call(disp.foreign)
-        t2.selectAll('.textdiv').style('display', 'block')
-        t2.selectAll('.foreignobj').call(disp2.foreign)
+  t1.selectAll('.textdiv').style('display', 'none')
+  t1.selectAll('.foreignobj').call(disp.foreign)
+  t2.selectAll('.textdiv').style('display', 'block')
+  t2.selectAll('.foreignobj').call(disp2.foreign)
 
-        /* Remove the old node when the transition is finished. */
-        t1.remove().each('end', function () {
-          // _svg.style("shape-rendering", "crispEdges");
-          _transitioning = false
-        })
-        t1.select('.depth').remove()
+  /* Remove the old node when the transition is finished. */
+  t1.remove().each('end', function () {
+    _transitioning = false
+  })
+  t1.select('.depth').remove()
 
-        _transitioning = false
-        _current_display = disp2
-      }
+  _transitioning = false
+  _current_display = disp2
+}
 
       return disp
     }
 
-    /* recursively layout everything so that it fits within a 1x1 square */
+    /* Recursively lay out nodes inside a normalized 1x1 square. */
     /**
 		 * Recursively lays out node descendants in normalized coordinates.
 		 *
@@ -366,14 +360,14 @@ function (d, i, direction) {
 		 */
     function _layout (d) {
       if (d.values) {
-        /* only layout up to a maximum number of children */
+        /* Layout only up to the configured maximum number of children. */
         d.values.sort(function (a, b) {
           return _get_value(b) - _get_value(a)
         })
         d.children = d.values.slice(0, _max_rects)
         _treemap.nodes({ children: d.children })
         d.children.forEach(function (c) {
-          /* this update moves the position to the top left */
+          /* Move each child position to the top-left coordinate system. */
           c.x = 1.0 - (c.x + c.dx)
           c.y = 1.0 - (c.y + c.dy)
           c.visible = true
@@ -386,7 +380,7 @@ function (d, i, direction) {
           c.visible = false
         })
         d.values.forEach(function (c) {
-          /* need to correct parent assigned during treemap */
+          /* Restore parent references after d3 treemap processing. */
           c.parent = d
           _layout(c)
         })
@@ -395,7 +389,7 @@ function (d, i, direction) {
     }
 
     return {
-      /* exposed layout settings */
+      /* Expose layout settings. */
       width: function () {
         if (arguments.length == 0) {
           return _width
@@ -471,8 +465,6 @@ function (d, i, direction) {
       display: function (element, d) {
         _treemap = d3.layout.treemap()
           .round(false)
-        // .ratio(_inner_width() / _inner_height())
-        // .ratio(_inner_height() / _inner_width())
           .value(_get_value)
           .sort(function (a, b) { return b.value - a.value })
 
@@ -485,7 +477,7 @@ function (d, i, direction) {
           _colors = d3.scale.category10().domain([0, _max_rects])
         }
 
-        /* create svg */
+        /* Create the SVG container. */
         _svg = element.append('svg')
           .attr('class', 'treemap')
           .attr('width', _width)
@@ -498,13 +490,6 @@ function (d, i, direction) {
 
         _grandparent = _svg.append('g')
           .attr('class', 'grandparent')
-
-        /*
-				_grandparent.append("rect")
-					.attr("y", -_margin.top)
-					.attr("width", _width)
-					.attr("height", _margin.top);
-        */
 
         _grandparent.append('text')
           .attr('x', 6)

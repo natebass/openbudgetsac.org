@@ -30,13 +30,13 @@ describe('compare page e2e', () => {
     }
   })
 
-    /**
+  /**
    * Builds format a11y violations.
    *
    * @param {any} violations Input value.
    * @returns {any} Function result.
    */
-function formatA11yViolations (violations) {
+  function formatA11yViolations (violations) {
     return violations.map((violation) => {
       const impactedNodes = violation.nodes.slice(0, 3).map((node) => {
         return node.target.join(' ')
