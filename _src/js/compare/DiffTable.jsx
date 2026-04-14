@@ -1,9 +1,16 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
 
-import { DiffStyled, asDollars, compareChartOptions, getSortedBudgetKeys } from './utils'
+import { DiffStyled, asDollars, compareChartOptions, getSortedBudgetKeys, translateDataLabel } from './utils'
 import { t } from './i18n.js'
 
+/**
+ * Compares values in descending order.
+ *
+ * @param {number|string} a Left value.
+ * @param {number|string} b Right value.
+ * @returns {number} Sort comparator value.
+ */
 function compareDesc (a, b) {
   if (a === b) {
     return 0
@@ -11,6 +18,13 @@ function compareDesc (a, b) {
   return a > b ? -1 : 1
 }
 
+/**
+ * Compares values in ascending order.
+ *
+ * @param {number|string} a Left value.
+ * @param {number|string} b Right value.
+ * @returns {number} Sort comparator value.
+ */
 function compareAsc (a, b) {
   if (a === b) {
     return 0
@@ -18,6 +32,14 @@ function compareAsc (a, b) {
   return a < b ? -1 : 1
 }
 
+/**
+ * Builds per-row chart data for the two selected fiscal years.
+ *
+ * @param {{value:number,prev:number}} entry Row diff entry.
+ * @param {Array<{fiscal_year_range:string}>} years Selected year records.
+ * @param {string[]} colors Series colors.
+ * @returns {{labels:string[],datasets:Array<{data:number[],label:string,backgroundColor:string}>}} Chart.js data.
+ */
 function buildRowChartData (entry, years, colors) {
   return {
     labels: [''],
@@ -121,6 +143,7 @@ export default class DiffTable extends React.Component {
     const visibleEntries = this.state.showAllRows ? diffEntries : diffEntries.slice(0, defaultVisibleRows)
 
     const diffList = visibleEntries.map((entry) => {
+      const displayKey = translateDataLabel(entry.key)
       const data = buildRowChartData(entry, this.props.years, this.props.colors)
       const chartOptions = {
         ...compareChartOptions,
@@ -133,7 +156,7 @@ export default class DiffTable extends React.Component {
         <tr key={entry.key}>
           <td>
             <h4>
-              {entry.key}
+              {displayKey}
               {showRowCharts
                 ? (
                   <Bar
@@ -141,7 +164,7 @@ export default class DiffTable extends React.Component {
                     options={chartOptions}
                     height={40}
                     role='img'
-                    aria-label={t('compare.chartAria.row', { item: entry.key })}
+                    aria-label={t('compare.chartAria.row', { item: displayKey })}
                   />
                   )
                 : (

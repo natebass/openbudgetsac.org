@@ -47,6 +47,9 @@ jobs:
       - name: Build CSS
         run: npm run build-css
 
+      - name: Verify JSDoc coverage in active JS/JSX files
+        run: npm run docs:jsdoc:check
+
       - name: Generate JSDoc docs
         run: npm run docs:jsdoc
 

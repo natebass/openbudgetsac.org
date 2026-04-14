@@ -1,8 +1,51 @@
 # js/compare/DiffTable.jsx
 
-- JSDoc blocks found: 5
+- JSDoc blocks found: 8
 
 ## Block 1
+
+Associated declaration: `function compareDesc (a, b) {`
+
+```js
+/**
+ * Compares values in descending order.
+ *
+ * @param {number|string} a Left value.
+ * @param {number|string} b Right value.
+ * @returns {number} Sort comparator value.
+ */
+```
+
+## Block 2
+
+Associated declaration: `function compareAsc (a, b) {`
+
+```js
+/**
+ * Compares values in ascending order.
+ *
+ * @param {number|string} a Left value.
+ * @param {number|string} b Right value.
+ * @returns {number} Sort comparator value.
+ */
+```
+
+## Block 3
+
+Associated declaration: `function buildRowChartData (entry, years, colors) {`
+
+```js
+/**
+ * Builds per-row chart data for the two selected fiscal years.
+ *
+ * @param {{value:number,prev:number}} entry Row diff entry.
+ * @param {Array<{fiscal_year_range:string}>} years Selected year records.
+ * @param {string[]} colors Series colors.
+ * @returns {{labels:string[],datasets:Array<{data:number[],label:string,backgroundColor:string}>}} Chart.js data.
+ */
+```
+
+## Block 4
 
 Associated declaration: `constructor (props) {`
 
@@ -14,7 +57,7 @@ Associated declaration: `constructor (props) {`
    */
 ```
 
-## Block 2
+## Block 5
 
 Associated declaration: `handleSortChange (event) {`
 
@@ -27,7 +70,7 @@ Associated declaration: `handleSortChange (event) {`
    */
 ```
 
-## Block 3
+## Block 6
 
 Associated declaration: `handleShowAllRows () {`
 
@@ -39,7 +82,7 @@ Associated declaration: `handleShowAllRows () {`
    */
 ```
 
-## Block 4
+## Block 7
 
 Associated declaration: `componentDidUpdate (prevProps) {`
 
@@ -52,7 +95,7 @@ Associated declaration: `componentDidUpdate (prevProps) {`
    */
 ```
 
-## Block 5
+## Block 8
 
 Associated declaration: `render () {`
 

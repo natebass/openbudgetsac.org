@@ -1,7 +1,7 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
 
-import { asTick, getSortedBudgetKeys } from './utils.jsx'
+import { asTick, getSortedBudgetKeys, translateDataLabel } from './utils.jsx'
 import { t } from './i18n.js'
 
 const chartOpts = {
@@ -51,11 +51,12 @@ export default class Trend extends React.Component {
    * @returns {JSX.Element} Trend chart component.
    */
   render () {
-    const labels = getSortedBudgetKeys(this.props.data)
+    const rawLabels = getSortedBudgetKeys(this.props.data)
+    const labels = rawLabels.map((label) => translateDataLabel(label))
     const datasets = this.props.data.map((record, i) => {
       return {
         label: this.props.years[i].fiscal_year_range,
-        data: labels.map(label => record[label]),
+        data: rawLabels.map(label => record[label]),
         backgroundColor: this.props.colors[i]
       }
     })

@@ -80,6 +80,8 @@ npm run serve                # eleventy dev server
 npm run watch                # webpack watch for compare app
 npm run build                # production compare bundle
 npm run build-css            # compile Sass
+npm run docs:jsdoc:autofix   # insert missing JSDoc in active JS/JSX files and regenerate docs
+npm run docs:jsdoc:check     # fail if active JS/JSX files are missing JSDoc comments
 npm run docs:jsdoc           # generate Markdown JSDoc inventory in _src/docs/jsdoc
 node scripts/add-missing-jsdoc.mjs # add missing JSDoc blocks in active first-party JS/JSX files
 npm run lint                 # standard + eslint
@@ -109,7 +111,7 @@ Memory profiling outputs:
 ## CI/CD
 
 - CI workflow (`.github/workflows/ci.yml`) validates:
-  - npm checks (lint, i18n unit smoke, unit coverage in CI, a11y, perf, bench, JSDoc docs generation, Eleventy build)
+  - npm checks (lint, i18n unit smoke, unit coverage in CI, a11y, perf, bench, JSDoc coverage check, JSDoc docs generation, Eleventy build)
   - dependency installs with Puppeteer browser download disabled for non-E2E jobs (`PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev`)
   - built-site i18n sanity checks (`build/js/i18n-site.js` and localized markup wiring in generated HTML)
   - explicit Chromium browser install for E2E (`npx puppeteer browsers install chrome`) after Linux shared-library provisioning
@@ -118,7 +120,7 @@ Memory profiling outputs:
     - `docker compose build site` (runtime/default website image)
     - `docker build --target test .` (full Docker-optimized test suite)
     - `docker build --target verify-parallel .` (parallel verification target)
-- Deploy workflow (`.github/workflows/deploy.yml`) runs i18n smoke tests, generates JSDoc docs, builds static files from `_src`, validates i18n assets in output, and publishes to GitHub Pages.
+- Deploy workflow (`.github/workflows/deploy.yml`) runs i18n smoke tests, verifies JSDoc coverage, generates JSDoc docs, builds static files from `_src`, validates i18n assets in output, and publishes to GitHub Pages.
 
 ## Source Tree
 ```text
@@ -192,6 +194,7 @@ openbudgetsac.org/
 - Resolution order for locale selection: `lang` query parameter, local storage (`ob.locale`), `<html lang>`, then browser language.
 - Runtime propagation of selected locale to internal links so page transitions keep language state.
 - `data-i18n`, `data-i18n-html`, `data-i18n-title`, and `data-i18n-aria-label` support across navigation, compare UI text, and legacy flow/tree labels.
+- Dynamic data labels in Comparison and Detail views are translated through the site i18n runtime helper for `es-419`.
 - Dedicated unit tests for compare and site runtime locale behavior (`i18n.test.js`, `siteI18n.test.js`).
 
 ### Performance and quality features

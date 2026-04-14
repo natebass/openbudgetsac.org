@@ -7,7 +7,15 @@ jest.mock('react-chartjs-2', () => ({
 }))
 
 describe('DiffTable component', () => {
+  afterEach(() => {
+    delete window.obI18n
+  })
+
   test('treats previous zero values as existing data, not newly added', () => {
+    window.obI18n = {
+      translateLegacyText: (value) => (value === 'Fire' ? 'Bomberos' : value)
+    }
+
     render(
       <DiffTable
         data={[{ Fire: 100 }, { Fire: 0 }]}
@@ -22,6 +30,7 @@ describe('DiffTable component', () => {
     )
 
     expect(screen.queryByText('Newly Added')).not.toBeInTheDocument()
+    expect(screen.getByText('Bomberos')).toBeInTheDocument()
     expect(screen.getByText('+$100')).toBeInTheDocument()
   })
 })

@@ -1,6 +1,6 @@
 # js/compare/index.jsx
 
-- JSDoc blocks found: 15
+- JSDoc blocks found: 17
 
 ## Block 1
 
@@ -8,9 +8,9 @@ Associated declaration: `function getConnection () {`
 
 ```js
 /**
- * Gets get connection.
+ * Returns the browser network information object when available.
  *
- * @returns {any} Function result.
+ * @returns {NetworkInformation|null} Network info object, or null when unavailable.
  */
 ```
 
@@ -20,9 +20,9 @@ Associated declaration: `function derivePerformanceFlags () {`
 
 ```js
 /**
- * Builds derive performance flags.
+ * Derives UI performance flags from viewport width and connection hints.
  *
- * @returns {any} Function result.
+ * @returns {{compactMode:boolean, constrainedMode:boolean}} Rendering flags.
  */
 ```
 
@@ -55,6 +55,19 @@ Associated declaration: `function getBudgetDefaults (budgets) {`
 
 ## Block 5
 
+Associated declaration: `function formatTotals (selectedYears) {`
+
+```js
+/**
+ * Maps selected year records to the totals data shape used by the total chart.
+ *
+ * @param {Array<{fiscal_year_range:string,total:number}|undefined>} selectedYears Selected year records.
+ * @returns {Array<{key:string,total:number}|undefined>} Formatted totals list.
+ */
+```
+
+## Block 6
+
 Associated declaration: `constructor (props) {`
 
 ```js
@@ -65,7 +78,7 @@ Associated declaration: `constructor (props) {`
    */
 ```
 
-## Block 6
+## Block 7
 
 Associated declaration: `componentDidMount () {`
 
@@ -77,7 +90,7 @@ Associated declaration: `componentDidMount () {`
    */
 ```
 
-## Block 7
+## Block 8
 
 Associated declaration: `componentWillUnmount () {`
 
@@ -89,7 +102,7 @@ Associated declaration: `componentWillUnmount () {`
    */
 ```
 
-## Block 8
+## Block 9
 
 Associated declaration: `applyPerformanceFlags () {`
 
@@ -101,7 +114,7 @@ Associated declaration: `applyPerformanceFlags () {`
    */
 ```
 
-## Block 9
+## Block 10
 
 Associated declaration: `scheduleApplyPerformanceFlags () {`
 
@@ -113,7 +126,7 @@ Associated declaration: `scheduleApplyPerformanceFlags () {`
    */
 ```
 
-## Block 10
+## Block 11
 
 Associated declaration: `handleChangeType (event) {`
 
@@ -126,7 +139,7 @@ Associated declaration: `handleChangeType (event) {`
    */
 ```
 
-## Block 11
+## Block 12
 
 Associated declaration: `handleSelectBudget1 (option) {`
 
@@ -139,7 +152,7 @@ Associated declaration: `handleSelectBudget1 (option) {`
    */
 ```
 
-## Block 12
+## Block 13
 
 Associated declaration: `handleSelectBudget2 (option) {`
 
@@ -152,7 +165,7 @@ Associated declaration: `handleSelectBudget2 (option) {`
    */
 ```
 
-## Block 13
+## Block 14
 
 Associated declaration: `handleBreakdownSelect (key) {`
 
@@ -165,7 +178,7 @@ Associated declaration: `handleBreakdownSelect (key) {`
    */
 ```
 
-## Block 14
+## Block 15
 
 Associated declaration: `handleSelectBudget (key, otherKey, index) {`
 
@@ -180,7 +193,7 @@ Associated declaration: `handleSelectBudget (key, otherKey, index) {`
    */
 ```
 
-## Block 15
+## Block 16
 
 Associated declaration: `render () {`
 
@@ -190,4 +203,16 @@ Associated declaration: `render () {`
    *
    * @returns {JSX.Element} Compare application UI.
    */
+```
+
+## Block 17
+
+Associated declaration: `async function enableA11yRuntimeChecks () {`
+
+```js
+/**
+ * Enables axe runtime checks in non-production browser environments.
+ *
+ * @returns {Promise<void>} Resolves after attempting initialization.
+ */
 ```

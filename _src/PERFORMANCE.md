@@ -45,6 +45,7 @@ Run from `_src/`:
 - `npm run perf:report`
 - `npm run bench`
 - `npm run lint`
+- `npm run docs:jsdoc:check`
 - `npm run test:unit:coverage`
 - `npm run test:a11y`
 - `npm run test:e2e:preflight`

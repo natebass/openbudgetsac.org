@@ -1,8 +1,21 @@
 # js/compare/utils.jsx
 
-- JSDoc blocks found: 3
+- JSDoc blocks found: 4
 
 ## Block 1
+
+Associated declaration: `function translateDataLabel (label) {`
+
+```js
+/**
+ * Translates a dynamic data label using the site i18n runtime when available.
+ *
+ * @param {string} label Label text from data sources.
+ * @returns {string} Localized label text.
+ */
+```
+
+## Block 2
 
 Associated declaration: `export function getSortedBudgetKeys (dataPair) {`
 
@@ -15,7 +28,7 @@ Associated declaration: `export function getSortedBudgetKeys (dataPair) {`
  */
 ```
 
-## Block 2
+## Block 3
 
 Associated declaration: `export function asDiff (value, usePct) {`
 
@@ -29,7 +42,7 @@ Associated declaration: `export function asDiff (value, usePct) {`
  */
 ```
 
-## Block 3
+## Block 4
 
 Associated declaration: `render () {`
 

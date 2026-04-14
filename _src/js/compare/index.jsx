@@ -49,9 +49,9 @@ const diffColors = {
 }
 
 /**
- * Gets get connection.
+ * Returns the browser network information object when available.
  *
- * @returns {any} Function result.
+ * @returns {NetworkInformation|null} Network info object, or null when unavailable.
  */
 function getConnection () {
   if (typeof navigator === 'undefined') {
@@ -61,9 +61,9 @@ function getConnection () {
 }
 
 /**
- * Builds derive performance flags.
+ * Derives UI performance flags from viewport width and connection hints.
  *
- * @returns {any} Function result.
+ * @returns {{compactMode:boolean, constrainedMode:boolean}} Rendering flags.
  */
 function derivePerformanceFlags () {
   if (typeof window === 'undefined') {
@@ -119,6 +119,12 @@ function getBudgetDefaults (budgets) {
   return [budgets[0], budgets[1]]
 }
 
+/**
+ * Maps selected year records to the totals data shape used by the total chart.
+ *
+ * @param {Array<{fiscal_year_range:string,total:number}|undefined>} selectedYears Selected year records.
+ * @returns {Array<{key:string,total:number}|undefined>} Formatted totals list.
+ */
 function formatTotals (selectedYears) {
   return selectedYears.map((record) => {
     if (!record) {
@@ -474,6 +480,11 @@ class Compare extends React.Component {
   }
 }
 
+/**
+ * Enables axe runtime checks in non-production browser environments.
+ *
+ * @returns {Promise<void>} Resolves after attempting initialization.
+ */
 async function enableA11yRuntimeChecks () {
   if (process.env.NODE_ENV === 'production' || typeof window === 'undefined') {
     return

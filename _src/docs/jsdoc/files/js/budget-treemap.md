@@ -1,6 +1,6 @@
 # js/budget-treemap.js
 
-- JSDoc blocks found: 17
+- JSDoc blocks found: 20
 
 ## Block 1
 
@@ -8,12 +8,12 @@ Associated declaration: `function i18nT (key, fallback, vars) {`
 
 ```js
 /**
-   * Runs i18n t.
+   * Resolves a localized message with optional interpolation.
    *
-   * @param {any} key Input value.
-   * @param {any} fallback Input value.
-   * @param {any} vars Input value.
-   * @returns {any} Function result.
+   * @param {string} key Translation key.
+   * @param {string} fallback Fallback message.
+   * @param {Record<string, unknown>} vars Interpolation variables.
+   * @returns {string} Localized message text.
    */
 ```
 
@@ -23,14 +23,27 @@ Associated declaration: `function escapeHtml (value) {`
 
 ```js
 /**
-   * Runs escape html.
+   * Escapes user-visible text for safe HTML rendering.
    *
-   * @param {any} value Input value.
-   * @returns {any} Function result.
+   * @param {unknown} value Raw text value.
+   * @returns {string} HTML-escaped text.
    */
 ```
 
 ## Block 3
+
+Associated declaration: `function i18nLabel (value) {`
+
+```js
+/**
+   * Translates dynamic data labels when locale runtime is available.
+   *
+   * @param {any} value Source label.
+   * @returns {string} Localized label text.
+   */
+```
+
+## Block 4
 
 Associated declaration: `namespace.budget_treemap = function () {`
 
@@ -42,7 +55,7 @@ Associated declaration: `namespace.budget_treemap = function () {`
    */
 ```
 
-## Block 4
+## Block 5
 
 Associated declaration: `let _get_value = function (d) {`
 
@@ -55,7 +68,7 @@ Associated declaration: `let _get_value = function (d) {`
      */
 ```
 
-## Block 5
+## Block 6
 
 Associated declaration: `let _hash_normalize = function (s) {`
 
@@ -68,7 +81,7 @@ Associated declaration: `let _hash_normalize = function (s) {`
      */
 ```
 
-## Block 6
+## Block 7
 
 Associated declaration: `let _hash_compare = function (v1, v2) {`
 
@@ -82,7 +95,7 @@ Associated declaration: `let _hash_compare = function (v1, v2) {`
      */
 ```
 
-## Block 7
+## Block 8
 
 Associated declaration: `function _apply_handlers (d3obj) {`
 
@@ -95,7 +108,7 @@ Associated declaration: `function _apply_handlers (d3obj) {`
      */
 ```
 
-## Block 8
+## Block 9
 
 Associated declaration: `let _tooltip_function = function (d, i) {`
 
@@ -109,7 +122,7 @@ Associated declaration: `let _tooltip_function = function (d, i) {`
      */
 ```
 
-## Block 9
+## Block 10
 
 Associated declaration: `expected: function () {`
 
@@ -121,7 +134,7 @@ Associated declaration: `expected: function () {`
        */
 ```
 
-## Block 10
+## Block 11
 
 Associated declaration: `get: function (root) {`
 
@@ -134,7 +147,7 @@ Associated declaration: `get: function (root) {`
        */
 ```
 
-## Block 11
+## Block 12
 
 Associated declaration: `set: function (node) {`
 
@@ -147,7 +160,33 @@ Associated declaration: `set: function (node) {`
        */
 ```
 
-## Block 12
+## Block 13
+
+Associated declaration: `function _ensure_elements () {`
+
+```js
+/**
+     * Lazily binds configured DOM selectors to d3 elements.
+     *
+     * @returns {void}
+     */
+```
+
+## Block 14
+
+Associated declaration: `function _load_data (url, callback) {`
+
+```js
+/**
+     * Loads treemap JSON data and caches successful responses by URL.
+     *
+     * @param {string} url Dataset URL.
+     * @param {(error: Error|null, data: object|null) => void} callback Data callback.
+     * @returns {void}
+     */
+```
+
+## Block 15
 
 Associated declaration: `create: function () {`
 
@@ -159,20 +198,19 @@ Associated declaration: `create: function () {`
          */
 ```
 
-## Block 13
+## Block 16
 
-Associated declaration: `function (e) {`
+Associated declaration: `window.onhashchange = function () {`
 
 ```js
 /**
-         * Runs onhashchange.
+         * Refreshes the treemap when browser hash navigation changes.
          *
-         * @param {any} e Input value.
-         * @returns {any} Function result.
+         * @returns {void}
          */
 ```
 
-## Block 14
+## Block 17
 
 Associated declaration: `function _create_breadcrumbs (d) {`
 
@@ -185,7 +223,7 @@ Associated declaration: `function _create_breadcrumbs (d) {`
            */
 ```
 
-## Block 15
+## Block 18
 
 Associated declaration: `_create_dropdown: function () {`
 
@@ -197,7 +235,7 @@ Associated declaration: `_create_dropdown: function () {`
        */
 ```
 
-## Block 16
+## Block 19
 
 Associated declaration: `_sync_dropdown_selection: function () {`
 
@@ -209,7 +247,7 @@ Associated declaration: `_sync_dropdown_selection: function () {`
          */
 ```
 
-## Block 17
+## Block 20
 
 Associated declaration: `refresh: function () {`
 

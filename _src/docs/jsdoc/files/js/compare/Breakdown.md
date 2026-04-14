@@ -1,6 +1,6 @@
 # js/compare/Breakdown.jsx
 
-- JSDoc blocks found: 6
+- JSDoc blocks found: 7
 
 ## Block 1
 
@@ -8,15 +8,28 @@ Associated declaration: `function areSameYears (currentYears, previousYears) {`
 
 ```js
 /**
- * Runs are same years.
+ * Checks whether two selected year arrays represent the same year/type pairings.
  *
- * @param {any} currentYears Input value.
- * @param {any} previousYears Input value.
- * @returns {any} Function result.
+ * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} currentYears Current years.
+ * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} previousYears Previous years.
+ * @returns {boolean} True when selections match.
  */
 ```
 
 ## Block 2
+
+Associated declaration: `function hasCompleteYears (years) {`
+
+```js
+/**
+ * Checks whether both selected year entries are present.
+ *
+ * @param {Array<unknown>} years Year selection array.
+ * @returns {boolean} True when all entries are truthy.
+ */
+```
+
+## Block 3
 
 Associated declaration: `constructor (props) {`
 
@@ -28,7 +41,7 @@ Associated declaration: `constructor (props) {`
    */
 ```
 
-## Block 3
+## Block 4
 
 Associated declaration: `componentDidMount () {`
 
@@ -40,7 +53,7 @@ Associated declaration: `componentDidMount () {`
    */
 ```
 
-## Block 4
+## Block 5
 
 Associated declaration: `componentDidUpdate (prevProps) {`
 
@@ -53,7 +66,7 @@ Associated declaration: `componentDidUpdate (prevProps) {`
    */
 ```
 
-## Block 5
+## Block 6
 
 Associated declaration: `fetchData (years) {`
 
@@ -66,7 +79,7 @@ Associated declaration: `fetchData (years) {`
    */
 ```
 
-## Block 6
+## Block 7
 
 Associated declaration: `render () {`
 

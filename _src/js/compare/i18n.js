@@ -143,10 +143,10 @@ const resources = {
 }
 
 /**
- * Builds normalize language.
+ * Normalizes supported language inputs to canonical locale identifiers.
  *
- * @param {any} value Input value.
- * @returns {any} Function result.
+ * @param {unknown} value Candidate language input.
+ * @returns {'en-US'|'es-419'|null} Normalized locale, or null when unsupported.
  */
 function normalizeLanguage (value) {
   if (!value || typeof value !== 'string') {
@@ -163,10 +163,10 @@ function normalizeLanguage (value) {
   return exactMatch || null
 }
 
-export /**
- * Gets resolve language.
+/**
+ * Resolves the active language from URL, document, and browser preferences.
  *
- * @returns {any} Function result.
+ * @returns {'en-US'|'es-419'} Resolved language code.
  */
 function resolveLanguage () {
   if (typeof window !== 'undefined' && window.location && typeof window.location.search === 'string') {
@@ -204,11 +204,11 @@ function resolveLanguage () {
 let currentLanguage = resolveLanguage()
 
 /**
- * Runs lookup message.
+ * Looks up a translation message by dot-delimited key path.
  *
- * @param {any} language Input value.
- * @param {any} key Input value.
- * @returns {any} Function result.
+ * @param {'en-US'|'es-419'} language Locale key.
+ * @param {string} key Dot-delimited translation key.
+ * @returns {string|null} Message text when found.
  */
 function lookupMessage (language, key) {
   const keys = String(key).split('.')
@@ -223,11 +223,11 @@ function lookupMessage (language, key) {
 }
 
 /**
- * Builds interpolate.
+ * Replaces `{{token}}` placeholders with provided interpolation values.
  *
- * @param {any} template Input value.
- * @param {any} values Input value.
- * @returns {any} Function result.
+ * @param {string} template Localized message template.
+ * @param {Record<string, unknown>} values Interpolation values.
+ * @returns {string} Interpolated message.
  */
 function interpolate (template, values) {
   if (!values || typeof values !== 'object') {
@@ -240,11 +240,11 @@ function interpolate (template, values) {
   })
 }
 
-export /**
- * Sets set language.
+/**
+ * Sets the active language and updates the document language attribute.
  *
- * @param {any} language Input value.
- * @returns {any} Function result.
+ * @param {string} language Requested language value.
+ * @returns {'en-US'|'es-419'} Active language code.
  */
 function setLanguage (language) {
   currentLanguage = normalizeLanguage(language) || FALLBACK_LANGUAGE
@@ -254,21 +254,21 @@ function setLanguage (language) {
   return currentLanguage
 }
 
-export /**
- * Gets get language.
+/**
+ * Gets the current active language.
  *
- * @returns {any} Function result.
+ * @returns {'en-US'|'es-419'} Active language code.
  */
 function getLanguage () {
   return currentLanguage
 }
 
-export /**
- * Runs t.
+/**
+ * Translates a message key with optional token interpolation.
  *
- * @param {any} key Input value.
- * @param {any} options Input value.
- * @returns {any} Function result.
+ * @param {string} key Translation key.
+ * @param {Record<string, unknown>} options Interpolation values.
+ * @returns {string} Localized message text.
  */
 function t (key, options) {
   const localized = lookupMessage(currentLanguage, key)
@@ -290,3 +290,5 @@ Object.defineProperty(i18n, 'language', {
 })
 
 export default i18n
+
+export { resolveLanguage, setLanguage, getLanguage, t }

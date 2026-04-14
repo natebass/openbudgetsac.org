@@ -21,10 +21,10 @@ const SAFE_YEAR_RE = /^FY\d{2}$/i
 const TYPE_SORT_WEIGHT_BASE = 6
 
 /**
- * Checks whether is safe breakdown key.
+ * Checks whether a breakdown label is safe to use as an object key.
  *
- * @param {any} value Input value.
- * @returns {any} Function result.
+ * @param {unknown} value Candidate key value.
+ * @returns {boolean} True when the key is safe.
  */
 function isSafeBreakdownKey (value) {
   return typeof value === 'string' &&
@@ -35,10 +35,10 @@ function isSafeBreakdownKey (value) {
 }
 
 /**
- * Gets get totals sort index.
+ * Builds a sortable index for totals based on fiscal year and budget type.
  *
- * @param {any} record Input value.
- * @returns {any} Function result.
+ * @param {{fiscal_year_range:string,budget_type:(string|number)}} record Totals record.
+ * @returns {number} Numeric sort key.
  */
 function getTotalsSortIndex (record) {
   const year = record.fiscal_year_range.slice(2, 4)
@@ -48,23 +48,37 @@ function getTotalsSortIndex (record) {
   return +`${year}.${type}`
 }
 
+/**
+ * Builds the JSON endpoint URL for one breakdown request.
+ *
+ * @param {string} year Fiscal year token.
+ * @param {'spending'|'revenue'} type Budget dataset type.
+ * @param {'department'|'category'} dimension Breakdown grouping.
+ * @returns {string} Endpoint URL.
+ */
 function createBreakdownUrl (year, type, dimension) {
   return API_BASE + typePaths[type] + dimensionPaths[dimension] + `/${encodeURIComponent(year)}.json`
 }
 
+/**
+ * Parses a numeric total and falls back to zero for invalid values.
+ *
+ * @param {unknown} rawTotal Raw value from the dataset.
+ * @returns {number} Parsed numeric total.
+ */
 function parseNumericTotal (rawTotal) {
   const parsed = Number(rawTotal)
   return Number.isFinite(parsed) ? parsed : 0
 }
 
 /**
- * Checks whether assert valid breakdown request.
+ * Validates request inputs before fetching compare breakdown data.
  *
- * @param {any} years Input value.
- * @param {any} yearTypes Input value.
- * @param {any} type Input value.
- * @param {any} dimension Input value.
- * @returns {any} Function result.
+ * @param {unknown} years Requested fiscal years.
+ * @param {unknown} yearTypes Requested budget types.
+ * @param {unknown} type Dataset type selector.
+ * @param {unknown} dimension Breakdown dimension selector.
+ * @returns {void}
  */
 function assertValidBreakdownRequest (years, yearTypes, type, dimension) {
   if (!Array.isArray(years) || !Array.isArray(yearTypes) || years.length !== yearTypes.length || years.length === 0) {

@@ -6,11 +6,11 @@ import { fetchBreakdownData } from './api.js'
 import { t } from './i18n.js'
 
 /**
- * Runs are same years.
+ * Checks whether two selected year arrays represent the same year/type pairings.
  *
- * @param {any} currentYears Input value.
- * @param {any} previousYears Input value.
- * @returns {any} Function result.
+ * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} currentYears Current years.
+ * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} previousYears Previous years.
+ * @returns {boolean} True when selections match.
  */
 function areSameYears (currentYears, previousYears) {
   if (!Array.isArray(currentYears) || !Array.isArray(previousYears) || currentYears.length !== previousYears.length) {
@@ -29,6 +29,12 @@ function areSameYears (currentYears, previousYears) {
   })
 }
 
+/**
+ * Checks whether both selected year entries are present.
+ *
+ * @param {Array<unknown>} years Year selection array.
+ * @returns {boolean} True when all entries are truthy.
+ */
 function hasCompleteYears (years) {
   return Array.isArray(years) && years.every(Boolean)
 }

@@ -1,6 +1,6 @@
 # JavaScript JSDoc Index
 
-Generated on 2026-04-14T03:20:47.148Z.
+Generated on 2026-04-14T16:13:53.234Z.
 
 Total files scanned: 153
 
@@ -113,7 +113,7 @@ Total files scanned: 153
 | `css/bower_components/jquery/src/var/toString.js` | 0 | [files/css/bower_components/jquery/src/var/toString.md](files/css/bower_components/jquery/src/var/toString.md) |
 | `css/bower_components/jquery/src/wrap.js` | 0 | [files/css/bower_components/jquery/src/wrap.md](files/css/bower_components/jquery/src/wrap.md) |
 | `js/budget-glossary.js` | 5 | [files/js/budget-glossary.md](files/js/budget-glossary.md) |
-| `js/budget-treemap.js` | 17 | [files/js/budget-treemap.md](files/js/budget-treemap.md) |
+| `js/budget-treemap.js` | 20 | [files/js/budget-treemap.md](files/js/budget-treemap.md) |
 | `js/compare/__tests__/a11y/compare.a11y.jsx` | 0 | [files/js/compare/__tests__/a11y/compare.a11y.md](files/js/compare/__tests__/a11y/compare.a11y.md) |
 | `js/compare/__tests__/api.test.js` | 0 | [files/js/compare/__tests__/api.test.md](files/js/compare/__tests__/api.test.md) |
 | `js/compare/__tests__/Breakdown.test.jsx` | 0 | [files/js/compare/__tests__/Breakdown.test.md](files/js/compare/__tests__/Breakdown.test.md) |
@@ -123,25 +123,25 @@ Total files scanned: 153
 | `js/compare/__tests__/Total.test.jsx` | 0 | [files/js/compare/__tests__/Total.test.md](files/js/compare/__tests__/Total.test.md) |
 | `js/compare/__tests__/Trend.test.jsx` | 0 | [files/js/compare/__tests__/Trend.test.md](files/js/compare/__tests__/Trend.test.md) |
 | `js/compare/__tests__/utils.test.jsx` | 0 | [files/js/compare/__tests__/utils.test.md](files/js/compare/__tests__/utils.test.md) |
-| `js/compare/api.js` | 5 | [files/js/compare/api.md](files/js/compare/api.md) |
-| `js/compare/Breakdown.jsx` | 6 | [files/js/compare/Breakdown.md](files/js/compare/Breakdown.md) |
-| `js/compare/DiffTable.jsx` | 5 | [files/js/compare/DiffTable.md](files/js/compare/DiffTable.md) |
+| `js/compare/api.js` | 7 | [files/js/compare/api.md](files/js/compare/api.md) |
+| `js/compare/Breakdown.jsx` | 7 | [files/js/compare/Breakdown.md](files/js/compare/Breakdown.md) |
+| `js/compare/DiffTable.jsx` | 8 | [files/js/compare/DiffTable.md](files/js/compare/DiffTable.md) |
 | `js/compare/i18n.js` | 7 | [files/js/compare/i18n.md](files/js/compare/i18n.md) |
-| `js/compare/index.jsx` | 15 | [files/js/compare/index.md](files/js/compare/index.md) |
+| `js/compare/index.jsx` | 17 | [files/js/compare/index.md](files/js/compare/index.md) |
 | `js/compare/Total.jsx` | 1 | [files/js/compare/Total.md](files/js/compare/Total.md) |
 | `js/compare/Trend.jsx` | 1 | [files/js/compare/Trend.md](files/js/compare/Trend.md) |
-| `js/compare/utils.jsx` | 3 | [files/js/compare/utils.md](files/js/compare/utils.md) |
+| `js/compare/utils.jsx` | 4 | [files/js/compare/utils.md](files/js/compare/utils.md) |
 | `js/data.js` | 8 | [files/js/data.md](files/js/data.md) |
 | `js/dist/306.compare.bundle.js` | 0 | [files/js/dist/306.compare.bundle.md](files/js/dist/306.compare.bundle.md) |
 | `js/dist/compare.bundle.js` | 0 | [files/js/dist/compare.bundle.md](files/js/dist/compare.bundle.md) |
 | `js/flow.js` | 10 | [files/js/flow.md](files/js/flow.md) |
 | `js/hash.js` | 1 | [files/js/hash.md](files/js/hash.md) |
-| `js/i18n-site.js` | 14 | [files/js/i18n-site.md](files/js/i18n-site.md) |
-| `js/old/main.js` | 0 | [files/js/old/main.md](files/js/old/main.md) |
-| `js/old/main1.js` | 0 | [files/js/old/main1.md](files/js/old/main1.md) |
-| `js/old/main2.js` | 0 | [files/js/old/main2.md](files/js/old/main2.md) |
-| `js/old/main3.js` | 0 | [files/js/old/main3.md](files/js/old/main3.md) |
-| `js/old/main4.js` | 0 | [files/js/old/main4.md](files/js/old/main4.md) |
+| `js/i18n-site.js` | 15 | [files/js/i18n-site.md](files/js/i18n-site.md) |
+| `js/old/main.js` | 4 | [files/js/old/main.md](files/js/old/main.md) |
+| `js/old/main1.js` | 4 | [files/js/old/main1.md](files/js/old/main1.md) |
+| `js/old/main2.js` | 4 | [files/js/old/main2.md](files/js/old/main2.md) |
+| `js/old/main3.js` | 5 | [files/js/old/main3.md](files/js/old/main3.md) |
+| `js/old/main4.js` | 5 | [files/js/old/main4.md](files/js/old/main4.md) |
 | `js/old/purl.js` | 13 | [files/js/old/purl.md](files/js/old/purl.md) |
 | `js/old/sankey.js` | 29 | [files/js/old/sankey.md](files/js/old/sankey.md) |
 | `js/old/treemap.js` | 13 | [files/js/old/treemap.md](files/js/old/treemap.md) |

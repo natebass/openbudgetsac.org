@@ -24,6 +24,22 @@ export const BUDGET_TYPES = {
   3: 'Proposed'
 }
 
+/**
+ * Translates a dynamic data label using the site i18n runtime when available.
+ *
+ * @param {string} label Label text from data sources.
+ * @returns {string} Localized label text.
+ */
+function translateDataLabel (label) {
+  if (typeof window !== 'undefined' &&
+    window.obI18n &&
+    typeof window.obI18n.translateLegacyText === 'function') {
+    return window.obI18n.translateLegacyText(String(label))
+  }
+  return String(label)
+}
+export { translateDataLabel }
+
 export const compareChartOptions = {
   plugins: {
     legend: {
@@ -43,7 +59,7 @@ export const compareChartOptions = {
       ticks: {
         beginAtZero: true,
         callback: (value) => {
-          // Show values as currency in millions.
+          // Show axis values as dollars in millions.
           return `${asTick(value / 1000000)}M`
         }
       }
@@ -75,7 +91,7 @@ export function getSortedBudgetKeys (dataPair) {
  * @returns {string} Human-readable difference string.
  */
 export function asDiff (value, usePct) {
-  // Handle sentinel values first.
+  // Handle sentinel values before numeric formatting.
   switch (value) {
     case Infinity:
       return t('diff.newlyAdded')
@@ -83,7 +99,7 @@ export function asDiff (value, usePct) {
       break
   }
 
-  // Then format either as a percent or as dollars.
+  // Then format as either a percent or dollars.
   if (usePct) {
     return asPct(value)
   }

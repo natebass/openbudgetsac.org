@@ -4,12 +4,12 @@ ob.display = ob.display || {}
 
 ;(function (namespace, undefined) {
   /**
-   * Runs i18n t.
+   * Resolves a localized message with optional interpolation.
    *
-   * @param {any} key Input value.
-   * @param {any} fallback Input value.
-   * @param {any} vars Input value.
-   * @returns {any} Function result.
+   * @param {string} key Translation key.
+   * @param {string} fallback Fallback message.
+   * @param {Record<string, unknown>} vars Interpolation variables.
+   * @returns {string} Localized message text.
    */
   function i18nT (key, fallback, vars) {
     if (window.obI18n && typeof window.obI18n.t === 'function') {
@@ -24,10 +24,10 @@ ob.display = ob.display || {}
   }
 
   /**
-   * Runs escape html.
+   * Escapes user-visible text for safe HTML rendering.
    *
-   * @param {any} value Input value.
-   * @returns {any} Function result.
+   * @param {unknown} value Raw text value.
+   * @returns {string} HTML-escaped text.
    */
   function escapeHtml (value) {
     return String(value == null ? '' : value)
@@ -36,6 +36,20 @@ ob.display = ob.display || {}
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;')
+  }
+
+  /**
+   * Translates dynamic data labels when locale runtime is available.
+   *
+   * @param {any} value Source label.
+   * @returns {string} Localized label text.
+   */
+  function i18nLabel (value) {
+    const text = String(value == null ? '' : value)
+    if (window.obI18n && typeof window.obI18n.translateLegacyText === 'function') {
+      return window.obI18n.translateLegacyText(text)
+    }
+    return text
   }
 
   /**
@@ -155,7 +169,7 @@ ob.display = ob.display || {}
         const parentValue = _get_value(d.parent)
         percent = parentValue ? (_get_value(d) / parentValue) : 0
       }
-      let display = '<p class="treemap_tooltip title">' + escapeHtml(d.key) + '</p>'
+      let display = '<p class="treemap_tooltip title">' + escapeHtml(i18nLabel(d.key)) + '</p>'
       display += '<p class="treemap_tooltip amount">' + escapeHtml(_format.number(_get_value(d))) + '</p>'
       display += '<p class="treemap_tooltip percentage">' + _format.percent(percent) + '</p>'
       return display
@@ -219,6 +233,11 @@ ob.display = ob.display || {}
       }
     }
 
+    /**
+     * Lazily binds configured DOM selectors to d3 elements.
+     *
+     * @returns {void}
+     */
     function _ensure_elements () {
       if (!_spreadsheet_element) {
         _spreadsheet_element = d3.select(_spreadsheet_selector)
@@ -231,6 +250,13 @@ ob.display = ob.display || {}
       }
     }
 
+    /**
+     * Loads treemap JSON data and caches successful responses by URL.
+     *
+     * @param {string} url Dataset URL.
+     * @param {(error: Error|null, data: object|null) => void} callback Data callback.
+     * @returns {void}
+     */
     function _load_data (url, callback) {
       if (Object.prototype.hasOwnProperty.call(_dataset_cache, url)) {
         window.setTimeout(function () {
@@ -392,19 +418,18 @@ ob.display = ob.display || {}
       create: function () {
         /* Handle browser back/forward navigation by reloading the active node. */
         const self = this
-        window.onhashchange = /**
-         * Runs onhashchange.
+        /**
+         * Refreshes the treemap when browser hash navigation changes.
          *
-         * @param {any} e Input value.
-         * @returns {any} Function result.
+         * @returns {void}
          */
-function (e) {
-  const hash = window.location.hash.replace('#', '')
-  // Ignore hash updates triggered by normal in-app transitions.
-  if (hash != _hash.expected()) {
-    self.refresh()
-  }
-}
+        window.onhashchange = function () {
+          const hash = window.location.hash.replace('#', '')
+          // Ignore hash updates triggered by normal in-app transitions.
+          if (hash != _hash.expected()) {
+            self.refresh()
+          }
+        }
 
         /* Create the initial color palette. */
         const _color_stack = ob.palette.stack().palette(d3.scale.ordinal().range(_palette))
@@ -457,7 +482,8 @@ function (e) {
                 _treemap.transition(clicked, levels, false)
               })
               .text(function (d, i) {
-                return i > 0 ? ' > ' + d.key : d.key
+                const label = i18nLabel(d.key)
+                return i > 0 ? ' > ' + label : label
               })
           }
 
@@ -508,7 +534,7 @@ function (e) {
             ])
             .column(function (d, i, elem) {
               if (i == 1) {
-                elem.attr('class', 'item').text(d)
+                elem.attr('class', 'item').text(i18nLabel(d))
               } else if (i == 2) {
                 elem.attr('class', 'money').text(d)
               } else if (i == 3) {
@@ -521,7 +547,7 @@ function (e) {
                   .attr('class', 'square')
                   .style('background-color', _color_stack.palette()(j))
               } else if (i == 1) {
-                elem.attr('class', 'item').text(d.key)
+                elem.attr('class', 'item').text(i18nLabel(d.key))
               } else if (i == 2) {
                 elem.attr('class', 'money').text(_format.number(d.data.expense))
               } else if (i == 3) {
@@ -580,7 +606,7 @@ function (e) {
               let html = '<div class="amount">'
               html += escapeHtml(_format.number(_get_value(d)))
               html += '</div><div class="name">'
-              html += escapeHtml(d.key)
+              html += escapeHtml(i18nLabel(d.key))
               html += '</div>'
               return html
             })
@@ -601,7 +627,7 @@ function (e) {
               _hash.set(d)
               _spreadsheet.data(d.values)
                 .display()
-              d3.select(_title_selector).text(d.key)
+              d3.select(_title_selector).text(i18nLabel(d.key))
               /* Set breadcrumbs. */
               _create_breadcrumbs(d)
             })
@@ -626,7 +652,7 @@ function (e) {
           _spreadsheet.on('click', _treemap.transition)
 
           /* Set the title. */
-          d3.select(_title_selector).text(node.key)
+          d3.select(_title_selector).text(i18nLabel(node.key))
 
           /* Set breadcrumbs. */
           _create_breadcrumbs(node)
@@ -680,7 +706,7 @@ function (e) {
           })
           .enter()
           .append('option')
-          .text(function (d) { return d.value })
+          .text(function (d) { return i18nLabel(d.value) })
           .attr('selected', function (d) {
             if (d.value == _config.dropdown_choice[d.key]) { return 'selected' }
           })

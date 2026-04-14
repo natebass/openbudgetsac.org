@@ -1,3 +1,4 @@
+/* global alert */
 $(function () {
   const DEFAULT_DRILLDOWNS = ['fund', 'department', 'unit']
   const DEFAULT_CUTS = { 'time.year': '2013' }
@@ -45,6 +46,13 @@ $(function () {
 
   window.wdg_widget = new OpenSpending.Treemap($('#treewidget13-15'), context, state)
 
+  /**
+   * Builds year filter values and heading text from query parameters.
+   *
+   * @param {any} referenceYears Input value.
+   * @param {any} headerJoiner Input value.
+   * @returns {any} Function result.
+   */
   function buildYearSelection (referenceYears, headerJoiner) {
     if (!referenceYears) {
       return null
@@ -69,6 +77,14 @@ $(function () {
     }
   }
 
+  /**
+   * Builds a breadcrumb URL for the next drilldown state.
+   *
+   * @param {any} crumbList Input value.
+   * @param {any} drill Input value.
+   * @param {any} parameterValue Input value.
+   * @returns {any} Function result.
+   */
   function buildCrumbPath (crumbList, drill, parameterValue) {
     return [
       crumbList[crumbList.length - 1].path,
@@ -79,6 +95,12 @@ $(function () {
     ].join('')
   }
 
+  /**
+   * Renders breadcrumb links for the current drilldown path.
+   *
+   * @param {any} crumbList Input value.
+   * @returns {any} Function result.
+   */
   function renderBreadcrumbs (crumbList) {
     const breadcrumbsEl = $('#breadcrumbs')
     breadcrumbsEl.empty()
@@ -94,6 +116,13 @@ $(function () {
     }
   }
 
+  /**
+   * Builds the next page URL for a drilldown click.
+   *
+   * @param {any} nextDrilldown Input value.
+   * @param {any} nodeName Input value.
+   * @returns {any} Function result.
+   */
   function buildDrilldownLocation (nextDrilldown, nodeName) {
     return [
       window.location.href,
@@ -104,6 +133,12 @@ $(function () {
     ].join('')
   }
 
+  /**
+   * Resolves the localized fallback alert for terminal drilldown nodes.
+   *
+   * @param {any} fallback Input value.
+   * @returns {any} Function result.
+   */
   function getCannotDigDeeperMessage (fallback) {
     if (window.obI18n && typeof window.obI18n.t === 'function') {
       return window.obI18n.t('old.alert.cannotDigDeeper', fallback)

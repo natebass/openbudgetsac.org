@@ -1,6 +1,6 @@
 # js/i18n-site.js
 
-- JSDoc blocks found: 14
+- JSDoc blocks found: 15
 
 ## Block 1
 
@@ -8,10 +8,10 @@ Associated declaration: `function normalizeLocale (value) {`
 
 ```js
 /**
-   * Builds normalize locale.
+   * Normalizes locale values to supported site locales.
    *
-   * @param {any} value Input value.
-   * @returns {any} Function result.
+   * @param {unknown} value Candidate locale input.
+   * @returns {'en-US'|'es-419'|null} Supported locale code or null.
    */
 ```
 
@@ -21,11 +21,11 @@ Associated declaration: `function interpolate (template, vars) {`
 
 ```js
 /**
-   * Builds interpolate.
+   * Replaces token placeholders in a localized string.
    *
-   * @param {any} template Input value.
-   * @param {any} vars Input value.
-   * @returns {any} Function result.
+   * @param {string} template Translation template.
+   * @param {Record<string, unknown>} vars Interpolation variables.
+   * @returns {string} Interpolated string.
    */
 ```
 
@@ -35,12 +35,12 @@ Associated declaration: `function t (key, fallback, vars) {`
 
 ```js
 /**
-   * Runs t.
+   * Resolves a translation key with optional fallback and interpolation.
    *
-   * @param {any} key Input value.
-   * @param {any} fallback Input value.
-   * @param {any} vars Input value.
-   * @returns {any} Function result.
+   * @param {string} key Translation key.
+   * @param {string} fallback Fallback message.
+   * @param {Record<string, unknown>} vars Interpolation variables.
+   * @returns {string} Localized text.
    */
 ```
 
@@ -50,9 +50,9 @@ Associated declaration: `function resolveLocale () {`
 
 ```js
 /**
-   * Gets resolve locale.
+   * Resolves locale from query params, storage, document, and browser preferences.
    *
-   * @returns {any} Function result.
+   * @returns {'en-US'|'es-419'} Resolved locale.
    */
 ```
 
@@ -62,10 +62,10 @@ Associated declaration: `function applyTranslations (root) {`
 
 ```js
 /**
-   * Sets apply translations.
+   * Applies data-attribute-based translations to a root node.
    *
-   * @param {any} root Input value.
-   * @returns {any} Function result.
+   * @param {Document|Element} root DOM root for translation updates.
+   * @returns {void}
    */
 ```
 
@@ -75,10 +75,10 @@ Associated declaration: `function getSortedReplacementKeys (map) {`
 
 ```js
 /**
-   * Gets get sorted replacement keys.
+   * Returns cached map keys sorted by length, longest first.
    *
-   * @param {any} map Input value.
-   * @returns {any} Function result.
+   * @param {Record<string, string>} map Replacement map.
+   * @returns {string[]} Sorted keys.
    */
 ```
 
@@ -88,104 +88,118 @@ Associated declaration: `function applyFragmentMap (value, map) {`
 
 ```js
 /**
-   * Sets apply fragment map.
+   * Applies fragment substitutions using a translation map.
    *
-   * @param {any} value Input value.
-   * @param {any} map Input value.
-   * @returns {any} Function result.
+   * @param {string} value Source text.
+   * @param {Record<string, string>} map Replacement map.
+   * @returns {string} Text with substitutions applied.
    */
 ```
 
 ## Block 8
 
-Associated declaration: `function applyLegacyAttributeTranslations (root, attributeMap) {`
+Associated declaration: `function translateLegacyText (value, locale) {`
 
 ```js
 /**
-   * Sets apply legacy attribute translations.
+   * Translates a dynamic legacy data label using locale-specific maps.
    *
-   * @param {any} root Input value.
-   * @param {any} attributeMap Input value.
-   * @returns {any} Function result.
+   * @param {string} value Label text.
+   * @param {string} locale Locale override.
+   * @returns {string} Translated label when available.
    */
 ```
 
 ## Block 9
 
-Associated declaration: `function applyLegacyTextNodeTranslations (root, textMap) {`
+Associated declaration: `function applyLegacyAttributeTranslations (root, attributeMap) {`
 
 ```js
 /**
-   * Sets apply legacy text node translations.
+   * Translates legacy text fragments in selected element attributes.
    *
-   * @param {any} root Input value.
-   * @param {any} textMap Input value.
-   * @returns {any} Function result.
+   * @param {Document|Element} root Root node.
+   * @param {Record<string, string>} attributeMap Translation map.
+   * @returns {void}
    */
 ```
 
 ## Block 10
 
-Associated declaration: `function applyLegacyDocumentTitleTranslations (locale) {`
+Associated declaration: `function applyLegacyTextNodeTranslations (root, textMap) {`
 
 ```js
 /**
-   * Sets apply legacy document title translations.
+   * Translates legacy free-text nodes across the rendered document.
    *
-   * @param {any} locale Input value.
-   * @returns {any} Function result.
+   * @param {Document|Element} root Root node.
+   * @param {Record<string, string>} textMap Translation map.
+   * @returns {void}
    */
 ```
 
 ## Block 11
 
-Associated declaration: `function applyLegacyLeafText (root) {`
+Associated declaration: `function applyLegacyDocumentTitleTranslations (locale) {`
 
 ```js
 /**
-   * Sets apply legacy leaf text.
+   * Translates the document title using the legacy text map.
    *
-   * @param {any} root Input value.
-   * @returns {any} Function result.
+   * @param {'en-US'|'es-419'} locale Active locale.
+   * @returns {void}
    */
 ```
 
 ## Block 12
 
-Associated declaration: `function propagateLocaleToLinks (locale, root) {`
+Associated declaration: `function applyLegacyLeafText (root) {`
 
 ```js
 /**
-   * Sets propagate locale to links.
+   * Applies legacy attribute, text-node, and title translations.
    *
-   * @param {any} locale Input value.
-   * @param {any} root Input value.
-   * @returns {any} Function result.
+   * @param {Document|Element} root Root node.
+   * @returns {void}
    */
 ```
 
 ## Block 13
 
-Associated declaration: `function setLocale (locale, options) {`
+Associated declaration: `function propagateLocaleToLinks (locale, root) {`
 
 ```js
 /**
-   * Sets set locale.
+   * Appends the active locale to same-origin links in a DOM root.
    *
-   * @param {any} locale Input value.
-   * @param {any} options Input value.
-   * @returns {any} Function result.
+   * @param {'en-US'|'es-419'} locale Active locale.
+   * @param {Document|Element} root Root node.
+   * @returns {void}
    */
 ```
 
 ## Block 14
 
+Associated declaration: `function setLocale (locale, options) {`
+
+```js
+/**
+   * Sets the active locale and re-renders translated content.
+   *
+   * @param {string} locale Requested locale.
+   * @param {{persist?: boolean}} options Optional behavior flags.
+   * @returns {void}
+   */
+```
+
+## Block 15
+
 Associated declaration: `function init () {`
 
 ```js
 /**
-   * Runs init.
+   * Initializes locale state and language selector bindings.
    *
-   * @returns {any} Function result.
+   * @returns {void}
    */
 ```

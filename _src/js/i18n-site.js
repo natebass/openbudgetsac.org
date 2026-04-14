@@ -176,7 +176,7 @@
       'treemap.table.item': 'Elemento',
       'treemap.table.expense': 'Gasto',
       'treemap.table.revenue': 'Ingreso',
-      'feedback.formTitle': 'Formulario de comentarios de Open Budget Sacramento',
+      'feedback.formTitle': 'Formulario de comentarios de Presupuesto Abierto Sacramento',
       'feedback.loadingForm': 'Cargando formulario de comentarios...',
       'compare.toolAriaLabel': 'Herramienta de comparación presupuestaria',
       'old.alert.cannotDigDeeper': 'No podemos profundizar más.'
@@ -205,7 +205,7 @@
       'Focus on Measure Z': 'Enfoque en la Medida Z',
       'Sacramento Budget Basics': 'Conceptos básicos del presupuesto de Sacramento',
       'Select fiscal year': 'Selecciona el año fiscal',
-      'How would you use Open Budget?': '¿Cómo usarías Open Budget?',
+      'How would you use Open Budget?': '¿Cómo usarías Presupuesto Abierto?',
       'Feedback form notice:': 'Aviso del formulario de comentarios:',
       'If this embedded form fails to load, use the direct link below to submit your input.': 'Si este formulario incrustado no carga, usa el enlace directo de abajo para enviar tu información.',
       'Submit feedback with the form below, or open it directly in a new tab.': 'Envía comentarios con el formulario de abajo o ábrelo directamente en una pestaña nueva.',
@@ -286,6 +286,72 @@
       Data: 'Datos',
       Resources: 'Recursos',
       'Click on an area to start exploring': 'Haz clic en un área para comenzar a explorar',
+      'What we do': 'Qué hacemos',
+      'How we do it': 'Cómo lo hacemos',
+      'We display city budget data in a helpful and clear format, explain how the budget is put together and voted on, and give people resources to follow up on what they have learned.': 'Mostramos datos del presupuesto de la ciudad en un formato claro y útil, explicamos cómo se arma y vota el presupuesto, y ofrecemos recursos para que las personas profundicen en lo que aprendieron.',
+      'Open Budget: Sacramento helps people learn more about the city budget, so they can talk about it with each other, with city council members, and with city staff.  We want people to know how their city works and how it could work better.': 'Open Budget: Sacramento ayuda a que las personas conozcan mejor el presupuesto de la ciudad, para que puedan hablar sobre él entre sí, con miembros del concejo municipal y con personal de la ciudad. Queremos que la gente sepa cómo funciona su ciudad y cómo podría funcionar mejor.',
+      'We talk to': 'Hablamos con',
+      'local groups': 'grupos locales',
+      'to learn what they want to know about the budget and how best to share that knowledge.': 'para saber qué quieren conocer del presupuesto y cuál es la mejor forma de compartir ese conocimiento.',
+      'Every two years, at the beginning of each budget cycle, we get this data from Sacramento Open Data': 'Cada dos años, al inicio de cada ciclo presupuestario, obtenemos estos datos de Sacramento Open Data',
+      'and present it in a simple, useful format to access timely, accurate budget data and present it in a simple, useful format.': 'y los presentamos en un formato simple y útil para acceder a datos presupuestarios oportunos y precisos.',
+      'For those who wish to do their own analysis or make their own charts, we offer': 'Para quienes desean hacer su propio análisis o crear sus propias gráficas, ofrecemos',
+      'For those who wish to do their own analysis or make their own charts, we offer , which is': 'Para quienes desean hacer su propio análisis o crear sus propias gráficas, ofrecemos, que es',
+      'a free, easy-to-use open-source tool': 'una herramienta de código abierto gratuita y fácil de usar',
+      'which is': 'que es',
+      'Now that you know our goals,': 'Ahora que ya conoces nuestros objetivos,',
+      'share your ideas here': 'comparte tus ideas aquí',
+      "Timeline of Sacramento's Budget Process": 'Cronología del proceso presupuestario de Sacramento',
+      'Here are resources that have helped or inspired our work so far. Soon, we will relaunch this page as a wiki so people can more easily contribute. For now,': 'Estos son recursos que han ayudado o inspirado nuestro trabajo hasta ahora. Pronto volveremos a lanzar esta página como una wiki para facilitar contribuciones. Por ahora,',
+      'send us links to other resources': 'envíanos enlaces a otros recursos',
+      '. As you explore the list below and see how others are making budgets more accessible, feel free to': '. Mientras exploras la lista de abajo y ves cómo otras personas hacen los presupuestos más accesibles, puedes',
+      'suggest features': 'sugerir funciones',
+      "Soon, we'll relaunch this page as a wiki so people can more easily contribute. For now,": 'Pronto volveremos a lanzar esta página como una wiki para facilitar contribuciones. Por ahora,',
+      'send us links': 'envíanos enlaces',
+      '2013 Budget Discussion': 'Discusión del presupuesto 2013',
+      'Budget Process Transparency Ordinance': 'Ordenanza de transparencia del proceso presupuestario',
+      "CODEFORSACRAMENTO's City Budget 101 (in progress)": 'Presupuesto de la ciudad 101 de CODEFORSACRAMENTO (en progreso)',
+      'Budget Office': 'Oficina de Presupuesto',
+      'Budget Process': 'Proceso presupuestario',
+      'Budget Advisory Committee': 'Comité Asesor de Presupuesto',
+      'Sacramento Budget Prioritization': 'Priorización del presupuesto de Sacramento',
+      ": How would you allocate the City's General Fund budget?": ': ¿Cómo asignarías el presupuesto del Fondo General de la ciudad?',
+      'Cash Flow: 2017-19 Proposed Budget': 'Flujo de caja: presupuesto propuesto 2017-19',
+      'Detailed Breakdown: 2017-19 Proposed Budget': 'Desglose detallado: presupuesto propuesto 2017-19',
+      'Cash Flow: 2016-17 Adjusted Budget': 'Flujo de caja: presupuesto ajustado 2016-17',
+      'Detailed Breakdown: 2016-17 Adjusted Budget': 'Desglose detallado: presupuesto ajustado 2016-17',
+      'Cash Flow: 2015-17 Proposed Budget': 'Flujo de caja: presupuesto propuesto 2015-17',
+      'Detailed Breakdown: 2015-17 Proposed Budget': 'Desglose detallado: presupuesto propuesto 2015-17',
+      'Cash Flow: 2015-17 Adopted Budget': 'Flujo de caja: presupuesto adoptado 2015-17',
+      'Detailed Breakdown: 2015-17 Adopted Budget': 'Desglose detallado: presupuesto adoptado 2015-17',
+      'Cash Flow: 2014-15 Adjusted Budget': 'Flujo de caja: presupuesto ajustado 2014-15',
+      'Cash Flow: 2013-15 Adopted Budget': 'Flujo de caja: presupuesto adoptado 2013-15',
+      'Detailed Breakdown: 2013-15 Adopted Budget': 'Desglose detallado: presupuesto adoptado 2013-15',
+      '2011-13 Adopted Spending (Treemap)': 'Gasto adoptado 2011-13 (mapa de árbol)',
+      'Focus on Measure Z: How does Sacramento fund violence prevention?': 'Enfoque en la Medida Z: ¿cómo financia Sacramento la prevención de la violencia?',
+      'Help us': 'Ayúdanos',
+      ', an open-source discussion platform (': ', una plataforma de discusión de código abierto (',
+      'City of Sacramento\'s Fiscal Year 2019-2021 Budget': 'Presupuesto del año fiscal 2019-2021 de la Ciudad de Sacramento',
+      'The Fiscal Data Package': 'Paquete de Datos Fiscales',
+      'Checkbook NYC (New York City, New York, United States)': 'Checkbook NYC (Ciudad de Nueva York, Nueva York, Estados Unidos)',
+      'City of Palo Alto\'s Financial Reporting Platform (Palo Alto, California, United States)': 'Plataforma de Reportes Financieros de la Ciudad de Palo Alto (Palo Alto, California, Estados Unidos)',
+      'HNL Open Data (Honolulu, Hawaii, United States)': 'HNL Open Data (Honolulu, Hawái, Estados Unidos)',
+      'Berlin Open Data (Berlin, Berlin, Germany)': 'Berlin Open Data (Berlín, Berlín, Alemania)',
+      'OpenDataPhilly (Philadelphia, Pennsylvania, United States)': 'OpenDataPhilly (Filadelfia, Pensilvania, Estados Unidos)',
+      'Long Beach Open Data Portal (Long Beach, California, United States)': 'Portal de Datos Abiertos de Long Beach (Long Beach, California, Estados Unidos)',
+      'Cook County Open Data (Cook County, Illinois, United States)': 'Datos Abiertos del Condado de Cook (Condado de Cook, Illinois, Estados Unidos)',
+      'Budget Challenge (California, United States)': 'Desafío Presupuestario (California, Estados Unidos)',
+      'Budget Browser (Massachusetts, United States)': 'Navegador Presupuestario (Massachusetts, Estados Unidos)',
+      'Our State Budget - (Washington, United States)': 'Nuestro Presupuesto Estatal - (Washington, Estados Unidos)',
+      'Where Does It All Go? (United Kingdom)': '¿A dónde va todo? (Reino Unido)',
+      'Central Government Budget (Sweden)': 'Presupuesto del Gobierno Central (Suecia)',
+      'National Budget Investment (Cameroon)': 'Inversión del Presupuesto Nacional (Camerún)',
+      '"In Sacramento, Calif., CODEFORSACRAMENTO, a civic-tech innovation brigade from Code for America, has a conversation feature that lets users ask questions and discuss every line item of the city budget."': '"En Sacramento, California, CODEFORSACRAMENTO, una brigada de innovación cívico-tecnológica de Code for America, cuenta con una función de conversación que permite a las personas usuarias hacer preguntas y debatir cada partida del presupuesto municipal."',
+      'GovTech: "Developed a visualization tool called Open Budget to allow the public to explore the city budget."': 'GovTech: "Desarrolló una herramienta de visualización llamada Open Budget para que el público pueda explorar el presupuesto de la ciudad."',
+      'KALW: "Volunteers hack technology to improve the Sacramento city government."': 'KALW: "Personas voluntarias usan tecnología para mejorar el gobierno municipal de Sacramento."',
+      'Sacramento Bee: "Hacking Sacramento\'s Budget."': 'Sacramento Bee: "Hackeando el presupuesto de Sacramento."',
+      'Sacramento Bee: "Our Town, Our Budget: What Does Public Safety Really Look Like?"': 'Sacramento Bee: "Nuestra ciudad, nuestro presupuesto: ¿cómo es realmente la seguridad pública?"',
+      'Tech President: "Sacramento Gets A New Data Visualization Site for Its Budget"': 'Tech President: "Sacramento obtiene un nuevo sitio de visualización de datos para su presupuesto"',
       'Detailed Breakdown:': 'Desglose detallado:',
       'Cash Flow:': 'Flujo de caja:'
     }
@@ -296,7 +362,7 @@
       Primary: 'Principal',
       'Budget comparison tool': 'Herramienta de comparación presupuestaria',
       'Select fiscal year': 'Selecciona el año fiscal',
-      'Open Budget Sacramento Feedback Form': 'Formulario de comentarios de Open Budget Sacramento',
+      'Open Budget Sacramento Feedback Form': 'Formulario de comentarios de Presupuesto Abierto Sacramento',
       'City of Sacramento Department of Finance': 'Departamento de Finanzas de la Ciudad de Sacramento',
       'City of Sacramento Budget': 'Presupuesto de la Ciudad de Sacramento',
       'Recent Sacramento Budget Data': 'Datos presupuestarios recientes de Sacramento',
@@ -315,13 +381,228 @@
     }
   }
 
+  const LEGACY_DATA_LABEL_MAP = {
+    'es-419': {
+      'City Attorney': 'Fiscalía municipal',
+      'City Auditor': 'Auditoría municipal',
+      'City Clerk': 'Secretaría municipal',
+      'City Manager': 'Gerencia municipal',
+      'City Treasurer': 'Tesorería municipal',
+      'Citywide and Community Support': 'Apoyo comunitario y de toda la ciudad',
+      'Community Development': 'Desarrollo comunitario',
+      'Community Response': 'Respuesta comunitaria',
+      'Convention & Cultural Services': 'Convenciones y servicios culturales',
+      'Convention and Cultural Services': 'Convenciones y servicios culturales',
+      'Debt Service': 'Servicio de la deuda',
+      'Economic Development': 'Desarrollo económico',
+      Finance: 'Finanzas',
+      Fire: 'Bomberos',
+      'General Services': 'Servicios generales',
+      'Human Resources': 'Recursos humanos',
+      'Information Technology': 'Tecnología de la información',
+      'Mayor/Council': 'Alcaldía/Concejo',
+      'Non Appropriated': 'No asignado',
+      'Non-Appropriated': 'No asignado',
+      'Office of the City Auditor': 'Oficina de la Auditoría Municipal',
+      'Parks & Recreation': 'Parques y recreación',
+      'Parks and Recreation': 'Parques y recreación',
+      Police: 'Policía',
+      Projects: 'Proyectos',
+      'Public Works': 'Obras públicas',
+      Technology: 'Tecnología',
+      Utilities: 'Servicios públicos',
+      'Youth, Parks, and Community Enrichment': 'Juventud, parques y enriquecimiento comunitario',
+      'Assessment Levies': 'Gravámenes de evaluación',
+      'Books and Periodicals': 'Libros y publicaciones periódicas',
+      'Capital Improvements': 'Mejoras de capital',
+      'Charges, Fees, & Services Accounts': 'Cuentas de cargos, tarifas y servicios',
+      'Charges, Fees, and Services': 'Cargos, tarifas y servicios',
+      'City Debt Service': 'Servicio de la deuda de la ciudad',
+      'City Property': 'Propiedad de la ciudad',
+      Contingency: 'Contingencia',
+      'Contingency Accounts': 'Cuentas de contingencia',
+      'Contributions from Other Funds': 'Aportes de otros fondos',
+      'Contributions from Other Funds Accounts': 'Cuentas de aportes de otros fondos',
+      'Debt Service Accounts': 'Cuentas de servicio de la deuda',
+      Donations: 'Donaciones',
+      Earnings: 'Ingresos',
+      'Employee Benefits': 'Beneficios para empleados',
+      'Employee Services': 'Servicios al personal',
+      'Employer Paid Taxes': 'Impuestos pagados por el empleador',
+      'Energy and Fuel': 'Energía y combustible',
+      'Fines Forfeitures Penalties': 'Multas, decomisos y sanciones',
+      'Fines, Forfeitures, &  Penalties': 'Multas, decomisos y sanciones',
+      'Fines, Forfeitures, and  Penalties': 'Multas, decomisos y sanciones',
+      Food: 'Alimentos',
+      'General Supplies': 'Suministros generales',
+      'Interest, Rents, & Concessions': 'Intereses, rentas y concesiones',
+      'Interest, Rents, Concessions': 'Intereses, rentas y concesiones',
+      'Interest, Rents, and Concessions': 'Intereses, rentas y concesiones',
+      'Interfund Reimbursement': 'Reembolso entre fondos',
+      'Interfund SerProvided': 'Servicios provistos entre fondos',
+      Intergovernmental: 'Intergubernamental',
+      'Intergovernmental Accounts': 'Cuentas intergubernamentales',
+      'Inventory Supplies': 'Suministros de inventario',
+      'Labor Adjustments': 'Ajustes laborales',
+      'Labor and Supply Offset': 'Compensación laboral y de suministros',
+      'Labor/Supply Offset': 'Compensación laboral/suministros',
+      'Licenses  Permits': 'Licencias y permisos',
+      'Licenses & Permits': 'Licencias y permisos',
+      'Licenses and Permits': 'Licencias y permisos',
+      'Miscellaneous Revenue': 'Ingresos misceláneos',
+      'Miscellaneous Revenue Accounts': 'Cuentas de ingresos misceláneos',
+      'Multi-Year Operating Projects': 'Proyectos operativos multianuales',
+      'Multi-Year Operating Projects ': 'Proyectos operativos multianuales',
+      'Operating Transfers': 'Transferencias operativas',
+      'Operating Transfers Accounts': 'Cuentas de transferencias operativas',
+      'Other Objects': 'Otros conceptos',
+      'Other Purchased Services': 'Otros servicios contratados',
+      'Other Services and Supplies': 'Otros servicios y suministros',
+      'Other Sources (Uses)': 'Otras fuentes (usos)',
+      'Other Tax': 'Otros impuestos',
+      'Other Taxes': 'Otros impuestos',
+      Property: 'Propiedad',
+      'Property Accounts': 'Cuentas de propiedad',
+      'Property Tax': 'Impuesto a la propiedad',
+      'Property Taxes': 'Impuestos a la propiedad',
+      'Purchased Prof and Tech Svcs': 'Servicios profesionales y técnicos contratados',
+      'Purchased Property Services': 'Servicios de propiedad contratados',
+      Salaries: 'Salarios',
+      'Sales Tax': 'Impuesto sobre ventas',
+      'Service & Supply Adjustments': 'Ajustes de servicios y suministros',
+      Taxes: 'Impuestos',
+      Transfers: 'Transferencias',
+      'Utility User Tax': 'Impuesto a usuarios de servicios públicos',
+      Revenue: 'Ingresos',
+      Expense: 'Gasto',
+      Expenses: 'Gastos',
+      Fund: 'Fondo',
+      Funds: 'Fondos',
+      ' and ': ' y ',
+      ' & ': ' y ',
+      ' - ': ' - ',
+      Maintenance: 'Mantenimiento',
+      Maint: 'Mantenimiento',
+      Benefit: 'Beneficio',
+      Area: 'Área',
+      Street: 'Calle',
+      Program: 'Programa',
+      Reinvestment: 'Reinversión',
+      Registration: 'Registro',
+      Housing: 'Vivienda',
+      Office: 'Oficina',
+      Planning: 'Planificación',
+      Cultural: 'Cultural',
+      Services: 'Servicios',
+      Other: 'Otro',
+      District: 'Distrito',
+      Dist: 'Distrito',
+      Mgmt: 'Gestión',
+      Management: 'Gestión',
+      Loan: 'Préstamo',
+      Trust: 'Fideicomiso',
+      Contributions: 'Aportes',
+      Capital: 'Capital',
+      Grant: 'Subvención',
+      Grants: 'Subvenciones',
+      Fleet: 'Flota',
+      Tax: 'Impuesto',
+      Construction: 'Construcción',
+      Acquisition: 'Adquisición',
+      Lighting: 'Iluminación',
+      Landscaping: 'Paisajismo',
+      Parcel: 'Parcelario',
+      Fee: 'Tarifa',
+      Development: 'Desarrollo',
+      Safety: 'Seguridad',
+      Transportation: 'Transporte',
+      Replacement: 'Reemplazo',
+      Recycling: 'Reciclaje',
+      Waste: 'Residuos',
+      Water: 'Agua',
+      Wastewater: 'Aguas residuales',
+      Bonds: 'Bonos',
+      Bond: 'Bono',
+      Refunding: 'Refinanciamiento',
+      Ref: 'Ref.',
+      Ser: 'Serie',
+      Series: 'Serie',
+      Lease: 'Arrendamiento',
+      Financing: 'Financiamiento',
+      Northside: 'Lado norte',
+      Neighborhood: 'Barrio',
+      Community: 'Comunidad',
+      Tree: 'Árbol',
+      Planting: 'Plantación',
+      Route: 'Ruta',
+      State: 'Estatal',
+      Sports: 'Deportes',
+      Commission: 'Comisión',
+      Tourism: 'Turismo',
+      Market: 'Mercado',
+      Parking: 'Estacionamiento',
+      Marina: 'Marina',
+      Start: 'Inicio',
+      Zoo: 'Zoológico',
+      '15_CIRBS': '15_CIRBS',
+      '16th St PBID': 'PBID de la calle 16',
+      '2003 North Sac TE TABS': 'TABS TE de North Sac 2003',
+      'Aggie Square EIFD': 'EIFD de Aggie Square',
+      'Central Midtown Restaurant BID': 'BID de restaurantes de Central Midtown',
+      'Curtis Park CFD 2013-03': 'CFD Curtis Park 2013-03',
+      'Curtis Park Village CFD 2014-02': 'CFD Curtis Park Village 2014-02',
+      'Del Paso Bid': 'BID de Del Paso',
+      'Del Paso PBID': 'PBID de Del Paso',
+      'Downtown Plaza Bid': 'BID de Downtown Plaza',
+      'Downtown Plaza PBID': 'PBID de Downtown Plaza',
+      'Fairytale Town': 'Ciudad de Cuento',
+      'Franklin Blvd Bid': 'BID de Franklin Blvd',
+      'Franklin Blvd PBID': 'PBID de Franklin Blvd',
+      'Franklin Boulevard PBID': 'PBID de Franklin Boulevard',
+      'Franklin Boulevard Pbid': 'PBID de Franklin Boulevard',
+      'Greater Broadway PBID': 'PBID de Greater Broadway',
+      'Handle BID No 2011-04': 'BID Handle Núm. 2011-04',
+      'Jacinto Creek': 'Arroyo Jacinto',
+      'Land Park': 'Parque Land',
+      'Mack Road PBID': 'PBID de Mack Road',
+      'Measure U': 'Medida U',
+      'Midtown Sacramento PBID': 'PBID de Midtown Sacramento',
+      'N Nat Lndscp 99-02': 'Paisajismo N Nat 99-02',
+      'N Natomas Lands CFD 3': 'CFD 3 de tierras de N Natomas',
+      'N Natomas Lands Cfd 3': 'CFD 3 de tierras de N Natomas',
+      'NN Westlake CFD 2000-01 Const': 'CFD NN Westlake 2000-01 Const.',
+      'NW Land Park CFD 2013-02': 'CFD NW Land Park 2013-02',
+      'Natomas Central CFD 2006-02': 'CFD Natomas Central 2006-02',
+      'Natomas Crossing CFD 2013-01': 'CFD Natomas Crossing 2013-01',
+      'New Measure A Specific Project': 'Proyecto específico de la Nueva Medida A',
+      'Oak Park PBID': 'PBID de Oak Park',
+      'Old Sacramento Bid': 'BID de Old Sacramento',
+      'Old Sacramento PBID': 'PBID de Old Sacramento',
+      'Parkebridge CFD 2014-07': 'CFD Parkebridge 2014-07',
+      'Power Inn Rd Md 2003-01': 'Distrito de mantenimiento Power Inn Rd 2003-01',
+      'Quimby Act': 'Ley Quimby',
+      'SHRA CDBG': 'SHRA CDBG',
+      'Sacramento TID': 'TID de Sacramento',
+      'So Natomas Comm Improv': 'Mejoras comunitarias de So Natomas',
+      'Special Recreation': 'Recreación especial',
+      'Stockton Blvd BIA': 'BIA de Stockton Blvd',
+      'Stockton Blvd PBID': 'PBID de Stockton Blvd',
+      'Stockton Blvd Pbid': 'PBID de Stockton Blvd',
+      'Storm Drainage': 'Drenaje pluvial',
+      'Township 9 CFD No. 2012-06': 'CFD Township 9 Núm. 2012-06',
+      'Willowcreek Assmnt Md': 'Distrito de evaluación Willowcreek',
+      'Willowcreek Lndscpng CFD': 'CFD de paisajismo Willowcreek',
+      'Willowcreek Lndscpng Cfd': 'CFD de paisajismo Willowcreek'
+    }
+  }
+
   const LEGACY_REPLACE_CACHE = {}
 
   /**
-   * Builds normalize locale.
+   * Normalizes locale values to supported site locales.
    *
-   * @param {any} value Input value.
-   * @returns {any} Function result.
+   * @param {unknown} value Candidate locale input.
+   * @returns {'en-US'|'es-419'|null} Supported locale code or null.
    */
   function normalizeLocale (value) {
     if (!value || typeof value !== 'string') {
@@ -338,11 +619,11 @@
   }
 
   /**
-   * Builds interpolate.
+   * Replaces token placeholders in a localized string.
    *
-   * @param {any} template Input value.
-   * @param {any} vars Input value.
-   * @returns {any} Function result.
+   * @param {string} template Translation template.
+   * @param {Record<string, unknown>} vars Interpolation variables.
+   * @returns {string} Interpolated string.
    */
   function interpolate (template, vars) {
     if (!template || !vars) {
@@ -354,12 +635,12 @@
   }
 
   /**
-   * Runs t.
+   * Resolves a translation key with optional fallback and interpolation.
    *
-   * @param {any} key Input value.
-   * @param {any} fallback Input value.
-   * @param {any} vars Input value.
-   * @returns {any} Function result.
+   * @param {string} key Translation key.
+   * @param {string} fallback Fallback message.
+   * @param {Record<string, unknown>} vars Interpolation variables.
+   * @returns {string} Localized text.
    */
   function t (key, fallback, vars) {
     const locale = api.currentLocale || DEFAULT_LOCALE
@@ -369,9 +650,9 @@
   }
 
   /**
-   * Gets resolve locale.
+   * Resolves locale from query params, storage, document, and browser preferences.
    *
-   * @returns {any} Function result.
+   * @returns {'en-US'|'es-419'} Resolved locale.
    */
   function resolveLocale () {
     if (typeof global.location !== 'undefined' && typeof global.location.search === 'string') {
@@ -414,10 +695,10 @@
   }
 
   /**
-   * Sets apply translations.
+   * Applies data-attribute-based translations to a root node.
    *
-   * @param {any} root Input value.
-   * @returns {any} Function result.
+   * @param {Document|Element} root DOM root for translation updates.
+   * @returns {void}
    */
   function applyTranslations (root) {
     if (!root || !root.querySelectorAll) {
@@ -448,10 +729,10 @@
   }
 
   /**
-   * Gets get sorted replacement keys.
+   * Returns cached map keys sorted by length, longest first.
    *
-   * @param {any} map Input value.
-   * @returns {any} Function result.
+   * @param {Record<string, string>} map Replacement map.
+   * @returns {string[]} Sorted keys.
    */
   function getSortedReplacementKeys (map) {
     const cacheKey = Object.keys(map).join('||')
@@ -464,11 +745,11 @@
   }
 
   /**
-   * Sets apply fragment map.
+   * Applies fragment substitutions using a translation map.
    *
-   * @param {any} value Input value.
-   * @param {any} map Input value.
-   * @returns {any} Function result.
+   * @param {string} value Source text.
+   * @param {Record<string, string>} map Replacement map.
+   * @returns {string} Text with substitutions applied.
    */
   function applyFragmentMap (value, map) {
     if (!value || typeof value !== 'string') {
@@ -487,11 +768,46 @@
   }
 
   /**
-   * Sets apply legacy attribute translations.
+   * Translates a dynamic legacy data label using locale-specific maps.
    *
-   * @param {any} root Input value.
-   * @param {any} attributeMap Input value.
-   * @returns {any} Function result.
+   * @param {string} value Label text.
+   * @param {string} locale Locale override.
+   * @returns {string} Translated label when available.
+   */
+  function translateLegacyText (value, locale) {
+    if (value == null) {
+      return value
+    }
+    const currentLocale = normalizeLocale(locale) || api.currentLocale || DEFAULT_LOCALE
+    if (currentLocale === 'en-US') {
+      return String(value)
+    }
+
+    const text = String(value)
+    const exactMap = LEGACY_DATA_LABEL_MAP[currentLocale]
+    if (exactMap && Object.prototype.hasOwnProperty.call(exactMap, text)) {
+      return exactMap[text]
+    }
+    if (exactMap) {
+      const translatedFromDataMap = applyFragmentMap(text, exactMap)
+      if (translatedFromDataMap !== text) {
+        return translatedFromDataMap
+      }
+    }
+
+    const fragmentMap = LEGACY_TEXT_MAP[currentLocale]
+    if (fragmentMap) {
+      return applyFragmentMap(text, fragmentMap)
+    }
+    return text
+  }
+
+  /**
+   * Translates legacy text fragments in selected element attributes.
+   *
+   * @param {Document|Element} root Root node.
+   * @param {Record<string, string>} attributeMap Translation map.
+   * @returns {void}
    */
   function applyLegacyAttributeTranslations (root, attributeMap) {
     if (!attributeMap) {
@@ -512,11 +828,11 @@
   }
 
   /**
-   * Sets apply legacy text node translations.
+   * Translates legacy free-text nodes across the rendered document.
    *
-   * @param {any} root Input value.
-   * @param {any} textMap Input value.
-   * @returns {any} Function result.
+   * @param {Document|Element} root Root node.
+   * @param {Record<string, string>} textMap Translation map.
+   * @returns {void}
    */
   function applyLegacyTextNodeTranslations (root, textMap) {
     if (!textMap || typeof document === 'undefined') {
@@ -554,10 +870,10 @@
   }
 
   /**
-   * Sets apply legacy document title translations.
+   * Translates the document title using the legacy text map.
    *
-   * @param {any} locale Input value.
-   * @returns {any} Function result.
+   * @param {'en-US'|'es-419'} locale Active locale.
+   * @returns {void}
    */
   function applyLegacyDocumentTitleTranslations (locale) {
     if (typeof document === 'undefined') {
@@ -575,10 +891,10 @@
   }
 
   /**
-   * Sets apply legacy leaf text.
+   * Applies legacy attribute, text-node, and title translations.
    *
-   * @param {any} root Input value.
-   * @returns {any} Function result.
+   * @param {Document|Element} root Root node.
+   * @returns {void}
    */
   function applyLegacyLeafText (root) {
     const locale = api.currentLocale || DEFAULT_LOCALE
@@ -592,11 +908,11 @@
   }
 
   /**
-   * Sets propagate locale to links.
+   * Appends the active locale to same-origin links in a DOM root.
    *
-   * @param {any} locale Input value.
-   * @param {any} root Input value.
-   * @returns {any} Function result.
+   * @param {'en-US'|'es-419'} locale Active locale.
+   * @param {Document|Element} root Root node.
+   * @returns {void}
    */
   function propagateLocaleToLinks (locale, root) {
     if (!root || !root.querySelectorAll || !global.location) {
@@ -622,11 +938,11 @@
   }
 
   /**
-   * Sets set locale.
+   * Sets the active locale and re-renders translated content.
    *
-   * @param {any} locale Input value.
-   * @param {any} options Input value.
-   * @returns {any} Function result.
+   * @param {string} locale Requested locale.
+   * @param {{persist?: boolean}} options Optional behavior flags.
+   * @returns {void}
    */
   function setLocale (locale, options) {
     const normalized = normalizeLocale(locale) || DEFAULT_LOCALE
@@ -654,9 +970,9 @@
   }
 
   /**
-   * Runs init.
+   * Initializes locale state and language selector bindings.
    *
-   * @returns {any} Function result.
+   * @returns {void}
    */
   function init () {
     const locale = resolveLocale()
@@ -679,6 +995,7 @@
     normalizeLocale,
     resolveLocale,
     t,
+    translateLegacyText,
     applyTranslations,
     propagateLocaleToLinks,
     setLocale,

@@ -26,6 +26,8 @@
     "serve:test:static:nobuild": "npx @11ty/eleventy && node test/static-server.js",
     "watch": "npx webpack --config webpack.config.js --mode development --watch",
     "build": "npx webpack --config webpack.config.js --mode production",
+    "docs:jsdoc:autofix": "node scripts/add-missing-jsdoc.mjs && npm run docs:jsdoc",
+    "docs:jsdoc:check": "node scripts/add-missing-jsdoc.mjs && git diff --exit-code -- js test __tests__",
     "docs:jsdoc": "node scripts/generate-jsdoc-docs.mjs",
     "build-css": "dart-sass --style=compressed css/main.scss styles/main.css",
     "lint:standard": "XDG_CACHE_HOME=.cache standard --env browser --env node --env jest --global d3 --global ob --global $ --global jQuery --global event --global width --global OpenSpending --global define --global _ --global $jit --global yepnope --global json --global _grandparent \"js/**/*.js\" \"js/**/*.jsx\" \"test/**/*.js\" \"__tests__/**/*.js\" \"bench/**/*.js\"",

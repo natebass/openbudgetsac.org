@@ -41,4 +41,32 @@ describe('site i18n runtime', () => {
     expect(document.getElementById('external').getAttribute('href')).toBe('https://example.com/docs')
     expect(window.localStorage.getItem('ob.locale')).toBe('es-419')
   })
+
+  test('translates legacy page copy fragments on text nodes', () => {
+    document.body.innerHTML = `
+      <h2>What we do</h2>
+      <p>Now that you know our goals, <a href="/feedback">share your ideas here</a>.</p>
+      <p>Help us <a href="http://www.discourse.org/">install</a>, an open-source discussion platform (<a href="https://github.com/discourse/discourse">source code</a>).</p>
+    `
+
+    jest.isolateModules(() => {
+      const siteI18n = require('../../i18n-site.js')
+      siteI18n.setLocale('es-419')
+    })
+
+    expect(document.body.textContent).toContain('Qué hacemos')
+    expect(document.body.textContent).toContain('Ahora que ya conoces nuestros objetivos')
+    expect(document.body.textContent).toContain('comparte tus ideas aquí')
+    expect(document.body.textContent).toContain('Ayúdanos')
+    expect(document.body.textContent).toContain('una plataforma de discusión de código abierto')
+  })
+
+  test('exposes legacy label translation helper for dynamic data labels', () => {
+    jest.isolateModules(() => {
+      const siteI18n = require('../../i18n-site.js')
+      siteI18n.setLocale('es-419')
+      expect(siteI18n.translateLegacyText('Parks & Recreation')).toBe('Parques y recreación')
+      expect(siteI18n.translateLegacyText('Intergovernmental')).toBe('Intergubernamental')
+    })
+  })
 })
