@@ -6,13 +6,11 @@ block title
 block datasource
   h6
     | Data source:&nbsp;
-    a(href="/files/BudgetData for Public Adopted FY2016-17 Midcycle.xlsx") BudgetData for Public Adopted FY2016-17 Midcycle
+    a(href='/files/BudgetData for Public Adopted FY2016-17 Midcycle.xlsx') BudgetData for Public Adopted FY2016-17 Midcycle
   h6 Data provided by City of Sacramento staff; publication on #[a(href="https://data.cityofsacramento.org") data.cityofsacramento.org] pending as of 8/21/16.
 
 block disqus_config
-  script(type="text/javascript").
-    var disqus_identifier = "2016-17-adjusted-budget-flow";
+  - var disqusIdentifier = '2016-17-adjusted-budget-flow'
 
 block get_datafiles
-  script(type="text/javascript").
-    var datafiles = [{filename: "FY16-17__adjusted.csv"}];
+  - var flowDatafiles = [{filename: 'FY16-17__adjusted.csv'}]

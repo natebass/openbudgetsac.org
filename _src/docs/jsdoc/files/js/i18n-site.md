@@ -1,12 +1,12 @@
-# js/i18n-site.js
+# js/i18n-site.ts
 
 - JSDoc blocks found: 15
 
 ## Block 1
 
-Associated declaration: `function normalizeLocale (value) {`
+Associated declaration: `function normalizeLocale(value) {`
 
-```js
+```ts
 /**
    * Normalizes locale values to supported site locales.
    *
@@ -17,9 +17,9 @@ Associated declaration: `function normalizeLocale (value) {`
 
 ## Block 2
 
-Associated declaration: `function interpolate (template, vars) {`
+Associated declaration: `function interpolate(template: string, vars?: Record<string, unknown>) {`
 
-```js
+```ts
 /**
    * Replaces token placeholders in a localized string.
    *
@@ -31,9 +31,9 @@ Associated declaration: `function interpolate (template, vars) {`
 
 ## Block 3
 
-Associated declaration: `function t (key, fallback, vars) {`
+Associated declaration: `function t(key: string, fallback?: string, vars?: Record<string, unknown>) {`
 
-```js
+```ts
 /**
    * Resolves a translation key with optional fallback and interpolation.
    *
@@ -46,9 +46,9 @@ Associated declaration: `function t (key, fallback, vars) {`
 
 ## Block 4
 
-Associated declaration: `function resolveLocale () {`
+Associated declaration: `function resolveLocale() {`
 
-```js
+```ts
 /**
    * Resolves locale from query params, storage, document, and browser preferences.
    *
@@ -58,9 +58,9 @@ Associated declaration: `function resolveLocale () {`
 
 ## Block 5
 
-Associated declaration: `function applyTranslations (root) {`
+Associated declaration: `function applyTranslations(root: Document | Element) {`
 
-```js
+```ts
 /**
    * Applies data-attribute-based translations to a root node.
    *
@@ -71,9 +71,9 @@ Associated declaration: `function applyTranslations (root) {`
 
 ## Block 6
 
-Associated declaration: `function getSortedReplacementKeys (map) {`
+Associated declaration: `function getSortedReplacementKeys(map) {`
 
-```js
+```ts
 /**
    * Returns cached map keys sorted by length, longest first.
    *
@@ -84,9 +84,9 @@ Associated declaration: `function getSortedReplacementKeys (map) {`
 
 ## Block 7
 
-Associated declaration: `function applyFragmentMap (value, map) {`
+Associated declaration: `function applyFragmentMap(value, map) {`
 
-```js
+```ts
 /**
    * Applies fragment substitutions using a translation map.
    *
@@ -98,9 +98,9 @@ Associated declaration: `function applyFragmentMap (value, map) {`
 
 ## Block 8
 
-Associated declaration: `function translateLegacyText (value, locale) {`
+Associated declaration: `function translateLegacyText(value: string | null | undefined, locale?: string) {`
 
-```js
+```ts
 /**
    * Translates a dynamic legacy data label using locale-specific maps.
    *
@@ -112,9 +112,9 @@ Associated declaration: `function translateLegacyText (value, locale) {`
 
 ## Block 9
 
-Associated declaration: `function applyLegacyAttributeTranslations (root, attributeMap) {`
+Associated declaration: `function applyLegacyAttributeTranslations(root: Document | Element, attributeMap?: Record<string, string>) {`
 
-```js
+```ts
 /**
    * Translates legacy text fragments in selected element attributes.
    *
@@ -126,9 +126,9 @@ Associated declaration: `function applyLegacyAttributeTranslations (root, attrib
 
 ## Block 10
 
-Associated declaration: `function applyLegacyTextNodeTranslations (root, textMap) {`
+Associated declaration: `function applyLegacyTextNodeTranslations(root: Document | Element, textMap?: Record<string, string>) {`
 
-```js
+```ts
 /**
    * Translates legacy free-text nodes across the rendered document.
    *
@@ -140,9 +140,9 @@ Associated declaration: `function applyLegacyTextNodeTranslations (root, textMap
 
 ## Block 11
 
-Associated declaration: `function applyLegacyDocumentTitleTranslations (locale) {`
+Associated declaration: `function applyLegacyDocumentTitleTranslations(locale) {`
 
-```js
+```ts
 /**
    * Translates the document title using the legacy text map.
    *
@@ -153,9 +153,9 @@ Associated declaration: `function applyLegacyDocumentTitleTranslations (locale) 
 
 ## Block 12
 
-Associated declaration: `function applyLegacyLeafText (root) {`
+Associated declaration: `function applyLegacyLeafText(root: Document | Element) {`
 
-```js
+```ts
 /**
    * Applies legacy attribute, text-node, and title translations.
    *
@@ -166,9 +166,9 @@ Associated declaration: `function applyLegacyLeafText (root) {`
 
 ## Block 13
 
-Associated declaration: `function propagateLocaleToLinks (locale, root) {`
+Associated declaration: `function propagateLocaleToLinks(locale: 'en-US' | 'es-419', root: Document | Element) {`
 
-```js
+```ts
 /**
    * Appends the active locale to same-origin links in a DOM root.
    *
@@ -180,9 +180,9 @@ Associated declaration: `function propagateLocaleToLinks (locale, root) {`
 
 ## Block 14
 
-Associated declaration: `function setLocale (locale, options) {`
+Associated declaration: `function setLocale(locale: string, options?: {persist?: boolean}) {`
 
-```js
+```ts
 /**
    * Sets the active locale and re-renders translated content.
    *
@@ -194,9 +194,9 @@ Associated declaration: `function setLocale (locale, options) {`
 
 ## Block 15
 
-Associated declaration: `function init () {`
+Associated declaration: `function init() {`
 
-```js
+```ts
 /**
    * Initializes locale state and language selector bindings.
    *

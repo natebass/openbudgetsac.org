@@ -1,12 +1,12 @@
-# bench/index.js
+# bench/index.ts
 
 - JSDoc blocks found: 4
 
 ## Block 1
 
-Associated declaration: `function getReporter () {`
+Associated declaration: `function getReporter() {`
 
-```js
+```ts
 /**
  * Gets get reporter.
  *
@@ -16,9 +16,9 @@ Associated declaration: `function getReporter () {`
 
 ## Block 2
 
-Associated declaration: `function createContext () {`
+Associated declaration: `function createContext() {`
 
-```js
+```ts
 /**
  * Builds create context.
  *
@@ -28,9 +28,9 @@ Associated declaration: `function createContext () {`
 
 ## Block 3
 
-Associated declaration: `function loadSuiteRegistrars () {`
+Associated declaration: `function loadSuiteRegistrars() {`
 
-```js
+```ts
 /**
  * Runs load suite registrars.
  *
@@ -40,9 +40,9 @@ Associated declaration: `function loadSuiteRegistrars () {`
 
 ## Block 4
 
-Associated declaration: `async function run () {`
+Associated declaration: `async function run() {`
 
-```js
+```ts
 /**
  * Runs run.
  *

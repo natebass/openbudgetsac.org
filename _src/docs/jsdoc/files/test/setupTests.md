@@ -1,4 +1,4 @@
-# test/setupTests.js
+# test/setupTests.ts
 
 - JSDoc blocks found: 0
 

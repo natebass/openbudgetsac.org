@@ -1,12 +1,12 @@
-# js/hash.js
+# js/hash.ts
 
 - JSDoc blocks found: 1
 
 ## Block 1
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
    * Checks whether hash.
    *

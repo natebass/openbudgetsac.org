@@ -1,12 +1,12 @@
-# test/perf-report.js
+# test/perf-report.ts
 
 - JSDoc blocks found: 2
 
 ## Block 1
 
-Associated declaration: `function formatBytes (value) {`
+Associated declaration: `function formatBytes(value) {`
 
-```js
+```ts
 /**
  * Builds format bytes.
  *
@@ -17,9 +17,9 @@ Associated declaration: `function formatBytes (value) {`
 
 ## Block 2
 
-Associated declaration: `function fail (message) {`
+Associated declaration: `function fail(message) {`
 
-```js
+```ts
 /**
  * Runs fail.
  *

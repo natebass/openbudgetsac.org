@@ -1,12 +1,12 @@
-# js/sankey.js
+# js/sankey.ts
 
 - JSDoc blocks found: 21
 
 ## Block 1
 
-Associated declaration: `d3.sankey = function () {`
+Associated declaration: `d3.sankey = function() {`
 
-```js
+```ts
 /**
  * Creates a d3 sankey layout instance.
  *
@@ -16,9 +16,9 @@ Associated declaration: `d3.sankey = function () {`
 
 ## Block 2
 
-Associated declaration: `function link (d) {`
+Associated declaration: `function link(d) {`
 
-```js
+```ts
 /**
      * Generates a cubic Bézier path for a sankey link.
      *
@@ -29,9 +29,9 @@ Associated declaration: `function link (d) {`
 
 ## Block 3
 
-Associated declaration: `function computeNodeLinks () {`
+Associated declaration: `function computeNodeLinks() {`
 
-```js
+```ts
 /**
    * Populates `sourceLinks` and `targetLinks` for each node.
    *
@@ -41,9 +41,9 @@ Associated declaration: `function computeNodeLinks () {`
 
 ## Block 4
 
-Associated declaration: `function computeNodeValues () {`
+Associated declaration: `function computeNodeValues() {`
 
-```js
+```ts
 /**
    * Computes each node value from incoming/outgoing link totals.
    *
@@ -53,9 +53,9 @@ Associated declaration: `function computeNodeValues () {`
 
 ## Block 5
 
-Associated declaration: `function computeNodeBreadths () {`
+Associated declaration: `function computeNodeBreadths() {`
 
-```js
+```ts
 /**
    * Assigns horizontal breadth (`x`) positions for each node.
    *
@@ -65,9 +65,9 @@ Associated declaration: `function computeNodeBreadths () {`
 
 ## Block 6
 
-Associated declaration: `function moveSinksRight (x) {`
+Associated declaration: `function moveSinksRight(x) {`
 
-```js
+```ts
 /**
    * Moves sink nodes to the right-most column.
    *
@@ -78,9 +78,9 @@ Associated declaration: `function moveSinksRight (x) {`
 
 ## Block 7
 
-Associated declaration: `function scaleNodeBreadths (kx) {`
+Associated declaration: `function scaleNodeBreadths(kx) {`
 
-```js
+```ts
 /**
    * Scales node breadth coordinates to pixel units.
    *
@@ -91,9 +91,9 @@ Associated declaration: `function scaleNodeBreadths (kx) {`
 
 ## Block 8
 
-Associated declaration: `function computeNodeDepths (iterations) {`
+Associated declaration: `function computeNodeDepths(iterations) {`
 
-```js
+```ts
 /**
    * Computes vertical positions and heights for nodes.
    *
@@ -104,9 +104,9 @@ Associated declaration: `function computeNodeDepths (iterations) {`
 
 ## Block 9
 
-Associated declaration: `function initializeNodeDepth () {`
+Associated declaration: `function initializeNodeDepth() {`
 
-```js
+```ts
 /**
      * Initializes node/link depths before relaxation passes.
      *
@@ -116,9 +116,9 @@ Associated declaration: `function initializeNodeDepth () {`
 
 ## Block 10
 
-Associated declaration: `function relaxLeftToRight (alpha) {`
+Associated declaration: `function relaxLeftToRight(alpha) {`
 
-```js
+```ts
 /**
      * Relaxes node depth from left to right.
      *
@@ -129,9 +129,9 @@ Associated declaration: `function relaxLeftToRight (alpha) {`
 
 ## Block 11
 
-Associated declaration: `function weightedSource (link) {`
+Associated declaration: `function weightedSource(link) {`
 
-```js
+```ts
 /**
        * Calculates weighted source center by link value.
        *
@@ -142,9 +142,9 @@ Associated declaration: `function weightedSource (link) {`
 
 ## Block 12
 
-Associated declaration: `function relaxRightToLeft (alpha) {`
+Associated declaration: `function relaxRightToLeft(alpha) {`
 
-```js
+```ts
 /**
      * Relaxes node depth from right to left.
      *
@@ -155,9 +155,9 @@ Associated declaration: `function relaxRightToLeft (alpha) {`
 
 ## Block 13
 
-Associated declaration: `function weightedTarget (link) {`
+Associated declaration: `function weightedTarget(link) {`
 
-```js
+```ts
 /**
        * Calculates weighted target center by link value.
        *
@@ -168,9 +168,9 @@ Associated declaration: `function weightedTarget (link) {`
 
 ## Block 14
 
-Associated declaration: `function resolveCollisions () {`
+Associated declaration: `function resolveCollisions() {`
 
-```js
+```ts
 /**
      * Resolves overlapping nodes within each breadth column.
      *
@@ -180,9 +180,9 @@ Associated declaration: `function resolveCollisions () {`
 
 ## Block 15
 
-Associated declaration: `function ascendingDepth (a, b) {`
+Associated declaration: `function ascendingDepth(a, b) {`
 
-```js
+```ts
 /**
      * Sort comparator for y-position.
      *
@@ -194,9 +194,9 @@ Associated declaration: `function ascendingDepth (a, b) {`
 
 ## Block 16
 
-Associated declaration: `function centerFunds () {`
+Associated declaration: `function centerFunds() {`
 
-```js
+```ts
 /**
      * Applies custom vertical centering for fund nodes.
      *
@@ -206,9 +206,9 @@ Associated declaration: `function centerFunds () {`
 
 ## Block 17
 
-Associated declaration: `function computeLinkDepths () {`
+Associated declaration: `function computeLinkDepths() {`
 
-```js
+```ts
 /**
    * Computes `sy` and `ty` offsets for link stacking.
    *
@@ -218,9 +218,9 @@ Associated declaration: `function computeLinkDepths () {`
 
 ## Block 18
 
-Associated declaration: `function ascendingSourceDepth (a, b) {`
+Associated declaration: `function ascendingSourceDepth(a, b) {`
 
-```js
+```ts
 /**
      * Sort comparator by source y-position.
      *
@@ -232,9 +232,9 @@ Associated declaration: `function ascendingSourceDepth (a, b) {`
 
 ## Block 19
 
-Associated declaration: `function ascendingTargetDepth (a, b) {`
+Associated declaration: `function ascendingTargetDepth(a, b) {`
 
-```js
+```ts
 /**
      * Sort comparator by target y-position.
      *
@@ -246,9 +246,9 @@ Associated declaration: `function ascendingTargetDepth (a, b) {`
 
 ## Block 20
 
-Associated declaration: `function center (node) {`
+Associated declaration: `function center(node) {`
 
-```js
+```ts
 /**
    * Computes vertical center for a node.
    *
@@ -259,9 +259,9 @@ Associated declaration: `function center (node) {`
 
 ## Block 21
 
-Associated declaration: `function value (link) {`
+Associated declaration: `function value(link) {`
 
-```js
+```ts
 /**
    * Value accessor for links.
    *

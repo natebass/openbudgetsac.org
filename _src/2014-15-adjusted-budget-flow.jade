@@ -9,9 +9,7 @@ block datasource
     a(href = "https://data.cityofsacramento.org/Financial/Budget-Data-For-Public-Adopted-FY2014-15-Midcycle-/d46c-ikcm") City of Sacramento Open Data: Budget Data For Public Adopted FY2014-15 Midcycle Budget 
 
 block disqus_config
-  script(type="text/javascript").
-    var disqus_identifier = "2014-2015 adjusted budget flow";
+  - var disqusIdentifier = '2014-2015 adjusted budget flow'
 
 block get_datafiles
-  script(type="text/javascript").
-    var datafiles = [{filename: "FY14-15__adjusted.csv"}];
+  - var flowDatafiles = [{filename: 'FY14-15__adjusted.csv'}]

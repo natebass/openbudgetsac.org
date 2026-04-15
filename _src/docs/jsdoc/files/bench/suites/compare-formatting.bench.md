@@ -1,12 +1,12 @@
-# bench/suites/compare-formatting.bench.js
+# bench/suites/compare-formatting.bench.ts
 
 - JSDoc blocks found: 1
 
 ## Block 1
 
-Associated declaration: `function registerCompareFormattingSuite (suite, context) {`
+Associated declaration: `function registerCompareFormattingSuite(suite: any, context: any) {`
 
-```js
+```ts
 /**
  * Runs exports.
  *

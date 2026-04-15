@@ -1,4 +1,4 @@
-# js/compare/__tests__/Trend.test.jsx
+# js/compare/__tests__/Trend.test.tsx
 
 - JSDoc blocks found: 0
 

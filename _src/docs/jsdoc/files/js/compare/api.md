@@ -1,102 +1,101 @@
-# js/compare/api.js
+# js/compare/api.ts
 
 - JSDoc blocks found: 7
 
 ## Block 1
 
-Associated declaration: `function isSafeBreakdownKey (value) {`
+Associated declaration: `function isSafeBreakdownKey(value: unknown): value is string {`
 
-```js
+```ts
 /**
- * Checks whether a breakdown label is safe to use as an object key.
+ * Checks whether is safe breakdown key.
  *
- * @param {unknown} value Candidate key value.
- * @returns {boolean} True when the key is safe.
+ * @param {any} value Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 2
 
-Associated declaration: `function getTotalsSortIndex (record) {`
+Associated declaration: `function getTotalsSortIndex(record: Pick<BudgetRecord, 'fiscal_year_range' | 'budget_type'>): number {`
 
-```js
+```ts
 /**
- * Builds a sortable index for totals based on fiscal year and budget type.
+ * Gets get totals sort index.
  *
- * @param {{fiscal_year_range:string,budget_type:(string|number)}} record Totals record.
- * @returns {number} Numeric sort key.
+ * @param {any} record Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 3
 
-Associated declaration: `function createBreakdownUrl (year, type, dimension) {`
+Associated declaration: `function createBreakdownUrl(year: string, type: BudgetDataType, dimension: BreakdownDimension): string {`
 
-```js
+```ts
 /**
- * Builds the JSON endpoint URL for one breakdown request.
+ * Builds create breakdown url.
  *
- * @param {string} year Fiscal year token.
- * @param {'spending'|'revenue'} type Budget dataset type.
- * @param {'department'|'category'} dimension Breakdown grouping.
- * @returns {string} Endpoint URL.
+ * @param {any} year Input value.
+ * @param {any} type Input value.
+ * @param {any} dimension Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 4
 
-Associated declaration: `function parseNumericTotal (rawTotal) {`
+Associated declaration: `function parseNumericTotal(rawTotal: unknown): number {`
 
-```js
+```ts
 /**
- * Parses a numeric total and falls back to zero for invalid values.
+ * Gets parse numeric total.
  *
- * @param {unknown} rawTotal Raw value from the dataset.
- * @returns {number} Parsed numeric total.
+ * @param {any} rawTotal Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 5
 
-Associated declaration: `function assertValidBreakdownRequest (years, yearTypes, type, dimension) {`
+Associated declaration: `function assertValidBreakdownRequest(`
 
-```js
+```ts
 /**
- * Validates request inputs before fetching compare breakdown data.
+ * Checks whether assert valid breakdown request.
  *
- * @param {unknown} years Requested fiscal years.
- * @param {unknown} yearTypes Requested budget types.
- * @param {unknown} type Dataset type selector.
- * @param {unknown} dimension Breakdown dimension selector.
- * @returns {void}
+ * @param {any} years Input value.
+ * @param {any} yearTypes Input value.
+ * @param {any} type Input value.
+ * @param {any} dimension Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 6
 
-Associated declaration: `export function fetchBreakdownData (years, yearTypes, type, dimension) {`
+Associated declaration: `async function fetchBreakdownData(`
 
-```js
+```ts
 /**
- * Fetches breakdown data for two years and filters rows by budget type.
+ * Gets fetch breakdown data.
  *
- * @param {string[]} years Fiscal year identifiers.
- * @param {(string|number)[]} yearTypes Budget type per requested year.
- * @param {'spending'|'revenue'} type Data type path selector.
- * @param {'department'|'category'} dimension Grouping dimension.
- * @returns {Promise<Array<Record<string, number>>>} Two budget maps keyed by dimension label.
+ * @param {any} years Input value.
+ * @param {any} yearTypes Input value.
+ * @param {any} type Input value.
+ * @param {any} dimension Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 7
 
-Associated declaration: `export function fetchTotals () {`
+Associated declaration: `async function fetchTotals(): Promise<Array<BudgetRecord>> {`
 
-```js
+```ts
 /**
- * Fetches total spending records and sorts newest-first.
+ * Gets fetch totals.
  *
- * @returns {Promise<Array<{fiscal_year_range:string,budget_type:(string|number),total:number}>>}
- * Sorted totals list.
+ * @returns {any} Function result.
  */
 ```

@@ -1,12 +1,12 @@
-# test/e2e-preflight.js
+# test/e2e-preflight.ts
 
 - JSDoc blocks found: 5
 
 ## Block 1
 
-Associated declaration: `function fail (message) {`
+Associated declaration: `function fail(message) {`
 
-```js
+```ts
 /**
  * Runs fail.
  *
@@ -17,9 +17,9 @@ Associated declaration: `function fail (message) {`
 
 ## Block 2
 
-Associated declaration: `function resolveChromePath () {`
+Associated declaration: `function resolveChromePath() {`
 
-```js
+```ts
 /**
  * Gets resolve chrome path.
  *
@@ -29,9 +29,9 @@ Associated declaration: `function resolveChromePath () {`
 
 ## Block 3
 
-Associated declaration: `function parseMissingLibraries (lddOutput) {`
+Associated declaration: `function parseMissingLibraries(lddOutput) {`
 
-```js
+```ts
 /**
  * Gets parse missing libraries.
  *
@@ -42,9 +42,9 @@ Associated declaration: `function parseMissingLibraries (lddOutput) {`
 
 ## Block 4
 
-Associated declaration: `function buildInstallHints (missingLibraries) {`
+Associated declaration: `function buildInstallHints(missingLibraries) {`
 
-```js
+```ts
 /**
  * Builds build install hints.
  *
@@ -55,9 +55,9 @@ Associated declaration: `function buildInstallHints (missingLibraries) {`
 
 ## Block 5
 
-Associated declaration: `function run () {`
+Associated declaration: `function run() {`
 
-```js
+```ts
 /**
  * Runs run.
  *

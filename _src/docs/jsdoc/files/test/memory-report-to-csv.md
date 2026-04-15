@@ -1,12 +1,12 @@
-# test/memory-report-to-csv.js
+# test/memory-report-to-csv.ts
 
 - JSDoc blocks found: 4
 
 ## Block 1
 
-Associated declaration: `function usage (code) {`
+Associated declaration: `function usage(code) {`
 
-```js
+```ts
 /**
  * Runs usage.
  *
@@ -17,9 +17,9 @@ Associated declaration: `function usage (code) {`
 
 ## Block 2
 
-Associated declaration: `function ensureParentDir (filePath) {`
+Associated declaration: `function ensureParentDir(filePath) {`
 
-```js
+```ts
 /**
  * Runs ensure parent dir.
  *
@@ -30,9 +30,9 @@ Associated declaration: `function ensureParentDir (filePath) {`
 
 ## Block 3
 
-Associated declaration: `function toMiB (bytes) {`
+Associated declaration: `function toMiB(bytes) {`
 
-```js
+```ts
 /**
  * Runs to mi b.
  *
@@ -43,9 +43,9 @@ Associated declaration: `function toMiB (bytes) {`
 
 ## Block 4
 
-Associated declaration: `function run () {`
+Associated declaration: `function run() {`
 
-```js
+```ts
 /**
  * Runs run.
  *

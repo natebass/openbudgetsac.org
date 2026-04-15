@@ -38,8 +38,11 @@ jobs:
       - name: Install dependencies
         run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
 
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: i18n unit smoke tests (site + compare)
-        run: npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand
+        run: npm run test:i18n:smoke
 
       - name: Build frontend bundle
         run: npm run build
@@ -47,14 +50,14 @@ jobs:
       - name: Build CSS
         run: npm run build-css
 
-      - name: Verify JSDoc coverage in active JS/JSX files
+      - name: Verify JSDoc coverage in active TS/JS files
         run: npm run docs:jsdoc:check
 
       - name: Generate JSDoc docs
         run: npm run docs:jsdoc
 
       - name: Build site with Eleventy
-        run: npx @11ty/eleventy
+        run: npm run site:build
 
       - name: Verify i18n assets in built site
         run: |

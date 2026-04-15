@@ -1,108 +1,109 @@
-# js/compare/DiffTable.jsx
+# js/compare/DiffTable.tsx
 
 - JSDoc blocks found: 8
 
 ## Block 1
 
-Associated declaration: `function compareDesc (a, b) {`
+Associated declaration: `function compareDesc(left: number | string, right: number | string): number {`
 
-```js
+```tsx
 /**
- * Compares values in descending order.
+ * Runs compare desc.
  *
- * @param {number|string} a Left value.
- * @param {number|string} b Right value.
- * @returns {number} Sort comparator value.
+ * @param {any} left Input value.
+ * @param {any} right Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 2
 
-Associated declaration: `function compareAsc (a, b) {`
+Associated declaration: `function compareAsc(left: number | string, right: number | string): number {`
 
-```js
+```tsx
 /**
- * Compares values in ascending order.
+ * Runs compare asc.
  *
- * @param {number|string} a Left value.
- * @param {number|string} b Right value.
- * @returns {number} Sort comparator value.
+ * @param {any} left Input value.
+ * @param {any} right Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 3
 
-Associated declaration: `function buildRowChartData (entry, years, colors) {`
+Associated declaration: `function buildRowChartData(entry: DiffEntry, years: SelectedYears, colors: Array<string>) {`
 
-```js
+```tsx
 /**
- * Builds per-row chart data for the two selected fiscal years.
+ * Builds build row chart data.
  *
- * @param {{value:number,prev:number}} entry Row diff entry.
- * @param {Array<{fiscal_year_range:string}>} years Selected year records.
- * @param {string[]} colors Series colors.
- * @returns {{labels:string[],datasets:Array<{data:number[],label:string,backgroundColor:string}>}} Chart.js data.
+ * @param {any} entry Input value.
+ * @param {any} years Input value.
+ * @param {any} colors Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 4
 
-Associated declaration: `constructor (props) {`
+Associated declaration: `constructor(props: DiffTableProps) {`
 
-```js
+```tsx
 /**
-   * Initializes table sort state.
+   * Runs constructor.
    *
-   * @param {object} props React component props.
+   * @param {any} props Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 5
 
-Associated declaration: `handleSortChange (event) {`
+Associated declaration: `handleSortChange(event: React.ChangeEvent<HTMLSelectElement>): void {`
 
-```js
+```tsx
 /**
-   * Updates active sort mode.
+   * Runs handle sort change.
    *
-   * @param {Event} event Input change event.
-   * @returns {void}
+   * @param {any} event Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 6
 
-Associated declaration: `handleShowAllRows () {`
+Associated declaration: `handleShowAllRows(): void {`
 
-```js
+```tsx
 /**
-   * Reveals all rows in constrained mode.
+   * Runs handle show all rows.
    *
-   * @returns {void}
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 7
 
-Associated declaration: `componentDidUpdate (prevProps) {`
+Associated declaration: `componentDidUpdate(prevProps: DiffTableProps): void {`
 
-```js
+```tsx
 /**
-   * Resets expanded rows when entering compact/constrained mode.
+   * Runs component did update.
    *
-   * @param {object} prevProps Previous props.
-   * @returns {void}
+   * @param {any} prevProps Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 8
 
-Associated declaration: `render () {`
+Associated declaration: `render(): React.JSX.Element {`
 
-```js
+```tsx
 /**
-   * Renders the diff table and spark bars.
+   * Runs render.
    *
-   * @returns {JSX.Element} Sorted diff table.
+   * @returns {any} Function result.
    */
 ```

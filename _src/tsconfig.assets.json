@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "./generated",
+    "rootDir": ".",
+    "sourceMap": false,
+    "types": [
+      "node",
+      "jquery"
+    ]
+  },
+  "include": [
+    "js/**/*.ts",
+    "types/**/*.d.ts"
+  ],
+  "exclude": [
+    "js/compare/**",
+    "js/**/__tests__/**"
+  ]
+}

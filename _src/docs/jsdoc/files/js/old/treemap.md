@@ -1,12 +1,12 @@
-# js/old/treemap.js
+# js/old/treemap.ts
 
 - JSDoc blocks found: 13
 
 ## Block 1
 
-Associated declaration: `function escapeHtml (value) {`
+Associated declaration: `function escapeHtml(value) {`
 
-```js
+```ts
 /**
    * Runs escape html.
    *
@@ -17,9 +17,9 @@ Associated declaration: `function escapeHtml (value) {`
 
 ## Block 2
 
-Associated declaration: `function safeNavigate (rawUrl) {`
+Associated declaration: `function safeNavigate(rawUrl) {`
 
-```js
+```ts
 /**
    * Runs safe navigate.
    *
@@ -30,9 +30,9 @@ Associated declaration: `function safeNavigate (rawUrl) {`
 
 ## Block 3
 
-Associated declaration: `function (elem, context, state) {`
+Associated declaration: `function(elem, context, state) {`
 
-```js
+```ts
 /**
    * Runs treemap.
    *
@@ -45,9 +45,9 @@ Associated declaration: `function (elem, context, state) {`
 
 ## Block 4
 
-Associated declaration: `function (endConfigure) {`
+Associated declaration: `function(endConfigure) {`
 
-```js
+```ts
 /**
      * Runs configure.
      *
@@ -58,9 +58,9 @@ Associated declaration: `function (endConfigure) {`
 
 ## Block 5
 
-Associated declaration: `function (state) {`
+Associated declaration: `function(state) {`
 
-```js
+```ts
 /**
      * Sets update.
      *
@@ -71,9 +71,9 @@ Associated declaration: `function (state) {`
 
 ## Block 6
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
      * Gets get download url.
      *
@@ -83,9 +83,9 @@ Associated declaration: `function () {`
 
 ## Block 7
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
      * Runs serialize.
      *
@@ -95,9 +95,9 @@ Associated declaration: `function () {`
 
 ## Block 8
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
      * Runs init.
      *
@@ -107,9 +107,9 @@ Associated declaration: `function () {`
 
 ## Block 9
 
-Associated declaration: `function (dataset, data) {`
+Associated declaration: `function(dataset, data) {`
 
-```js
+```ts
 /**
      * Sets set data from aggregator.
      *
@@ -121,9 +121,9 @@ Associated declaration: `function (dataset, data) {`
 
 ## Block 10
 
-Associated declaration: `function (node) {`
+Associated declaration: `function(node) {`
 
-```js
+```ts
 /**
      * Sets set node.
      *
@@ -134,9 +134,9 @@ Associated declaration: `function (node) {`
 
 ## Block 11
 
-Associated declaration: `function (tile) {`
+Associated declaration: `function(tile) {`
 
-```js
+```ts
 /**
      * Runs drilldown.
      *
@@ -147,9 +147,9 @@ Associated declaration: `function (tile) {`
 
 ## Block 12
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
      * Runs auto colorize.
      *
@@ -159,9 +159,9 @@ Associated declaration: `function () {`
 
 ## Block 13
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
      * Runs draw.
      *

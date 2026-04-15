@@ -1,12 +1,12 @@
-# js/data.js
+# js/data.ts
 
 - JSDoc blocks found: 8
 
 ## Block 1
 
-Associated declaration: `namespace.findIndex = function (array, value, comparitor) {`
+Associated declaration: `namespace.findIndex = function(array, value, comparitor) {`
 
-```js
+```ts
 /**
    * Finds the first index matching the provided comparator.
    *
@@ -19,9 +19,9 @@ Associated declaration: `namespace.findIndex = function (array, value, comparito
 
 ## Block 2
 
-Associated declaration: `namespace.hierarchy = function () {`
+Associated declaration: `namespace.hierarchy = function() {`
 
-```js
+```ts
 /**
    * Creates hierarchy helpers for budget data trees.
    *
@@ -31,9 +31,9 @@ Associated declaration: `namespace.hierarchy = function () {`
 
 ## Block 3
 
-Associated declaration: `function _prepare_recurse (node) {`
+Associated declaration: `function _prepare_recurse(node) {`
 
-```js
+```ts
 /**
      * Recursively prepares node values and parent/depth links.
      *
@@ -44,9 +44,9 @@ Associated declaration: `function _prepare_recurse (node) {`
 
 ## Block 4
 
-Associated declaration: `function _prepare (data) {`
+Associated declaration: `function _prepare(data) {`
 
-```js
+```ts
 /**
      * Converts nested d3 data into a root node shape used by visualizations.
      *
@@ -57,9 +57,9 @@ Associated declaration: `function _prepare (data) {`
 
 ## Block 5
 
-Associated declaration: `crunch: function (rows, order) {`
+Associated declaration: `crunch: function(rows, order) {`
 
-```js
+```ts
 /**
        * Nests flat rows into hierarchical budget data.
        *
@@ -71,9 +71,9 @@ Associated declaration: `crunch: function (rows, order) {`
 
 ## Block 6
 
-Associated declaration: `spelunk: function (root, keys, cmp) {`
+Associated declaration: `spelunk: function(root, keys, cmp) {`
 
-```js
+```ts
 /**
        * Finds the deepest node reachable by a sequence of keys.
        *
@@ -86,9 +86,9 @@ Associated declaration: `spelunk: function (root, keys, cmp) {`
 
 ## Block 7
 
-Associated declaration: `path: function (node) {`
+Associated declaration: `path: function(node) {`
 
-```js
+```ts
 /**
        * Builds the path from root to the given node.
        *
@@ -99,9 +99,9 @@ Associated declaration: `path: function (node) {`
 
 ## Block 8
 
-Associated declaration: `apply: function (node, func) {`
+Associated declaration: `apply: function(node, func) {`
 
-```js
+```ts
 /**
        * Applies a callback recursively to a node and descendants.
        *

@@ -1,4 +1,4 @@
-# js/compare/__tests__/api.test.js
+# js/compare/__tests__/api.test.ts
 
 - JSDoc blocks found: 0
 

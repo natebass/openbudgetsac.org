@@ -1,218 +1,219 @@
-# js/compare/index.jsx
+# js/compare/index.tsx
 
 - JSDoc blocks found: 17
 
 ## Block 1
 
-Associated declaration: `function getConnection () {`
+Associated declaration: `function getConnection(): NetworkInformation | null {`
 
-```js
+```tsx
 /**
- * Returns the browser network information object when available.
+ * Gets get connection.
  *
- * @returns {NetworkInformation|null} Network info object, or null when unavailable.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 2
 
-Associated declaration: `function derivePerformanceFlags () {`
+Associated declaration: `function derivePerformanceFlags(): {compactMode: boolean; constrainedMode: boolean} {`
 
-```js
+```tsx
 /**
- * Derives UI performance flags from viewport width and connection hints.
+ * Builds derive performance flags.
  *
- * @returns {{compactMode:boolean, constrainedMode:boolean}} Rendering flags.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 3
 
-Associated declaration: `function getBudgetOption (record, index) {`
+Associated declaration: `function getBudgetOption(record: BudgetRecord, index: number): BudgetOption {`
 
-```js
+```tsx
 /**
- * Builds a select option for a budget record.
+ * Gets get budget option.
  *
- * @param {{fiscal_year_range:string,budget_type:(string|number)}} record Budget metadata.
- * @param {number} index Option index.
- * @returns {{value:number,label:string}} Select option.
+ * @param {any} record Input value.
+ * @param {any} index Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 4
 
-Associated declaration: `function getBudgetDefaults (budgets) {`
+Associated declaration: `function getBudgetDefaults(budgets: Array<BudgetOption>): [BudgetOption | null, BudgetOption | null] {`
 
-```js
+```tsx
 /**
- * Picks the default pair of budget options.
+ * Gets get budget defaults.
  *
- * @param {Array<{value:number,label:string}>} budgets Options list.
- * @returns {[{value:number,label:string}|null,{value:number,label:string}|null]} Default pair.
+ * @param {any} budgets Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 5
 
-Associated declaration: `function formatTotals (selectedYears) {`
+Associated declaration: `function formatTotals(selectedYears: SelectedYears): Array<BudgetTotalDisplay | undefined> {`
 
-```js
+```tsx
 /**
- * Maps selected year records to the totals data shape used by the total chart.
+ * Builds format totals.
  *
- * @param {Array<{fiscal_year_range:string,total:number}|undefined>} selectedYears Selected year records.
- * @returns {Array<{key:string,total:number}|undefined>} Formatted totals list.
+ * @param {any} selectedYears Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 6
 
-Associated declaration: `constructor (props) {`
+Associated declaration: `constructor(props: Record<string, never>) {`
 
-```js
+```tsx
 /**
-   * Initializes compare view state.
+   * Runs constructor.
    *
-   * @param {object} props React component props.
+   * @param {any} props Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 7
 
-Associated declaration: `componentDidMount () {`
+Associated declaration: `componentDidMount(): void {`
 
-```js
+```tsx
 /**
-   * Loads totals and initializes default year selections.
+   * Runs component did mount.
    *
-   * @returns {void}
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 8
 
-Associated declaration: `componentWillUnmount () {`
+Associated declaration: `componentWillUnmount(): void {`
 
-```js
+```tsx
 /**
-   * Cleans up window and network listeners.
+   * Runs component will unmount.
    *
-   * @returns {void}
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 9
 
-Associated declaration: `applyPerformanceFlags () {`
+Associated declaration: `applyPerformanceFlags(): void {`
 
-```js
+```tsx
 /**
-   * Applies adaptive UI flags for small screens and slow connections.
+   * Sets apply performance flags.
    *
-   * @returns {void}
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 10
 
-Associated declaration: `scheduleApplyPerformanceFlags () {`
+Associated declaration: `scheduleApplyPerformanceFlags(): void {`
 
-```js
+```tsx
 /**
-   * Coalesces rapid resize events to avoid repeated expensive chart rerenders.
+   * Runs schedule apply performance flags.
    *
-   * @returns {void}
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 11
 
-Associated declaration: `handleChangeType (event) {`
+Associated declaration: `handleChangeType(event: React.ChangeEvent<HTMLSelectElement>): void {`
 
-```js
+```tsx
 /**
-   * Updates diff formatting mode.
+   * Runs handle change type.
    *
-   * @param {Event} event Select change event.
-   * @returns {void}
+   * @param {any} event Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 12
 
-Associated declaration: `handleSelectBudget1 (option) {`
+Associated declaration: `handleSelectBudget1(option: SingleValue<BudgetOption>): void {`
 
-```js
+```tsx
 /**
-   * Handles year selection for left-hand budget selector.
+   * Runs handle select budget1.
    *
-   * @param {{value:number}} option Selected option.
-   * @returns {void}
+   * @param {any} option Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 13
 
-Associated declaration: `handleSelectBudget2 (option) {`
+Associated declaration: `handleSelectBudget2(option: SingleValue<BudgetOption>): void {`
 
-```js
+```tsx
 /**
-   * Handles year selection for right-hand budget selector.
+   * Runs handle select budget2.
    *
-   * @param {{value:number}} option Selected option.
-   * @returns {void}
+   * @param {any} option Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 14
 
-Associated declaration: `handleBreakdownSelect (key) {`
+Associated declaration: `handleBreakdownSelect(key: BreakdownKey): void {`
 
-```js
+```tsx
 /**
-   * Switches the active breakdown tab.
+   * Runs handle breakdown select.
    *
-   * @param {string} key Breakdown key.
-   * @returns {void}
+   * @param {any} key Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 15
 
-Associated declaration: `handleSelectBudget (key, otherKey, index) {`
+Associated declaration: `handleSelectBudget(key: 'budget1' | 'budget2', otherKey: 'budget1' | 'budget2', index: number): void {`
 
-```js
+```tsx
 /**
-   * Updates one selected budget and constrains the opposite selector options.
+   * Runs handle select budget.
    *
-   * @param {'budget1'|'budget2'} key Target budget key.
-   * @param {'budget1'|'budget2'} otherKey Opposite budget key.
-   * @param {number} index Selected option index.
-   * @returns {void}
+   * @param {any} key Input value.
+   * @param {any} otherKey Input value.
+   * @param {any} index Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 16
 
-Associated declaration: `render () {`
+Associated declaration: `render(): React.JSX.Element {`
 
-```js
+```tsx
 /**
-   * Renders compare page controls and active breakdown panel.
+   * Runs render.
    *
-   * @returns {JSX.Element} Compare application UI.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 17
 
-Associated declaration: `async function enableA11yRuntimeChecks () {`
+Associated declaration: `async function enableA11yRuntimeChecks(): Promise<void> {`
 
-```js
+```tsx
 /**
- * Enables axe runtime checks in non-production browser environments.
+ * Runs enable a11y runtime checks.
  *
- * @returns {Promise<void>} Resolves after attempting initialization.
+ * @returns {any} Function result.
  */
 ```

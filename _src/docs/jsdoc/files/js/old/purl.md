@@ -1,12 +1,12 @@
-# js/old/purl.js
+# js/old/purl.ts
 
 - JSDoc blocks found: 13
 
 ## Block 1
 
-Associated declaration: `function parseUri (url, strictMode) {`
+Associated declaration: `function parseUri(url: string, strictMode?: boolean): any {`
 
-```js
+```ts
 /**
    * Gets parse uri.
    *
@@ -18,9 +18,9 @@ Associated declaration: `function parseUri (url, strictMode) {`
 
 ## Block 2
 
-Associated declaration: `function getAttrName (elm) {`
+Associated declaration: `function getAttrName(elm: Element): string | undefined {`
 
-```js
+```ts
 /**
    * Gets get attr name.
    *
@@ -31,9 +31,9 @@ Associated declaration: `function getAttrName (elm) {`
 
 ## Block 3
 
-Associated declaration: `function promote (parent, key) {`
+Associated declaration: `function promote(parent: Record<string, any>, key: string): Record<string, any> {`
 
-```js
+```ts
 /**
    * Runs promote.
    *
@@ -45,9 +45,9 @@ Associated declaration: `function promote (parent, key) {`
 
 ## Block 4
 
-Associated declaration: `function parse (parts, parent, key, val) {`
+Associated declaration: `function parse(parts: Array<string>, parent: Record<string, any>, key: string, val: any): void {`
 
-```js
+```ts
 /**
    * Gets parse.
    *
@@ -61,9 +61,9 @@ Associated declaration: `function parse (parts, parent, key, val) {`
 
 ## Block 5
 
-Associated declaration: `function merge (parent, key, val) {`
+Associated declaration: `function merge(parent: Record<string, any>, key: string, val: any): Record<string, any> {`
 
-```js
+```ts
 /**
    * Runs merge.
    *
@@ -76,9 +76,9 @@ Associated declaration: `function merge (parent, key, val) {`
 
 ## Block 6
 
-Associated declaration: `function parseString (str) {`
+Associated declaration: `function parseString(str: string): Record<string, any> {`
 
-```js
+```ts
 /**
    * Gets parse string.
    *
@@ -89,9 +89,9 @@ Associated declaration: `function parseString (str) {`
 
 ## Block 7
 
-Associated declaration: `function set (obj, key, val) {`
+Associated declaration: `function set(obj: Record<string, any>, key: string, val: any): void {`
 
-```js
+```ts
 /**
    * Sets set.
    *
@@ -104,9 +104,9 @@ Associated declaration: `function set (obj, key, val) {`
 
 ## Block 8
 
-Associated declaration: `function lastBraceInKey (str) {`
+Associated declaration: `function lastBraceInKey(str: string): number | undefined {`
 
-```js
+```ts
 /**
    * Runs last brace in key.
    *
@@ -117,9 +117,9 @@ Associated declaration: `function lastBraceInKey (str) {`
 
 ## Block 9
 
-Associated declaration: `function reduce (obj, accumulator) {`
+Associated declaration: `function reduce(obj: Array<any>, accumulator: (current: any, value: any, index: number, source: Array<any>) => any, initial?: any): any {`
 
-```js
+```ts
 /**
    * Runs reduce.
    *
@@ -131,9 +131,9 @@ Associated declaration: `function reduce (obj, accumulator) {`
 
 ## Block 10
 
-Associated declaration: `function isArray (vArg) {`
+Associated declaration: `function isArray(vArg: any): boolean {`
 
-```js
+```ts
 /**
    * Checks whether is array.
    *
@@ -144,9 +144,9 @@ Associated declaration: `function isArray (vArg) {`
 
 ## Block 11
 
-Associated declaration: `function keys (obj) {`
+Associated declaration: `function keys(obj: Record<string, any>): Array<string> {`
 
-```js
+```ts
 /**
    * Runs keys.
    *
@@ -157,9 +157,9 @@ Associated declaration: `function keys (obj) {`
 
 ## Block 12
 
-Associated declaration: `function purl (url, strictMode) {`
+Associated declaration: `function purl(url?: string | boolean, strictMode?: boolean): PurlApi {`
 
-```js
+```ts
 /**
    * Runs purl.
    *
@@ -171,9 +171,9 @@ Associated declaration: `function purl (url, strictMode) {`
 
 ## Block 13
 
-Associated declaration: `function (strictMode) {`
+Associated declaration: `function(strictMode?: boolean) {`
 
-```js
+```ts
 /**
      * Runs url.
      *

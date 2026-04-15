@@ -1,14 +1,17 @@
 # Performance Summary
 
-Last synced: April 14, 2026
+Last synced: April 15, 2026
 
 Detailed performance analysis is maintained in [`_src/PERFORMANCE.md`](_src/PERFORMANCE.md). This file tracks the repository-level guardrails and CI/CD enforcement points.
 
 ## Current Guardrails
-- Compare bundle budgets are enforced by `_src/test/perf-report.js` via `npm run perf:report` (raw + gzip thresholds).
-- Webpack performance hints are disabled in `_src/webpack.config.js` for cleaner local/E2E test output; `npm run perf:report` is the source of truth for bundle-size enforcement.
-- E2E reliability is protected by `_src/test/e2e-preflight.js` (Linux Chromium dependency checks before test launch).
-- Active first-party JavaScript/JSX JSDoc coverage is enforced by `_src/scripts/add-missing-jsdoc.mjs` via `npm run docs:jsdoc:check`.
+- Compare bundle budgets are enforced by `_src/test/perf-report.ts` via `npm run perf:report` (raw + gzip thresholds).
+- Webpack performance hints are disabled in `_src/webpack.config.ts` for cleaner local/E2E test output; `npm run perf:report` is the source of truth for bundle-size enforcement.
+- E2E reliability is protected by `_src/test/e2e-preflight.ts` (Linux Chromium dependency checks before test launch).
+- Legacy browser dependencies are served from local vendor assets (`build/js/vendor/*`) instead of external CDNs.
+- Legacy TypeScript browser output removes CommonJS prologue lines during `npm run build:legacy` via `_src/scripts/strip-cjs-prologue.ts`.
+- Active first-party TypeScript/JavaScript JSDoc coverage is enforced by `_src/scripts/add-missing-jsdoc.ts` via `npm run docs:jsdoc:check`.
+- Eleventy, Jest, webpack, and ESLint now run from their TypeScript config files through the npm scripts in `_src/package.json`.
 - Memory regression tooling is available through:
   - `npm run probe:memory`
   - `npm run probe:memory:watch`

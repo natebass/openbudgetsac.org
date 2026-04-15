@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2023"
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "strictNullChecks": false,
+    "noEmit": true,
+    "types": [
+      "jest",
+      "node",
+      "jquery"
+    ]
+  },
+  "include": [
+    ".eleventy.ts",
+    "eslint.config.ts",
+    "jest.config.ts",
+    "webpack.config.ts",
+    "*.ts",
+    "js/**/*.ts",
+    "js/**/*.tsx",
+    "test/**/*.ts",
+    "bench/**/*.ts",
+    "scripts/**/*.ts",
+    "__tests__/**/*.ts",
+    "types/**/*.d.ts"
+  ],
+  "exclude": [
+    "build/**",
+    "coverage/**",
+    "css/bower_components/**",
+    "docs/**",
+    "generated/**",
+    "images/**",
+    "node_modules/**",
+    "styles/**"
+  ]
+}

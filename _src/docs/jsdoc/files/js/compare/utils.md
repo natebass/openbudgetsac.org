@@ -1,55 +1,55 @@
-# js/compare/utils.jsx
+# js/compare/utils.tsx
 
 - JSDoc blocks found: 4
 
 ## Block 1
 
-Associated declaration: `function translateDataLabel (label) {`
+Associated declaration: `function translateDataLabel(label: string): string {`
 
-```js
+```tsx
 /**
- * Translates a dynamic data label using the site i18n runtime when available.
+ * Runs translate data label.
  *
- * @param {string} label Label text from data sources.
- * @returns {string} Localized label text.
+ * @param {any} label Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 2
 
-Associated declaration: `export function getSortedBudgetKeys (dataPair) {`
+Associated declaration: `function getSortedBudgetKeys(dataPair: BudgetBreakdownPair): Array<string> {`
 
-```js
+```tsx
 /**
- * Returns sorted unique category keys across two budget records.
+ * Gets get sorted budget keys.
  *
- * @param {Array<Record<string, number>>} dataPair Two budget record objects.
- * @returns {string[]} Sorted unique keys.
+ * @param {any} dataPair Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 3
 
-Associated declaration: `export function asDiff (value, usePct) {`
+Associated declaration: `function asDiff(value: number, usePct: boolean): string {`
 
-```js
+```tsx
 /**
- * Formats a numeric diff as either percentage or dollars.
+ * Runs as diff.
  *
- * @param {number} value Diff value.
- * @param {boolean} usePct When true, format as percentage.
- * @returns {string} Human-readable difference string.
+ * @param {any} value Input value.
+ * @param {any} usePct Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 4
 
-Associated declaration: `render () {`
+Associated declaration: `render(): React.JSX.Element {`
 
-```js
+```tsx
 /**
-   * Renders a colorized diff value.
+   * Runs render.
    *
-   * @returns {JSX.Element} Styled diff span.
+   * @returns {any} Function result.
    */
 ```

@@ -1,37 +1,41 @@
 # Performance Audit and Runtime Guardrails
 
-Date: April 14, 2026  
+Date: April 15, 2026  
 Scope: Frontend load path, runtime responsiveness, localization overhead, and CI regression controls.
 
 ## Baseline Improvements Already Landed
 
 1. Production compare bundle output (`webpack --mode production`) replaced development-mode output.
 2. D3 loading was narrowed to flow/tree pages instead of being globally loaded across every page.
-3. Legacy global scripts were deferred to reduce render blocking.
+3. Legacy page dependencies were stabilized with local vendor assets (`jquery`, `jquery-migrate`, `bootstrap`, `d3`) to avoid CDN runtime failures.
 4. Image loading hints were improved (`loading='lazy'`, `decoding='async'`, `fetchpriority='high'` on the first critical image).
 5. Static-server behavior for local testing added ETag and gzip support.
 
 ## i18n-Related Performance Notes
 
-1. Site-wide i18n now runs through `_src/js/i18n-site.js`.
+1. Site-wide i18n now runs through `_src/js/i18n-site.ts`.
 - Locale resolution order is deterministic (`lang` query param, localStorage, `<html lang>`, browser locale).
 - Translation application is selector-driven (`data-i18n*`) and runs once on init plus locale changes.
 - Internal links are rewritten with `lang=<locale>` to avoid extra locale negotiation work after navigation.
 
-2. Compare-page i18n now runs through `_src/js/compare/i18n.js`.
+2. Compare-page i18n now runs through `_src/js/compare/i18n.ts`.
 - Compare labels/loading/errors/chart ARIA strings are locale-backed.
 - Fallback language remains `en-US` to avoid missing-copy runtime crashes.
 
 3. Legacy flow/treemap components now consume i18n keys for status/error labels and key UI controls.
 - This prevents copy drift between React and non-React pages while adding negligible runtime overhead.
 
-4. Webpack performance hints are disabled in `webpack.config.js`.
+4. Legacy TypeScript browser output is post-processed by `scripts/strip-cjs-prologue.ts`.
+- This removes CommonJS prologue lines that can block browser globals (`d3`, `jQuery`) in non-module script execution.
+- The step runs automatically as part of `npm run build:legacy`.
+
+4. Webpack performance hints are disabled in `webpack.config.ts`.
 - This keeps local and E2E test logs focused on failures.
-- Bundle size enforcement remains in `_src/test/perf-report.js` via explicit raw+gzip thresholds.
+- Bundle size enforcement remains in `_src/test/perf-report.ts` via explicit raw+gzip thresholds.
 
 ## Current Measured Compare Bundle Result
 
-File: `_src/js/dist/compare.bundle.js`
+File: `_src/generated/js/dist/compare.bundle.js`
 - Before optimization pass: `2,569,415` bytes (~2.45 MiB)
 - After optimization pass: `491,445` bytes (~480 KiB)
 - Gzip: `159,906` bytes (~156 KiB)
@@ -49,7 +53,8 @@ Run from `_src/`:
 - `npm run test:unit:coverage`
 - `npm run test:a11y`
 - `npm run test:e2e:preflight`
-- `npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand`
+- `npm run test:i18n:smoke`
+- `npm run test:e2e` (now includes legacy flow/tree locale coverage in English and Spanish)
 
 Memory profiling helpers:
 - `npm run probe:memory`

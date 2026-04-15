@@ -1,15 +1,15 @@
-# js/compare/Trend.jsx
+# js/compare/Trend.tsx
 
 - JSDoc blocks found: 1
 
 ## Block 1
 
-Associated declaration: `render () {`
+Associated declaration: `render(): React.JSX.Element {`
 
-```js
+```tsx
 /**
-   * Renders a two-year grouped bar chart.
+   * Runs render.
    *
-   * @returns {JSX.Element} Trend chart component.
+   * @returns {any} Function result.
    */
 ```

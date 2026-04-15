@@ -1,12 +1,12 @@
-# js/palette.js
+# js/palette.ts
 
 - JSDoc blocks found: 6
 
 ## Block 1
 
-Associated declaration: `namespace.stack = function () {`
+Associated declaration: `namespace.stack = function() {`
 
-```js
+```ts
 /**
    * Creates a stack-based palette helper.
    *
@@ -17,9 +17,9 @@ Associated declaration: `namespace.stack = function () {`
 
 ## Block 2
 
-Associated declaration: `let _transform = function (color, count) {`
+Associated declaration: `let _transform = function(color, count) {`
 
-```js
+```ts
 /**
      * Builds a darker linear scale from a source color.
      *
@@ -31,9 +31,9 @@ Associated declaration: `let _transform = function (color, count) {`
 
 ## Block 3
 
-Associated declaration: `transform: function () {`
+Associated declaration: `transform: function() {`
 
-```js
+```ts
 /**
        * Gets/sets the transform used to derive nested palettes.
        *
@@ -43,9 +43,9 @@ Associated declaration: `transform: function () {`
 
 ## Block 4
 
-Associated declaration: `palette: function () {`
+Associated declaration: `palette: function() {`
 
-```js
+```ts
 /**
        * Gets/sets the current top palette.
        *
@@ -55,9 +55,9 @@ Associated declaration: `palette: function () {`
 
 ## Block 5
 
-Associated declaration: `shift: function () {`
+Associated declaration: `shift: function() {`
 
-```js
+```ts
 /**
        * Removes the active palette from the stack.
        *
@@ -67,9 +67,9 @@ Associated declaration: `shift: function () {`
 
 ## Block 6
 
-Associated declaration: `unshift: function (color, count) {`
+Associated declaration: `unshift: function(color, count) {`
 
-```js
+```ts
 /**
        * Pushes a derived palette to the front of the stack.
        *

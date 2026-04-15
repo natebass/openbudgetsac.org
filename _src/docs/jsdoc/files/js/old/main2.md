@@ -1,12 +1,12 @@
-# js/old/main2.js
+# js/old/main2.ts
 
 - JSDoc blocks found: 4
 
 ## Block 1
 
-Associated declaration: `function buildCrumbPath (crumbList, drill, parameterValue) {`
+Associated declaration: `function buildCrumbPath(crumbList, drill, parameterValue) {`
 
-```js
+```ts
 /**
    * Builds a breadcrumb URL for the next drilldown state.
    *
@@ -19,9 +19,9 @@ Associated declaration: `function buildCrumbPath (crumbList, drill, parameterVal
 
 ## Block 2
 
-Associated declaration: `function renderBreadcrumbs (crumbList) {`
+Associated declaration: `function renderBreadcrumbs(crumbList) {`
 
-```js
+```ts
 /**
    * Renders breadcrumb links for the current drilldown path.
    *
@@ -32,9 +32,9 @@ Associated declaration: `function renderBreadcrumbs (crumbList) {`
 
 ## Block 3
 
-Associated declaration: `function buildDrilldownLocation (nextDrilldown, nodeName) {`
+Associated declaration: `function buildDrilldownLocation(nextDrilldown, nodeName) {`
 
-```js
+```ts
 /**
    * Builds the next page URL for a drilldown click.
    *
@@ -46,9 +46,9 @@ Associated declaration: `function buildDrilldownLocation (nextDrilldown, nodeNam
 
 ## Block 4
 
-Associated declaration: `function getCannotDigDeeperMessage (fallback) {`
+Associated declaration: `function getCannotDigDeeperMessage(fallback) {`
 
-```js
+```ts
 /**
    * Resolves the localized fallback alert for terminal drilldown nodes.
    *

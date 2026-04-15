@@ -5,9 +5,10 @@ WORKDIR /app
 COPY _src/package*.json ./
 
 # Avoid downloading Puppeteer's browser in the shared base layer.
-# `docker compose up` builds the runtime target only and doesn't need Chromium.
+# `docker compose up` builds the runtime target only and does not need Chromium.
 ENV PUPPETEER_SKIP_DOWNLOAD=true
-RUN npm ci --include=dev --force
+RUN npm audit fix
+RUN npm ci --include=dev
 
 COPY _src .
 
@@ -48,16 +49,19 @@ RUN PUPPETEER_SKIP_DOWNLOAD=false npx puppeteer browsers install chrome
 
 FROM chromium-deps AS test
 
+# Build TypeScript assets and run the full verification suite inside Docker.
 RUN npm run docs:jsdoc && npm run build && npm run test:docker
 
 FROM chromium-deps AS verify-parallel
 
+# Build TypeScript assets once, then run the parallel verification target.
 RUN npm run docs:jsdoc && npm run build && npm run verify:all:parallel
 
 FROM base AS runtime
 
+# Build the compiled TypeScript assets that Eleventy serves from the runtime image.
 RUN npm run build
 
 EXPOSE 8011
 
-CMD ["npx", "@11ty/eleventy", "--serve", "--port=8011"]
+CMD ["npm", "run", "site:serve"]

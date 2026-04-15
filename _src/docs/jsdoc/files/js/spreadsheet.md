@@ -1,12 +1,12 @@
-# js/spreadsheet.js
+# js/spreadsheet.ts
 
 - JSDoc blocks found: 13
 
 ## Block 1
 
-Associated declaration: `namespace.spreadsheet = function () {`
+Associated declaration: `namespace.spreadsheet = function() {`
 
-```js
+```ts
 /**
    * Creates spreadsheet/table renderer for budget rows.
    *
@@ -16,9 +16,9 @@ Associated declaration: `namespace.spreadsheet = function () {`
 
 ## Block 2
 
-Associated declaration: `let _get_value = function (d) {`
+Associated declaration: `let _get_value = function(d) {`
 
-```js
+```ts
 /**
      * Default value accessor used for sorting.
      *
@@ -29,9 +29,9 @@ Associated declaration: `let _get_value = function (d) {`
 
 ## Block 3
 
-Associated declaration: `let _cell = function (d, i, elem) {`
+Associated declaration: `let _cell = function(d, i, _row, elem) {`
 
-```js
+```ts
 /**
      * Default cell renderer.
      *
@@ -43,9 +43,9 @@ Associated declaration: `let _cell = function (d, i, elem) {`
 
 ## Block 4
 
-Associated declaration: `let _column = function (d, i, elem) {`
+Associated declaration: `let _column = function(d, i, elem) {`
 
-```js
+```ts
 /**
      * Default header renderer.
      *
@@ -57,9 +57,9 @@ Associated declaration: `let _column = function (d, i, elem) {`
 
 ## Block 5
 
-Associated declaration: `width: function () {`
+Associated declaration: `width: function() {`
 
-```js
+```ts
 /**
        * Gets/sets table width.
        */
@@ -67,9 +67,9 @@ Associated declaration: `width: function () {`
 
 ## Block 6
 
-Associated declaration: `on: function (action, callback) {`
+Associated declaration: `on: function(action, callback) {`
 
-```js
+```ts
 /**
        * Gets/sets event handlers.
        */
@@ -77,9 +77,9 @@ Associated declaration: `on: function (action, callback) {`
 
 ## Block 7
 
-Associated declaration: `columns: function () {`
+Associated declaration: `columns: function() {`
 
-```js
+```ts
 /**
        * Gets/sets column labels.
        */
@@ -87,9 +87,9 @@ Associated declaration: `columns: function () {`
 
 ## Block 8
 
-Associated declaration: `column: function () {`
+Associated declaration: `column: function() {`
 
-```js
+```ts
 /**
        * Gets/sets column renderer.
        */
@@ -97,9 +97,9 @@ Associated declaration: `column: function () {`
 
 ## Block 9
 
-Associated declaration: `cell: function () {`
+Associated declaration: `cell: function() {`
 
-```js
+```ts
 /**
        * Gets/sets cell renderer.
        */
@@ -107,9 +107,9 @@ Associated declaration: `cell: function () {`
 
 ## Block 10
 
-Associated declaration: `value: function () {`
+Associated declaration: `value: function() {`
 
-```js
+```ts
 /**
        * Gets/sets value accessor for row sorting.
        */
@@ -117,9 +117,9 @@ Associated declaration: `value: function () {`
 
 ## Block 11
 
-Associated declaration: `data: function () {`
+Associated declaration: `data: function() {`
 
-```js
+```ts
 /**
        * Gets/sets source data.
        */
@@ -127,9 +127,9 @@ Associated declaration: `data: function () {`
 
 ## Block 12
 
-Associated declaration: `element: function () {`
+Associated declaration: `element: function() {`
 
-```js
+```ts
 /**
        * Gets/sets host element.
        */
@@ -137,9 +137,9 @@ Associated declaration: `element: function () {`
 
 ## Block 13
 
-Associated declaration: `display: function () {`
+Associated declaration: `display: function() {`
 
-```js
+```ts
 /**
        * Renders the spreadsheet table.
        */

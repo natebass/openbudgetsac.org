@@ -1,12 +1,12 @@
-# js/old/sankey.js
+# js/old/sankey.ts
 
 - JSDoc blocks found: 29
 
 ## Block 1
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
  * Runs sankey.
  *
@@ -16,9 +16,9 @@ Associated declaration: `function () {`
 
 ## Block 2
 
-Associated declaration: `function (_) {`
+Associated declaration: `function(_) {`
 
-```js
+```ts
 /**
    * Runs node width.
    *
@@ -29,9 +29,9 @@ Associated declaration: `function (_) {`
 
 ## Block 3
 
-Associated declaration: `function (_) {`
+Associated declaration: `function(_) {`
 
-```js
+```ts
 /**
    * Runs node padding.
    *
@@ -42,9 +42,9 @@ Associated declaration: `function (_) {`
 
 ## Block 4
 
-Associated declaration: `function (_) {`
+Associated declaration: `function(_) {`
 
-```js
+```ts
 /**
    * Runs nodes.
    *
@@ -55,9 +55,9 @@ Associated declaration: `function (_) {`
 
 ## Block 5
 
-Associated declaration: `function (_) {`
+Associated declaration: `function(_) {`
 
-```js
+```ts
 /**
    * Runs links.
    *
@@ -68,9 +68,9 @@ Associated declaration: `function (_) {`
 
 ## Block 6
 
-Associated declaration: `function (_) {`
+Associated declaration: `function(_) {`
 
-```js
+```ts
 /**
    * Runs size.
    *
@@ -81,9 +81,9 @@ Associated declaration: `function (_) {`
 
 ## Block 7
 
-Associated declaration: `function (iterations) {`
+Associated declaration: `function(iterations) {`
 
-```js
+```ts
 /**
    * Runs layout.
    *
@@ -94,9 +94,9 @@ Associated declaration: `function (iterations) {`
 
 ## Block 8
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
    * Runs relayout.
    *
@@ -106,9 +106,9 @@ Associated declaration: `function () {`
 
 ## Block 9
 
-Associated declaration: `function () {`
+Associated declaration: `function() {`
 
-```js
+```ts
 /**
    * Runs link.
    *
@@ -118,9 +118,9 @@ Associated declaration: `function () {`
 
 ## Block 10
 
-Associated declaration: `function link (d) {`
+Associated declaration: `function link(d) {`
 
-```js
+```ts
 /**
      * Runs link.
      *
@@ -131,9 +131,9 @@ Associated declaration: `function link (d) {`
 
 ## Block 11
 
-Associated declaration: `function (_) {`
+Associated declaration: `function(_) {`
 
-```js
+```ts
 /**
      * Runs curvature.
      *
@@ -144,9 +144,9 @@ Associated declaration: `function (_) {`
 
 ## Block 12
 
-Associated declaration: `function computeNodeLinks () {`
+Associated declaration: `function computeNodeLinks() {`
 
-```js
+```ts
 /**
    * Runs compute node links.
    *
@@ -156,9 +156,9 @@ Associated declaration: `function computeNodeLinks () {`
 
 ## Block 13
 
-Associated declaration: `function computeNodeValues () {`
+Associated declaration: `function computeNodeValues() {`
 
-```js
+```ts
 /**
    * Runs compute node values.
    *
@@ -168,9 +168,9 @@ Associated declaration: `function computeNodeValues () {`
 
 ## Block 14
 
-Associated declaration: `function computeNodeBreadths () {`
+Associated declaration: `function computeNodeBreadths() {`
 
-```js
+```ts
 /**
    * Runs compute node breadths.
    *
@@ -180,9 +180,9 @@ Associated declaration: `function computeNodeBreadths () {`
 
 ## Block 15
 
-Associated declaration: `function moveSinksRight (x) {`
+Associated declaration: `function moveSinksRight(x) {`
 
-```js
+```ts
 /**
    * Runs move sinks right.
    *
@@ -193,9 +193,9 @@ Associated declaration: `function moveSinksRight (x) {`
 
 ## Block 16
 
-Associated declaration: `function scaleNodeBreadths (kx) {`
+Associated declaration: `function scaleNodeBreadths(kx) {`
 
-```js
+```ts
 /**
    * Runs scale node breadths.
    *
@@ -206,9 +206,9 @@ Associated declaration: `function scaleNodeBreadths (kx) {`
 
 ## Block 17
 
-Associated declaration: `function computeNodeDepths (iterations) {`
+Associated declaration: `function computeNodeDepths(iterations) {`
 
-```js
+```ts
 /**
    * Runs compute node depths.
    *
@@ -219,9 +219,9 @@ Associated declaration: `function computeNodeDepths (iterations) {`
 
 ## Block 18
 
-Associated declaration: `function initializeNodeDepth () {`
+Associated declaration: `function initializeNodeDepth() {`
 
-```js
+```ts
 /**
      * Runs initialize node depth.
      *
@@ -231,9 +231,9 @@ Associated declaration: `function initializeNodeDepth () {`
 
 ## Block 19
 
-Associated declaration: `function relaxLeftToRight (alpha) {`
+Associated declaration: `function relaxLeftToRight(alpha) {`
 
-```js
+```ts
 /**
      * Runs relax left to right.
      *
@@ -244,9 +244,9 @@ Associated declaration: `function relaxLeftToRight (alpha) {`
 
 ## Block 20
 
-Associated declaration: `function weightedSource (link) {`
+Associated declaration: `function weightedSource(link) {`
 
-```js
+```ts
 /**
        * Runs weighted source.
        *
@@ -257,9 +257,9 @@ Associated declaration: `function weightedSource (link) {`
 
 ## Block 21
 
-Associated declaration: `function relaxRightToLeft (alpha) {`
+Associated declaration: `function relaxRightToLeft(alpha) {`
 
-```js
+```ts
 /**
      * Runs relax right to left.
      *
@@ -270,9 +270,9 @@ Associated declaration: `function relaxRightToLeft (alpha) {`
 
 ## Block 22
 
-Associated declaration: `function weightedTarget (link) {`
+Associated declaration: `function weightedTarget(link) {`
 
-```js
+```ts
 /**
        * Runs weighted target.
        *
@@ -283,9 +283,9 @@ Associated declaration: `function weightedTarget (link) {`
 
 ## Block 23
 
-Associated declaration: `function resolveCollisions () {`
+Associated declaration: `function resolveCollisions() {`
 
-```js
+```ts
 /**
      * Gets resolve collisions.
      *
@@ -295,9 +295,9 @@ Associated declaration: `function resolveCollisions () {`
 
 ## Block 24
 
-Associated declaration: `function ascendingDepth (a, b) {`
+Associated declaration: `function ascendingDepth(a, b) {`
 
-```js
+```ts
 /**
      * Runs ascending depth.
      *
@@ -309,9 +309,9 @@ Associated declaration: `function ascendingDepth (a, b) {`
 
 ## Block 25
 
-Associated declaration: `function computeLinkDepths () {`
+Associated declaration: `function computeLinkDepths() {`
 
-```js
+```ts
 /**
    * Runs compute link depths.
    *
@@ -321,9 +321,9 @@ Associated declaration: `function computeLinkDepths () {`
 
 ## Block 26
 
-Associated declaration: `function ascendingSourceDepth (a, b) {`
+Associated declaration: `function ascendingSourceDepth(a, b) {`
 
-```js
+```ts
 /**
      * Runs ascending source depth.
      *
@@ -335,9 +335,9 @@ Associated declaration: `function ascendingSourceDepth (a, b) {`
 
 ## Block 27
 
-Associated declaration: `function ascendingTargetDepth (a, b) {`
+Associated declaration: `function ascendingTargetDepth(a, b) {`
 
-```js
+```ts
 /**
      * Runs ascending target depth.
      *
@@ -349,9 +349,9 @@ Associated declaration: `function ascendingTargetDepth (a, b) {`
 
 ## Block 28
 
-Associated declaration: `function center (node) {`
+Associated declaration: `function center(node) {`
 
-```js
+```ts
 /**
    * Runs center.
    *
@@ -362,9 +362,9 @@ Associated declaration: `function center (node) {`
 
 ## Block 29
 
-Associated declaration: `function value (link) {`
+Associated declaration: `function value(link) {`
 
-```js
+```ts
 /**
    * Runs value.
    *

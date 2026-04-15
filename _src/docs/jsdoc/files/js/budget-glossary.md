@@ -1,12 +1,12 @@
-# js/budget-glossary.js
+# js/budget-glossary.ts
 
 - JSDoc blocks found: 5
 
 ## Block 1
 
-Associated declaration: `function validateRes (res) {`
+Associated declaration: `function validateRes(res) {`
 
-```js
+```ts
 /**
  * Checks whether validate res.
  *
@@ -17,9 +17,9 @@ Associated declaration: `function validateRes (res) {`
 
 ## Block 2
 
-Associated declaration: `function formatRes (res) {`
+Associated declaration: `function formatRes(res) {`
 
-```js
+```ts
 /**
  * Builds format res.
  *
@@ -30,9 +30,9 @@ Associated declaration: `function formatRes (res) {`
 
 ## Block 3
 
-Associated declaration: `function saveRes (formattedRes) {`
+Associated declaration: `function saveRes(formattedRes) {`
 
-```js
+```ts
 /**
  * Sets save res.
  *
@@ -43,9 +43,9 @@ Associated declaration: `function saveRes (formattedRes) {`
 
 ## Block 4
 
-Associated declaration: `function logError (err) {`
+Associated declaration: `function logError(err) {`
 
-```js
+```ts
 /**
  * Runs log error.
  *
@@ -56,9 +56,9 @@ Associated declaration: `function logError (err) {`
 
 ## Block 5
 
-Associated declaration: `function fetchDefinitions (url, options = {}) {`
+Associated declaration: `function fetchDefinitions(url, options = {}) {`
 
-```js
+```ts
 /**
  * Gets fetch definitions.
  *

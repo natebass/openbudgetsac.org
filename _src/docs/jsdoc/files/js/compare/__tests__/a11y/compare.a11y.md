@@ -1,4 +1,4 @@
-# js/compare/__tests__/a11y/compare.a11y.jsx
+# js/compare/__tests__/a11y/compare.a11y.tsx
 
 - JSDoc blocks found: 0
 

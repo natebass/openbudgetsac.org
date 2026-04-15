@@ -1,15 +1,15 @@
-# js/compare/Total.jsx
+# js/compare/Total.tsx
 
 - JSDoc blocks found: 1
 
 ## Block 1
 
-Associated declaration: `render () {`
+Associated declaration: `render(): React.JSX.Element {`
 
-```js
+```tsx
 /**
-   * Renders totals and their computed difference.
+   * Runs render.
    *
-   * @returns {JSX.Element} Total chart panel.
+   * @returns {any} Function result.
    */
 ```

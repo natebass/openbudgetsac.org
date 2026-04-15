@@ -33,11 +33,14 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Unit tests with coverage (CI)
         run: npm run test:unit:coverage
 
       - name: i18n unit smoke tests (site + compare)
-        run: npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand
+        run: npm run test:i18n:smoke
 
       - name: Accessibility tests
         run: npm run test:a11y
@@ -48,7 +51,7 @@ jobs:
       - name: Benchmarks (JSON)
         run: npm run bench:json
 
-      - name: Verify JSDoc coverage in active JS/JSX files
+      - name: Verify JSDoc coverage in active TS/JS files
         run: npm run docs:jsdoc:check
 
       - name: Generate JSDoc docs
@@ -58,7 +61,7 @@ jobs:
         run: npm run build-css
 
       - name: Build site with Eleventy
-        run: npx @11ty/eleventy
+        run: npm run site:build
 
       - name: Verify i18n assets in built site
         run: |

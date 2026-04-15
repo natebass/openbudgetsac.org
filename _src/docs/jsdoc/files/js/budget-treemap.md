@@ -1,12 +1,12 @@
-# js/budget-treemap.js
+# js/budget-treemap.ts
 
 - JSDoc blocks found: 20
 
 ## Block 1
 
-Associated declaration: `function i18nT (key, fallback, vars) {`
+Associated declaration: `function i18nT(key: string, fallback?: string, vars?: Record<string, unknown>) {`
 
-```js
+```ts
 /**
    * Resolves a localized message with optional interpolation.
    *
@@ -19,9 +19,9 @@ Associated declaration: `function i18nT (key, fallback, vars) {`
 
 ## Block 2
 
-Associated declaration: `function escapeHtml (value) {`
+Associated declaration: `function escapeHtml(value) {`
 
-```js
+```ts
 /**
    * Escapes user-visible text for safe HTML rendering.
    *
@@ -32,9 +32,9 @@ Associated declaration: `function escapeHtml (value) {`
 
 ## Block 3
 
-Associated declaration: `function i18nLabel (value) {`
+Associated declaration: `function i18nLabel(value) {`
 
-```js
+```ts
 /**
    * Translates dynamic data labels when locale runtime is available.
    *
@@ -45,9 +45,9 @@ Associated declaration: `function i18nLabel (value) {`
 
 ## Block 4
 
-Associated declaration: `namespace.budget_treemap = function () {`
+Associated declaration: `namespace.budget_treemap = function() {`
 
-```js
+```ts
 /**
    * Creates the composed budget treemap experience (treemap + table + controls).
    *
@@ -57,9 +57,9 @@ Associated declaration: `namespace.budget_treemap = function () {`
 
 ## Block 5
 
-Associated declaration: `let _get_value = function (d) {`
+Associated declaration: `let _get_value = function(d) {`
 
-```js
+```ts
 /**
      * Default accessor for node amount value.
      *
@@ -70,9 +70,9 @@ Associated declaration: `let _get_value = function (d) {`
 
 ## Block 6
 
-Associated declaration: `let _hash_normalize = function (s) {`
+Associated declaration: `let _hash_normalize = function(s) {`
 
-```js
+```ts
 /**
      * Normalizes hash path segments.
      *
@@ -83,9 +83,9 @@ Associated declaration: `let _hash_normalize = function (s) {`
 
 ## Block 7
 
-Associated declaration: `let _hash_compare = function (v1, v2) {`
+Associated declaration: `let _hash_compare = function(v1, v2) {`
 
-```js
+```ts
 /**
      * Compares hash path segment values.
      *
@@ -97,9 +97,9 @@ Associated declaration: `let _hash_compare = function (v1, v2) {`
 
 ## Block 8
 
-Associated declaration: `function _apply_handlers (d3obj) {`
+Associated declaration: `function _apply_handlers(d3obj: any) {`
 
-```js
+```ts
 /**
      * Applies registered interaction handlers to a d3-like object.
      *
@@ -110,9 +110,9 @@ Associated declaration: `function _apply_handlers (d3obj) {`
 
 ## Block 9
 
-Associated declaration: `let _tooltip_function = function (d, i) {`
+Associated declaration: `let _tooltip_function = function(d: LegacyTreeNode, i: number) {`
 
-```js
+```ts
 /**
      * Builds tooltip HTML content for treemap rectangles.
      *
@@ -124,9 +124,9 @@ Associated declaration: `let _tooltip_function = function (d, i) {`
 
 ## Block 10
 
-Associated declaration: `expected: function () {`
+Associated declaration: `expected: function() {`
 
-```js
+```ts
 /**
        * Gets/sets expected hash to avoid redundant refreshes.
        *
@@ -136,9 +136,9 @@ Associated declaration: `expected: function () {`
 
 ## Block 11
 
-Associated declaration: `get: function (root) {`
+Associated declaration: `get: function(root: LegacyTreeNode): LegacyTreeNode {`
 
-```js
+```ts
 /**
        * Resolves the currently selected node from window hash.
        *
@@ -149,9 +149,9 @@ Associated declaration: `get: function (root) {`
 
 ## Block 12
 
-Associated declaration: `set: function (node) {`
+Associated declaration: `set: function(node: LegacyTreeNode) {`
 
-```js
+```ts
 /**
        * Sets window hash to represent the provided node path.
        *
@@ -162,9 +162,9 @@ Associated declaration: `set: function (node) {`
 
 ## Block 13
 
-Associated declaration: `function _ensure_elements () {`
+Associated declaration: `function _ensure_elements() {`
 
-```js
+```ts
 /**
      * Lazily binds configured DOM selectors to d3 elements.
      *
@@ -174,9 +174,9 @@ Associated declaration: `function _ensure_elements () {`
 
 ## Block 14
 
-Associated declaration: `function _load_data (url, callback) {`
+Associated declaration: `function _load_data(url: string | null, callback: (error: Error | null, data: LegacyTreeNode | null) => void) {`
 
-```js
+```ts
 /**
      * Loads treemap JSON data and caches successful responses by URL.
      *
@@ -188,9 +188,9 @@ Associated declaration: `function _load_data (url, callback) {`
 
 ## Block 15
 
-Associated declaration: `create: function () {`
+Associated declaration: `create: function() {`
 
-```js
+```ts
 /**
          * Loads data and initializes composed treemap UI widgets.
          *
@@ -200,9 +200,9 @@ Associated declaration: `create: function () {`
 
 ## Block 16
 
-Associated declaration: `window.onhashchange = function () {`
+Associated declaration: `window.onhashchange = function() {`
 
-```js
+```ts
 /**
          * Refreshes the treemap when browser hash navigation changes.
          *
@@ -212,9 +212,9 @@ Associated declaration: `window.onhashchange = function () {`
 
 ## Block 17
 
-Associated declaration: `function _create_breadcrumbs (d) {`
+Associated declaration: `function _create_breadcrumbs(d: LegacyTreeNode) {`
 
-```js
+```ts
 /**
            * Renders clickable breadcrumb path for the current node.
            *
@@ -225,9 +225,9 @@ Associated declaration: `function _create_breadcrumbs (d) {`
 
 ## Block 18
 
-Associated declaration: `_create_dropdown: function () {`
+Associated declaration: `_create_dropdown: function() {`
 
-```js
+```ts
 /**
        * Creates and binds dropdown filters.
        *
@@ -237,9 +237,9 @@ Associated declaration: `_create_dropdown: function () {`
 
 ## Block 19
 
-Associated declaration: `_sync_dropdown_selection: function () {`
+Associated declaration: `_sync_dropdown_selection: function() {`
 
-```js
+```ts
 /**
          * Applies current dropdown choice values to existing dropdown controls.
          *
@@ -249,9 +249,9 @@ Associated declaration: `_sync_dropdown_selection: function () {`
 
 ## Block 20
 
-Associated declaration: `refresh: function () {`
+Associated declaration: `refresh: function() {`
 
-```js
+```ts
 /**
        * Rebuilds the visualization based on current configuration.
        *

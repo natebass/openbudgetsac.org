@@ -1,4 +1,4 @@
-# js/compare/__tests__/Breakdown.test.jsx
+# js/compare/__tests__/Breakdown.test.tsx
 
 - JSDoc blocks found: 0
 

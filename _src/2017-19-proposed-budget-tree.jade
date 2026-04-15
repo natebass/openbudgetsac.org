@@ -9,24 +9,18 @@ block datasource
     a(href = "https://data.cityofsacramento.org") Sacramento Budget Explorer
 
 block disqus_config
-  script(type='text/javascript').
-    var disqus_identifier = "2017-19 proposed budget tree";
+  - var disqusIdentifier = '2017-19 proposed budget tree'
 
 block datafiles
-  script.
-    var config = {
-      /* set values available in dropdown files */
-      dropdown_values: {
-        "Year": ["FY17-18", "FY18-19"],
-        "Account": ["Revenue", "Expense"]
+  -
+    var treeConfig = {
+      dropdownValues: {
+        Year: ['FY17-18', 'FY18-19'],
+        Account: ['Revenue', 'Expense'],
       },
-      /* set the default values */
-      dropdown_choice: {
-        "Year": "FY17-18",
-        "Account": "Expense"
+      dropdownChoice: {
+        Year: 'FY17-18',
+        Account: 'Expense',
       },
-      /* create the url to the data file based on the dropdown choices */
-      url: function() {
-        return 'data/tree/Proposed.' + this.dropdown_choice["Account"] + "." + this.dropdown_choice["Year"] + ".json";
-      }
-    };
+      urlTemplate: 'data/tree/Proposed.{Account}.{Year}.json',
+    }

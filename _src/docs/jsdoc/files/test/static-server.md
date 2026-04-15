@@ -1,12 +1,12 @@
-# test/static-server.js
+# test/static-server.ts
 
 - JSDoc blocks found: 3
 
 ## Block 1
 
-Associated declaration: `function setSecurityHeaders (res) {`
+Associated declaration: `function setSecurityHeaders(res) {`
 
-```js
+```ts
 /**
  * Sets set security headers.
  *
@@ -17,9 +17,9 @@ Associated declaration: `function setSecurityHeaders (res) {`
 
 ## Block 2
 
-Associated declaration: `function buildEtag (stat) {`
+Associated declaration: `function buildEtag(stat) {`
 
-```js
+```ts
 /**
  * Builds build etag.
  *
@@ -30,9 +30,9 @@ Associated declaration: `function buildEtag (stat) {`
 
 ## Block 3
 
-Associated declaration: `function isTextResponse (contentType) {`
+Associated declaration: `function isTextResponse(contentType) {`
 
-```js
+```ts
 /**
  * Checks whether is text response.
  *

@@ -1,12 +1,12 @@
-# test/run-e2e.js
+# test/run-e2e.ts
 
 - JSDoc blocks found: 6
 
 ## Block 1
 
-Associated declaration: `function parseArgs () {`
+Associated declaration: `function parseArgs() {`
 
-```js
+```ts
 /**
  * Gets parse args.
  *
@@ -16,9 +16,9 @@ Associated declaration: `function parseArgs () {`
 
 ## Block 2
 
-Associated declaration: `function runCommand (command, args, env) {`
+Associated declaration: `function runCommand(command, args, env) {`
 
-```js
+```ts
 /**
  * Runs run command.
  *
@@ -31,9 +31,9 @@ Associated declaration: `function runCommand (command, args, env) {`
 
 ## Block 3
 
-Associated declaration: `function canBindPort (host, port) {`
+Associated declaration: `function canBindPort(host, port) {`
 
-```js
+```ts
 /**
  * Checks whether can bind port.
  *
@@ -45,9 +45,9 @@ Associated declaration: `function canBindPort (host, port) {`
 
 ## Block 4
 
-Associated declaration: `function getRandomPort (host) {`
+Associated declaration: `function getRandomPort(host) {`
 
-```js
+```ts
 /**
  * Gets get random port.
  *
@@ -58,9 +58,9 @@ Associated declaration: `function getRandomPort (host) {`
 
 ## Block 5
 
-Associated declaration: `async function resolvePort (host) {`
+Associated declaration: `async function resolvePort(host) {`
 
-```js
+```ts
 /**
  * Gets resolve port.
  *
@@ -71,9 +71,9 @@ Associated declaration: `async function resolvePort (host) {`
 
 ## Block 6
 
-Associated declaration: `async function main () {`
+Associated declaration: `async function main() {`
 
-```js
+```ts
 /**
  * Runs main.
  *

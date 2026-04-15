@@ -22,110 +22,22 @@
     .row
       .col-md-12
         h4(data-i18n='common.comments') Comments
-        #disqus_thread
+        #disqus_thread(data-disqus-identifier=typeof disqusIdentifier !== 'undefined' ? disqusIdentifier : 'oboDefault')
 
 block disqus_config
-  script(type='text/javascript').
-    var disqus_identifier = "oboDefault";
+  - var disqusIdentifier = 'oboDefault'
 
-script(type='text/javascript').
-  
-  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-  var disqus_shortname = 'openbudgetsac';
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function() {
-  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
+script(src='/js/disqus-loader.js', charset='utf-8', defer)
 noscript
   span(data-i18n='common.pleaseEnableJs') Please enable JavaScript to view the
   |  
   a(href='http://disqus.com/?ref_noscript') comments powered by Disqus.
-
 
 script(src='/js/sankey.js', charset='utf-8')
 script(src='/js/flow.js', charset='utf-8')
 
 block get_datafiles
 
-script.
-    var flowFilenameAliases = {
-      'FY13-14__adopted.csv': 'FY14.csv',
-      'FY14-15__adopted.csv': 'FY15.csv',
-      'FY14-15__adjusted.csv': 'FY15.csv',
-      'FY15-16__adopted.csv': 'FY16.csv',
-      'FY16-17__adopted.csv': 'FY17.csv',
-      'FY15-16__proposed.csv': 'FY16.csv',
-      'FY16-17__proposed.csv': 'FY17.csv',
-      'FY16-17__adjusted.csv': 'FY17.csv',
-      'FY17-18__proposed.csv': 'FY18.csv',
-      'FY18-19__proposed.csv': 'FY19.csv'
-    };
-
-    function resolveFlowFilename(filename){
-      if (!filename) {
-        return '';
-      }
-      if (flowFilenameAliases[filename]) {
-        return flowFilenameAliases[filename];
-      }
-      if (/^FY\d{2}\.csv$/.test(filename)) {
-        return filename;
-      }
-      var legacyMatch = filename.match(/^FY(\d{2})-\d{2}(?:__[\w-]+)?\.csv$/);
-      if (legacyMatch) {
-        return 'FY' + legacyMatch[1] + '.csv';
-      }
-      return filename;
-    }
-
-    // process filenames to generate display names
-    
-    datafiles = datafiles.map(function(datafile){
-        var nameParts = datafile.filename.slice(0,-4).split("__");
-        datafile.displayName = nameParts.join(" ");
-        datafile.fy = nameParts[0];
-        datafile.type = nameParts[1];
-        return datafile;
-    });
-    datafiles.sort(function(a,b){
-      // years in descending order, 
-      // types in order of (adjusted, adopted, proposed)
-      // (which happens to be ascending)
-      var sortYear = d3.descending(a.fy, b.fy);
-      var sortType = d3.ascending(a.type, b.type);
-      return sortYear !== 0 ? sortYear : sortType;
-    });
-
-    d3.select("#fy.form-control").selectAll('option')
-        .data(datafiles)
-        .enter()
-        .append('option')
-            .attr('value', function(d){ return d.filename; })
-            .property('selected', function(d,i){ return i == 0;})
-            .text(function(d){return d.displayName;})
-            ;
-
-    d3.select("#fy.form-control")
-        .on('change', drawFlow)
-        ;
-
-    // run once to initially populate the chart
-    drawFlow();
-
-    function drawFlow(){
-        // get currently selected value
-        var rawFilename = d3.select('#fy.form-control')[0][0].value;
-        var filename = resolveFlowFilename(rawFilename);
-        var fy = filename.slice(0,-4);
-
-        d3.csv("/data/flow/" + filename, function(error, data){
-            if (error) {
-                console.log('error loading flow data for', filename, '(selected:', rawFilename + ')', error);
-                return false;
-            }
-            var final_data = data_wrangle(data, fy);
-            do_with_budget(final_data);
-        });
-    }
+if typeof flowDatafiles !== 'undefined'
+  script#flow-datafiles(type='application/json')!= JSON.stringify(flowDatafiles)
+script(src='/js/flow-page.js', charset='utf-8', defer)

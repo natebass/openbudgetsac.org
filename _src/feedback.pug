@@ -33,19 +33,9 @@ block content
           )
             span(data-i18n='feedback.loadingForm') Loading feedback form...
 
-        #disqus_thread
+        #disqus_thread(data-disqus-identifier='Open Budget: Sacramento feedback')
 
-  // DISQUS script
-  script(type='text/javascript').
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'openbudgetsac'; // required: replace example with your forum shortname
-    var disqus_identifier = 'Open Budget: Sacramento feedback';
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
+  script(src='/js/disqus-loader.js', charset='utf-8', defer)
   noscript
     | Please enable JavaScript to view the
     a(href='https://disqus.com/?ref_noscript') comments powered by Disqus.

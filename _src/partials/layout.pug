@@ -13,10 +13,10 @@ html(lang='en')
     block pageTitle
       title= title + " — Open Budget Sacramento"
 
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js', defer)
-    script(src='https://code.jquery.com/jquery-migrate-1.2.1.js', defer)
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js', defer)
-    script(src='/js/i18n-site.js', defer)
+    script(src='/js/vendor/jquery.min.js', defer)
+    script(src='/js/vendor/jquery-migrate-1.2.1.min.js', defer)
+    script(src='/js/vendor/bootstrap.min.js', defer)
+    script(src='/js/i18n-site.js')
   
   block bodyClass
     // - define slug here

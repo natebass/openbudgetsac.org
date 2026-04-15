@@ -1,12 +1,12 @@
-# js/old/main4.js
+# js/old/main4.ts
 
 - JSDoc blocks found: 5
 
 ## Block 1
 
-Associated declaration: `function buildYearSelection (referenceYears, headerJoiner) {`
+Associated declaration: `function buildYearSelection(referenceYears, headerJoiner) {`
 
-```js
+```ts
 /**
    * Builds year filter values and heading text from query parameters.
    *
@@ -18,9 +18,9 @@ Associated declaration: `function buildYearSelection (referenceYears, headerJoin
 
 ## Block 2
 
-Associated declaration: `function buildCrumbPath (crumbList, drill, parameterValue) {`
+Associated declaration: `function buildCrumbPath(crumbList, drill, parameterValue) {`
 
-```js
+```ts
 /**
    * Builds a breadcrumb URL for the next drilldown state.
    *
@@ -33,9 +33,9 @@ Associated declaration: `function buildCrumbPath (crumbList, drill, parameterVal
 
 ## Block 3
 
-Associated declaration: `function renderBreadcrumbs (crumbList) {`
+Associated declaration: `function renderBreadcrumbs(crumbList) {`
 
-```js
+```ts
 /**
    * Renders breadcrumb links for the current drilldown path.
    *
@@ -46,9 +46,9 @@ Associated declaration: `function renderBreadcrumbs (crumbList) {`
 
 ## Block 4
 
-Associated declaration: `function buildDrilldownLocation (nextDrilldown, nodeName) {`
+Associated declaration: `function buildDrilldownLocation(nextDrilldown, nodeName) {`
 
-```js
+```ts
 /**
    * Builds the next page URL for a drilldown click.
    *
@@ -60,9 +60,9 @@ Associated declaration: `function buildDrilldownLocation (nextDrilldown, nodeNam
 
 ## Block 5
 
-Associated declaration: `function getCannotDigDeeperMessage (fallback) {`
+Associated declaration: `function getCannotDigDeeperMessage(fallback) {`
 
-```js
+```ts
 /**
    * Resolves the localized fallback alert for terminal drilldown nodes.
    *

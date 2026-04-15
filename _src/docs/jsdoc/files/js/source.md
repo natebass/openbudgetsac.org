@@ -1,12 +1,12 @@
-# js/source.js
+# js/source.ts
 
 - JSDoc blocks found: 2
 
 ## Block 1
 
-Associated declaration: `function isSafeIdentifier (value) {`
+Associated declaration: `function isSafeIdentifier(value) {`
 
-```js
+```ts
 /**
    * Checks whether is safe identifier.
    *
@@ -17,9 +17,9 @@ Associated declaration: `function isSafeIdentifier (value) {`
 
 ## Block 2
 
-Associated declaration: `function (api_key, table_id) {`
+Associated declaration: `function(api_key, table_id) {`
 
-```js
+```ts
 /**
    * Runs fusion.
    *

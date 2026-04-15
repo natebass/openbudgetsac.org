@@ -1,12 +1,12 @@
-# js/treemap.js
+# js/treemap.ts
 
 - JSDoc blocks found: 11
 
 ## Block 1
 
-Associated declaration: `namespace.treemap = function () {`
+Associated declaration: `namespace.treemap = function() {`
 
-```js
+```ts
 /**
 	 * Creates the legacy treemap renderer.
 	 *
@@ -16,9 +16,9 @@ Associated declaration: `namespace.treemap = function () {`
 
 ## Block 2
 
-Associated declaration: `function _inner_height () {`
+Associated declaration: `function _inner_height() {`
 
-```js
+```ts
 /**
 		 * Calculates inner drawable height.
 		 *
@@ -28,9 +28,9 @@ Associated declaration: `function _inner_height () {`
 
 ## Block 3
 
-Associated declaration: `function _inner_width () {`
+Associated declaration: `function _inner_width() {`
 
-```js
+```ts
 /**
 		 * Calculates inner drawable width.
 		 *
@@ -40,9 +40,9 @@ Associated declaration: `function _inner_width () {`
 
 ## Block 4
 
-Associated declaration: `let _get_value = function (d) {`
+Associated declaration: `let _get_value = function(d) {`
 
-```js
+```ts
 /**
 		 * Default node value accessor.
 		 *
@@ -53,9 +53,9 @@ Associated declaration: `let _get_value = function (d) {`
 
 ## Block 5
 
-Associated declaration: `let _rect_text = function (d, i) {`
+Associated declaration: `let _rect_text = function(d, i) {`
 
-```js
+```ts
 /**
 		 * Default rectangle label renderer.
 		 *
@@ -67,9 +67,9 @@ Associated declaration: `let _rect_text = function (d, i) {`
 
 ## Block 6
 
-Associated declaration: `function _path (d) {`
+Associated declaration: `function _path(d) {`
 
-```js
+```ts
 /**
 		 * Builds root-to-node ancestry path.
 		 *
@@ -80,9 +80,9 @@ Associated declaration: `function _path (d) {`
 
 ## Block 7
 
-Associated declaration: `function _initialize (root) {`
+Associated declaration: `function _initialize(root) {`
 
-```js
+```ts
 /**
 		 * Initializes root layout coordinates.
 		 *
@@ -93,9 +93,9 @@ Associated declaration: `function _initialize (root) {`
 
 ## Block 8
 
-Associated declaration: `function _create_display (d) {`
+Associated declaration: `function _create_display(d: any): any {`
 
-```js
+```ts
 /**
 		 * Creates display helpers for a particular node context.
 		 *
@@ -106,9 +106,9 @@ Associated declaration: `function _create_display (d) {`
 
 ## Block 9
 
-Associated declaration: `function _display (d) {`
+Associated declaration: `function _display(d: any): any {`
 
-```js
+```ts
 /**
 		 * Displays a treemap view and prepares transitions.
 		 *
@@ -119,9 +119,9 @@ Associated declaration: `function _display (d) {`
 
 ## Block 10
 
-Associated declaration: `function (d, i, direction) {`
+Associated declaration: `function(d, i, direction) {`
 
-```js
+```ts
 /**
        * Runs transition.
        *
@@ -134,9 +134,9 @@ Associated declaration: `function (d, i, direction) {`
 
 ## Block 11
 
-Associated declaration: `function _layout (d) {`
+Associated declaration: `function _layout(d) {`
 
-```js
+```ts
 /**
 		 * Recursively lays out node descendants in normalized coordinates.
 		 *

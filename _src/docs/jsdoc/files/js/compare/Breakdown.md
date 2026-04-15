@@ -1,92 +1,93 @@
-# js/compare/Breakdown.jsx
+# js/compare/Breakdown.tsx
 
 - JSDoc blocks found: 7
 
 ## Block 1
 
-Associated declaration: `function areSameYears (currentYears, previousYears) {`
+Associated declaration: `function areSameYears(currentYears: SelectedYears, previousYears: SelectedYears): boolean {`
 
-```js
+```tsx
 /**
- * Checks whether two selected year arrays represent the same year/type pairings.
+ * Runs are same years.
  *
- * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} currentYears Current years.
- * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} previousYears Previous years.
- * @returns {boolean} True when selections match.
+ * @param {any} currentYears Input value.
+ * @param {any} previousYears Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 2
 
-Associated declaration: `function hasCompleteYears (years) {`
+Associated declaration: `function hasCompleteYears(years: SelectedYears): years is [NonNullable<SelectedYears[0]>, NonNullable<SelectedYears[1]>] {`
 
-```js
+```tsx
 /**
- * Checks whether both selected year entries are present.
+ * Checks whether has complete years.
  *
- * @param {Array<unknown>} years Year selection array.
- * @returns {boolean} True when all entries are truthy.
+ * @param {any} years Input value.
+ * @returns {any} Function result.
  */
 ```
 
 ## Block 3
 
-Associated declaration: `constructor (props) {`
+Associated declaration: `constructor(props: BreakdownProps) {`
 
-```js
+```tsx
 /**
-   * Initializes breakdown state.
+   * Runs constructor.
    *
-   * @param {object} props React component props.
+   * @param {any} props Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 4
 
-Associated declaration: `componentDidMount () {`
+Associated declaration: `componentDidMount(): void {`
 
-```js
+```tsx
 /**
-   * Loads data after mount.
+   * Runs component did mount.
    *
-   * @returns {void}
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 5
 
-Associated declaration: `componentDidUpdate (prevProps) {`
+Associated declaration: `componentDidUpdate(prevProps: BreakdownProps): void {`
 
-```js
+```tsx
 /**
-   * Refetches when selected years change.
+   * Runs component did update.
    *
-   * @param {object} prevProps Previous props.
-   * @returns {void}
+   * @param {any} prevProps Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 6
 
-Associated declaration: `fetchData (years) {`
+Associated declaration: `fetchData(years: SelectedYears): void {`
 
-```js
+```tsx
 /**
-   * Fetches breakdown data for selected year objects.
+   * Gets fetch data.
    *
-   * @param {Array<{fiscal_year_range:string,budget_type:(string|number)}|null>} years Year records.
-   * @returns {void}
+   * @param {any} years Input value.
+   * @returns {any} Function result.
    */
 ```
 
 ## Block 7
 
-Associated declaration: `render () {`
+Associated declaration: `render(): React.JSX.Element {`
 
-```js
+```tsx
 /**
-   * Renders loading state or chart/table breakdowns.
+   * Runs render.
    *
-   * @returns {JSX.Element} Breakdown content.
+   * @returns {any} Function result.
    */
 ```

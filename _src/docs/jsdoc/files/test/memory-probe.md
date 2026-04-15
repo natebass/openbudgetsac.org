@@ -1,12 +1,12 @@
-# test/memory-probe.js
+# test/memory-probe.ts
 
 - JSDoc blocks found: 15
 
 ## Block 1
 
-Associated declaration: `function parseNumberOption (value, fallback) {`
+Associated declaration: `function parseNumberOption(value, fallback) {`
 
-```js
+```ts
 /**
  * Gets parse number option.
  *
@@ -18,9 +18,9 @@ Associated declaration: `function parseNumberOption (value, fallback) {`
 
 ## Block 2
 
-Associated declaration: `function parseArgs (argv) {`
+Associated declaration: `function parseArgs(argv) {`
 
-```js
+```ts
 /**
  * Gets parse args.
  *
@@ -31,9 +31,9 @@ Associated declaration: `function parseArgs (argv) {`
 
 ## Block 3
 
-Associated declaration: `function printUsage (code) {`
+Associated declaration: `function printUsage(code) {`
 
-```js
+```ts
 /**
  * Runs print usage.
  *
@@ -44,9 +44,9 @@ Associated declaration: `function printUsage (code) {`
 
 ## Block 4
 
-Associated declaration: `function toMiB (bytes) {`
+Associated declaration: `function toMiB(bytes) {`
 
-```js
+```ts
 /**
  * Runs to mi b.
  *
@@ -57,9 +57,9 @@ Associated declaration: `function toMiB (bytes) {`
 
 ## Block 5
 
-Associated declaration: `function readProcStat (pid) {`
+Associated declaration: `function readProcStat(pid) {`
 
-```js
+```ts
 /**
  * Gets read proc stat.
  *
@@ -70,9 +70,9 @@ Associated declaration: `function readProcStat (pid) {`
 
 ## Block 6
 
-Associated declaration: `function listAllPids () {`
+Associated declaration: `function listAllPids() {`
 
-```js
+```ts
 /**
  * Gets list all pids.
  *
@@ -82,9 +82,9 @@ Associated declaration: `function listAllPids () {`
 
 ## Block 7
 
-Associated declaration: `function getRssBytesForPid (pid) {`
+Associated declaration: `function getRssBytesForPid(pid) {`
 
-```js
+```ts
 /**
  * Gets get rss bytes for pid.
  *
@@ -95,9 +95,9 @@ Associated declaration: `function getRssBytesForPid (pid) {`
 
 ## Block 8
 
-Associated declaration: `function collectDescendants (rootPid) {`
+Associated declaration: `function collectDescendants(rootPid) {`
 
-```js
+```ts
 /**
  * Gets collect descendants.
  *
@@ -108,9 +108,9 @@ Associated declaration: `function collectDescendants (rootPid) {`
 
 ## Block 9
 
-Associated declaration: `function sampleTreeRss (rootPid) {`
+Associated declaration: `function sampleTreeRss(rootPid) {`
 
-```js
+```ts
 /**
  * Runs sample tree rss.
  *
@@ -121,9 +121,9 @@ Associated declaration: `function sampleTreeRss (rootPid) {`
 
 ## Block 10
 
-Associated declaration: `function ensureParentDir (filePath) {`
+Associated declaration: `function ensureParentDir(filePath) {`
 
-```js
+```ts
 /**
  * Runs ensure parent dir.
  *
@@ -134,9 +134,9 @@ Associated declaration: `function ensureParentDir (filePath) {`
 
 ## Block 11
 
-Associated declaration: `function summarize (samples) {`
+Associated declaration: `function summarize(samples) {`
 
-```js
+```ts
 /**
  * Runs summarize.
  *
@@ -147,9 +147,9 @@ Associated declaration: `function summarize (samples) {`
 
 ## Block 12
 
-Associated declaration: `function run () {`
+Associated declaration: `function run() {`
 
-```js
+```ts
 /**
  * Runs run.
  *
@@ -159,9 +159,9 @@ Associated declaration: `function run () {`
 
 ## Block 13
 
-Associated declaration: `function takeSample () {`
+Associated declaration: `function takeSample() {`
 
-```js
+```ts
 /**
    * Runs take sample.
    *
@@ -171,9 +171,9 @@ Associated declaration: `function takeSample () {`
 
 ## Block 14
 
-Associated declaration: `function stopSampling () {`
+Associated declaration: `function stopSampling() {`
 
-```js
+```ts
 /**
    * Runs stop sampling.
    *
@@ -183,9 +183,9 @@ Associated declaration: `function stopSampling () {`
 
 ## Block 15
 
-Associated declaration: `function terminateChildTree () {`
+Associated declaration: `function terminateChildTree() {`
 
-```js
+```ts
 /**
    * Runs terminate child tree.
    *

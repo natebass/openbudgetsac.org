@@ -1,40 +1,40 @@
-# js/flow.js
+# js/flow.ts
 
 - JSDoc blocks found: 10
 
 ## Block 1
 
-Associated declaration: `function (d) {`
+Associated declaration: `function(d) {`
 
-```js
+```ts
 /**
  * Builds format.
  *
- * @param {any} d Input value.
- * @returns {any} Function result.
+ * @param {number} d Input value.
+ * @returns {string} Function result.
  */
 ```
 
 ## Block 2
 
-Associated declaration: `function (key, fallback, vars) {`
+Associated declaration: `function(key: string, fallback?: string, vars?: Record<string, unknown>) {`
 
-```js
+```ts
 /**
  * Runs i18n t.
  *
- * @param {any} key Input value.
- * @param {any} fallback Input value.
- * @param {any} vars Input value.
- * @returns {any} Function result.
+ * @param {string} key Input value.
+ * @param {string} [fallback] Input value.
+ * @param {Record<string, unknown>} [vars] Input value.
+ * @returns {string} Function result.
  */
 ```
 
 ## Block 3
 
-Associated declaration: `function localizeFlowLabel (label) {`
+Associated declaration: `function localizeFlowLabel(label) {`
 
-```js
+```ts
 /**
  * Localizes known flow labels while preserving source values for data operations.
  *
@@ -45,9 +45,9 @@ Associated declaration: `function localizeFlowLabel (label) {`
 
 ## Block 4
 
-Associated declaration: `function data_wrangle (dataset, fy) {`
+Associated declaration: `function data_wrangle(dataset, fy) {`
 
-```js
+```ts
 /**
  * Normalizes schema differences across fiscal year datasets.
  *
@@ -61,7 +61,7 @@ Associated declaration: `function data_wrangle (dataset, fy) {`
 
 Associated declaration: `const sort_by = (fields_arr) => {`
 
-```js
+```ts
 /**
  * Creates a comparator by explicit value ordering.
  *
@@ -72,9 +72,9 @@ Associated declaration: `const sort_by = (fields_arr) => {`
 
 ## Block 6
 
-Associated declaration: `const fundKey = (fund_field, general_fund) => d => d[fund_field] == general_fund ? 'General Fund' : 'Non-discretionary funds'`
+Associated declaration: `const fundKey = (fund_field, general_fund) => (d) => d[fund_field] == general_fund ? 'General Fund' : 'Non-discretionary funds';`
 
-```js
+```ts
 /**
  * Creates fund bucket accessor for grouped keys.
  *
@@ -86,9 +86,9 @@ Associated declaration: `const fundKey = (fund_field, general_fund) => d => d[fu
 
 ## Block 7
 
-Associated declaration: `const rollupFn = amount_field => v => ({ total: d3.sum(v, d => +d[amount_field]) })`
+Associated declaration: `const rollupFn = (amount_field) => (v) => ({total: d3.sum(v, (d) => +d[amount_field])});`
 
-```js
+```ts
 /**
  * Creates rollup function that adds numeric totals.
  *
@@ -99,9 +99,9 @@ Associated declaration: `const rollupFn = amount_field => v => ({ total: d3.sum(
 
 ## Block 8
 
-Associated declaration: `const flatten = nested => nested.reduce((acc, row) => acc.concat(row), [])`
+Associated declaration: `const flatten = (nested) => nested.reduce((acc, row) => acc.concat(row), []);`
 
-```js
+```ts
 /**
  * Maps grouped records into sankey nodes/links.
  *
@@ -114,9 +114,9 @@ Associated declaration: `const flatten = nested => nested.reduce((acc, row) => a
 
 ## Block 9
 
-Associated declaration: `function data_wrangle_v1 (dataset, category_field, department_field, expense_field, revenue_value, expense_value, fund_field, general_fund, amount_field) {`
+Associated declaration: `function data_wrangle_v1(dataset, category_field, department_field, expense_field, revenue_value, expense_value, fund_field, general_fund, amount_field) {`
 
-```js
+```ts
 /**
  * Builds sankey nodes and links from a normalized row schema.
  *
@@ -135,9 +135,9 @@ Associated declaration: `function data_wrangle_v1 (dataset, category_field, depa
 
 ## Block 10
 
-Associated declaration: `function do_with_budget (data) {`
+Associated declaration: `function do_with_budget(data) {`
 
-```js
+```ts
 /**
  * Renders the sankey chart for prepared data.
  *

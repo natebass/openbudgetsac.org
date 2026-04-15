@@ -1,12 +1,12 @@
-# js/tooltip.js
+# js/tooltip.ts
 
 - JSDoc blocks found: 5
 
 ## Block 1
 
-Associated declaration: `namespace.tooltip = function () {`
+Associated declaration: `namespace.tooltip = function() {`
 
-```js
+```ts
 /**
    * Creates a floating tooltip helper.
    *
@@ -16,9 +16,9 @@ Associated declaration: `namespace.tooltip = function () {`
 
 ## Block 2
 
-Associated declaration: `html: function () {`
+Associated declaration: `html: function() {`
 
-```js
+```ts
 /**
        * Gets/sets tooltip html renderer.
        *
@@ -28,9 +28,9 @@ Associated declaration: `html: function () {`
 
 ## Block 3
 
-Associated declaration: `show: function () {`
+Associated declaration: `show: function() {`
 
-```js
+```ts
 /**
        * Shows tooltip and updates content.
        *
@@ -40,9 +40,9 @@ Associated declaration: `show: function () {`
 
 ## Block 4
 
-Associated declaration: `track: function () {`
+Associated declaration: `track: function() {`
 
-```js
+```ts
 /**
        * Repositions tooltip near the pointer.
        *
@@ -52,9 +52,9 @@ Associated declaration: `track: function () {`
 
 ## Block 5
 
-Associated declaration: `hide: function () {`
+Associated declaration: `hide: function() {`
 
-```js
+```ts
 /**
        * Hides tooltip.
        *

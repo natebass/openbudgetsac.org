@@ -1,4 +1,4 @@
-# js/compare/__tests__/DiffTable.test.jsx
+# js/compare/__tests__/DiffTable.test.tsx
 
 - JSDoc blocks found: 0
 

@@ -1,4 +1,4 @@
-# js/compare/__tests__/siteI18n.test.js
+# js/compare/__tests__/siteI18n.test.ts
 
 - JSDoc blocks found: 0
 

@@ -3,7 +3,7 @@ www/
 
 node_modules/
 tmp/
-_src/js/dist/
+_src/generated/
 build/
 _site/
 yarn.lock

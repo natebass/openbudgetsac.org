@@ -6,6 +6,7 @@
 [![Node.js](https://img.shields.io/badge/node-22.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Eleventy](https://img.shields.io/badge/Eleventy-3.1.5-222222?logo=11ty&logoColor=white)](https://www.11ty.dev/)
 [![React](https://img.shields.io/badge/React-19.2.5-61DAFB?logo=react&logoColor=000)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Webpack](https://img.shields.io/badge/Webpack-5.106.1-8DD6F9?logo=webpack&logoColor=000)](https://webpack.js.org/)
 [![Jest](https://img.shields.io/badge/Jest-30.3.0-C21325?logo=jest&logoColor=white)](https://jestjs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.txt)
@@ -48,6 +49,7 @@ Core goals:
 ```bash
 # from repository root
 cd _src
+npm audit fix
 npm ci --include=dev
 npm run build-css
 npm run serve
@@ -76,29 +78,36 @@ docker compose --profile test build test-parallel
 From `_src/`:
 
 ```bash
-npm run serve                # eleventy dev server
-npm run watch                # webpack watch for compare app
-npm run build                # production compare bundle
-npm run build-css            # compile Sass
-npm run docs:jsdoc:autofix   # insert missing JSDoc in active JS/JSX files and regenerate docs
-npm run docs:jsdoc:check     # fail if active JS/JSX files are missing JSDoc comments
-npm run docs:jsdoc           # generate Markdown JSDoc inventory in _src/docs/jsdoc
-node scripts/add-missing-jsdoc.mjs # add missing JSDoc blocks in active first-party JS/JSX files
-npm run lint                 # standard + eslint
-npm run test                 # lint + unit + a11y + e2e
-npm run test:e2e             # preflight + e2e against local server
-npm run test:docker          # Docker-optimized full suite (coverage + a11y + e2e)
-npm run verify:all:parallel  # run lint/tests/e2e in parallel (used by Docker verify-parallel target)
-npm run perf:report          # compare bundle size budgets
-npm run bench                # benchmark suite
-npm run probe:memory         # RSS memory probe for serve command (writes JSON report)
-npm run probe:memory:csv     # convert serve JSON memory report to CSV
-npm run probe:memory:watch   # RSS memory probe for webpack watch command (writes JSON report)
+npm audit fix                  # resolves supply-side security issues introduced by NPM packages
+npm run serve                  # build TypeScript assets + CSS, then start the Eleventy dev server
+npm run watch                  # watch legacy TypeScript assets and the compare bundle
+npm run build:legacy           # emit legacy/browser TypeScript assets and patch browser-incompatible prologue lines
+npm run build:compare          # build the React compare bundle
+npm run build:assets           # build all JavaScript/TypeScript assets
+npm run build                  # alias for build:assets
+npm run build-css              # compile Sass
+npm run site:build             # build the Eleventy site with the TypeScript config
+npm run site:serve             # serve the Eleventy site with the TypeScript config
+npm run docs:jsdoc:autofix     # insert missing JSDoc in active TS/JS files and regenerate docs
+npm run docs:jsdoc:check       # fail if active TS/JS files are missing JSDoc comments
+npm run docs:jsdoc             # generate Markdown JSDoc inventory in _src/docs/jsdoc
+node --import tsx scripts/add-missing-jsdoc.ts # add missing JSDoc blocks in active first-party TS/JS files
+npm run typecheck              # TypeScript program check for the whole project
+npm run lint                   # ESLint with Google TypeScript style rules
+npm run test                   # lint + typecheck + unit + a11y + e2e
+npm run test:i18n:smoke        # site + compare i18n smoke tests
+npm run test:e2e               # preflight + e2e against local server
+npm run test:docker            # Docker-optimized full suite (coverage + a11y + e2e)
+npm run verify:all:parallel    # run lint/tests/e2e in parallel (used by Docker verify-parallel target)
+npm run perf:report            # compare bundle size budgets
+npm run bench                  # benchmark suite
+npm run probe:memory           # RSS memory probe for serve command (writes JSON report)
+npm run probe:memory:csv       # convert serve JSON memory report to CSV
+npm run probe:memory:watch     # RSS memory probe for webpack watch command (writes JSON report)
 npm run probe:memory:watch:csv # convert watch JSON memory report to CSV
-npx jest --config jest.config.cjs --selectProjects unit --runTestsByPath js/compare/__tests__/i18n.test.js js/compare/__tests__/siteI18n.test.js --runInBand # i18n smoke tests
 ```
 
-ESLint is now on flat config via [`_src/eslint.config.cjs`](_src/eslint.config.cjs) (`.eslintrc` has been removed).
+ESLint is on flat config via [`_src/eslint.config.ts`](_src/eslint.config.ts). TypeScript linting follows the Google TypeScript style guide through `eslint-config-google` plus `@typescript-eslint`.
 
 For performance baselines and guardrails, see [`PERFORMANCE.md`](PERFORMANCE.md) and [`_src/PERFORMANCE.md`](_src/PERFORMANCE.md).
 
@@ -111,11 +120,12 @@ Memory profiling outputs:
 ## CI/CD
 
 - CI workflow (`.github/workflows/ci.yml`) validates:
-  - npm checks (lint, i18n unit smoke, unit coverage in CI, a11y, perf, bench, JSDoc coverage check, JSDoc docs generation, Eleventy build)
+  - npm checks (lint, typecheck, i18n unit smoke, unit coverage in CI, a11y, perf, bench, JSDoc coverage check, JSDoc docs generation, Eleventy build)
   - dependency installs with Puppeteer browser download disabled for non-E2E jobs (`PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev`)
   - built-site i18n sanity checks (`build/js/i18n-site.js` and localized markup wiring in generated HTML)
   - explicit Chromium browser install for E2E (`npx puppeteer browsers install chrome`) after Linux shared-library provisioning
   - E2E with a prebuilt frontend bundle via `npm run test:e2e:nobuild`
+  - legacy Overview/Detail smoke coverage in both `en-US` and `es-419`
   - Docker targets:
     - `docker compose build site` (runtime/default website image)
     - `docker build --target test .` (full Docker-optimized test suite)
@@ -127,42 +137,47 @@ Memory profiling outputs:
 openbudgetsac.org/
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml                  # testing-based deployment config
-│       └── deploy.yml              # server-based deployment config
+│       ├── ci.yml                  # continuous integration workflow
+│       └── deploy.yml              # GitHub Pages deployment workflow
 ├── PERFORMANCE.md                  # repository-level performance summary + guardrails
 ├── _src/                           # primary development workspace
 │   ├── __tests__/                  # e2e tests
 │   ├── bench/                      # benchmark harness
 │   ├── css/                        # Sass + legacy vendor CSS assets
 │   ├── data/                       # compare/flow/tree data + Python scripts
+│   ├── docs/
+│   │   └── jsdoc/                  # generated JSDoc Markdown index + per-file docs
+│   ├── generated/                  # compiled browser-ready TypeScript output
 │   ├── images/                     # static images
 │   ├── js/
 │   │   ├── compare/                # React comparison app
-│   │   │   └── i18n.js             # compare-page i18n catalog + language resolution
-│   │   ├── i18n-site.js            # site-wide i18n runtime (legacy + modern templates)
-│   │   ├── old/                    # legacy OpenSpending scripts
-│   │   └── dist/                   # built bundles
-│   ├── docs/
-│   │   └── jsdoc/                  # generated JSDoc Markdown index + per-file docs
+│   │   │   └── i18n.ts             # compare-page i18n catalog + language resolution
+│   │   ├── i18n-site.ts            # site-wide i18n runtime (legacy + modern templates)
+│   │   └── old/                    # legacy OpenSpending scripts
 │   ├── partials/                   # shared Pug partials/layouts
 │   ├── scripts/
-│   │   ├── add-missing-jsdoc.mjs   # inserts generated missing JSDoc in active first-party JS/JSX files
-│   │   └── generate-jsdoc-docs.mjs # JSDoc Markdown generator (npm run docs:jsdoc)
+│   │   ├── add-missing-jsdoc.ts    # inserts generated missing JSDoc in active first-party TS/JS files
+│   │   ├── generate-jsdoc-docs.ts  # JSDoc Markdown generator (npm run docs:jsdoc)
+│   │   └── strip-cjs-prologue.ts   # removes browser-breaking CommonJS prologue lines from generated assets
 │   ├── templates/                  # legacy template pages
 │   ├── test/                       # test utilities (preflight, static server, perf, RSS memory probe + CSV conversion)
-│   │   ├── memory-probe.js         # process-tree RSS sampler for launch commands (JSON report)
-│   │   └── memory-report-to-csv.js # converts memory probe JSON timeline into CSV
-│   ├── eslint.config.cjs           # ESLint v10 flat configuration
-│   ├── package.json
-│   ├── jest.config.cjs
-│   ├── webpack.config.js
-│   └── PERFORMANCE.md
+│   │   ├── memory-probe.ts         # process-tree RSS sampler for launch commands (JSON report)
+│   │   └── memory-report-to-csv.ts # converts memory probe JSON timeline into CSV
+│   ├── vendor/                     # pinned browser runtime assets (d3, jquery-migrate)
+│   ├── eslint.config.ts            # ESLint v10 flat configuration
+│   ├── jest.config.ts              # Jest flat configurate
+│   ├── package.json                # NPM scripts
+│   ├── README.md                   # general repository documentation
+│   ├── tsconfig.json               # TS flat configuration
+│   ├── webpack.config.ts           # Webpack flat configuration
+│   └── PERFORMANCE.md              # benchmarking repository documentation
 ├── _treemap/                       # treemap data processing utilities
-├── Dockerfile                      # normal Docker config
-├── docker-compose.yml              # Docker compose config
+├── Dockerfile                      # container build and test targets
+├── docker-compose.yml              # local Docker orchestration
 ├── civic.json                      # civic-tech documentation
 └── LICENSE.txt                     # MIT License text
 ```
+
 
 ## Total Features
 
@@ -195,14 +210,14 @@ openbudgetsac.org/
 - Runtime propagation of selected locale to internal links so page transitions keep language state.
 - `data-i18n`, `data-i18n-html`, `data-i18n-title`, and `data-i18n-aria-label` support across navigation, compare UI text, and legacy flow/tree labels.
 - Dynamic data labels in Comparison and Detail views are translated through the site i18n runtime helper for `es-419`.
-- Dedicated unit tests for compare and site runtime locale behavior (`i18n.test.js`, `siteI18n.test.js`).
+- Dedicated unit tests for compare and site runtime locale behavior (`i18n.test.ts`, `siteI18n.test.ts`).
 
 ### Performance and quality features
 - Production-mode webpack builds for compare bundle.
 - Automated bundle-size budget reporting (`npm run perf:report`).
 - RSS memory probe tooling for startup/watch diagnostics (`npm run probe:memory`, `npm run probe:memory:watch`).
 - CSV export utility for memory timelines (`npm run probe:memory:csv`, `npm run probe:memory:watch:csv`).
-- Linting via Standard + ESLint.
+- Linting via ESLint, `@typescript-eslint`, and the Google TypeScript style guide.
 - Unit + accessibility tests via Jest.
 - E2E verification via Puppeteer with Linux dependency preflight checks.
 - Benchmarks via `bench-node`.
@@ -249,19 +264,21 @@ openbudgetsac.org/
 
 | Tool | Version | Badge | Link |
 | --- | --- | --- | --- |
+| TypeScript | `^6.0.2` | ![TypeScript](https://img.shields.io/badge/TypeScript-6.0.2-3178C6?logo=typescript&logoColor=white) | https://www.typescriptlang.org/ |
 | Jest | `^30.3.0` | ![Jest](https://img.shields.io/badge/Jest-30.3.0-C21325?logo=jest&logoColor=white) | https://jestjs.io/ |
 | Testing Library | `^16.3.2` | ![Testing Library](https://img.shields.io/badge/Testing%20Library-16.3.2-E33332?logo=testinglibrary&logoColor=white) | https://testing-library.com/ |
 | jest-axe | `^10.0.0` | ![axe](https://img.shields.io/badge/jest--axe-10.0.0-5A0FC8) | https://github.com/nickcolley/jest-axe |
 | Puppeteer | `^24.40.0` | ![Puppeteer](https://img.shields.io/badge/Puppeteer-24.40.0-40B5A4?logo=puppeteer&logoColor=white) | https://pptr.dev/ |
 | ESLint | `^10.2.0` | ![ESLint](https://img.shields.io/badge/ESLint-10.2.0-4B32C3?logo=eslint&logoColor=white) | https://eslint.org/ |
-| Standard JavaScript | `^17.1.2` | ![StandardJS](https://img.shields.io/badge/JavaScript%20Style-Standard-F3DF49?logo=javascript&logoColor=000) | https://standardjs.com/ |
+| eslint-config-google | `^0.14.0` | ![Google Style](https://img.shields.io/badge/Google-TS%20Style-4285F4?logo=google&logoColor=white) | https://github.com/google/eslint-config-google |
+| tsx | `^4.21.0` | ![tsx](https://img.shields.io/badge/tsx-4.21.0-0F172A) | https://github.com/privatenumber/tsx |
 | start-server-and-test | `^3.0.2` | ![start-server-and-test](https://img.shields.io/badge/start--server--and--test-3.0.2-00C853) | https://github.com/bahmutov/start-server-and-test |
 | GitHub Actions | workflow | ![GitHub Actions](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white) | https://docs.github.com/actions |
 
 ## List of Dependencies
 All dependencies required for active development are listed below.
 
-### JavaScript runtime dependencies (`_src/package.json`)
+### Runtime dependencies (`_src/package.json`)
 - `axios@^1.15.0`
 - `chart.js@^4.5.1`
 - `core-js@^3.49.0`
@@ -280,7 +297,7 @@ All dependencies required for active development are listed below.
 - `react-select@^5.10.2`
 - `react-spinkit@^3.0.0`
 
-### JavaScript dev/test/build dependencies (`_src/package.json`)
+### TypeScript dev/test/build dependencies (`_src/package.json`)
 - `@11ty/eleventy@^3.1.5`
 - `@11ty/eleventy-plugin-pug@^1.0.0`
 - `@axe-core/react@^4.11.1`
@@ -288,16 +305,23 @@ All dependencies required for active development are listed below.
 - `@babel/core@^7.29.0`
 - `@babel/preset-env@^7.29.2`
 - `@babel/preset-react@^7.28.5`
+- `@babel/preset-typescript@^7.28.5`
 - `@babel/register@^7.28.6`
 - `@eslint-react/eslint-plugin@^4.2.3`
 - `@eslint/js@^10.0.1`
 - `@testing-library/jest-dom@^6.9.1`
 - `@testing-library/react@^16.3.2`
+- `@types/jest@^30.0.0`
+- `@types/jquery@^4.0.0`
+- `@types/react-dom@^19.2.3`
+- `@typescript-eslint/eslint-plugin@^8.58.2`
+- `@typescript-eslint/parser@^8.58.2`
 - `babel-jest@^30.3.0`
 - `babel-loader@^10.1.1`
 - `bench-node@^0.14.0`
 - `css-loader@^7.1.4`
 - `eslint@^10.2.0`
+- `eslint-config-google@^0.14.0`
 - `eslint-plugin-jest@^29.15.2`
 - `eslint-plugin-react-hooks@7.1.0-canary-fef12a01-20260413`
 - `globals@^17.5.0`
@@ -305,9 +329,10 @@ All dependencies required for active development are listed below.
 - `jest-axe@^10.0.0`
 - `jest-environment-jsdom@^30.3.0`
 - `puppeteer@^24.40.0`
-- `standard@^17.1.2`
 - `start-server-and-test@^3.0.2`
 - `style-loader@^4.0.0`
+- `tsx@^4.21.0`
+- `typescript@^6.0.2`
 - `webpack@^5.106.1`
 - `webpack-cli@^7.0.2`
 
@@ -324,7 +349,7 @@ The E2E preflight checks and Docker test targets rely on shared libraries includ
 - `ca-certificates`, `fonts-liberation`, `xdg-utils`
 
 Authoritative locations:
-- [`_src/test/e2e-preflight.js`](_src/test/e2e-preflight.js)
+- [`_src/test/e2e-preflight.ts`](_src/test/e2e-preflight.ts)
 - [`Dockerfile`](Dockerfile)
 
 ## Outstanding Concerns / Issues / TODOs
@@ -332,10 +357,10 @@ No first-party `TODO`/`FIXME` markers are found in active codebase. However, the
 
 | Concern | Context | Location |
 | --- | --- | --- |
-| E2E tests require Linux Chromium shared libraries | `npm run test:e2e` will fail on hosts missing required runtime libs until dependencies are installed. | [`_src/test/e2e-preflight.js`](_src/test/e2e-preflight.js) |
+| E2E tests require Linux Chromium shared libraries | `npm run test:e2e` will fail on hosts missing required runtime libs until dependencies are installed. | [`_src/test/e2e-preflight.ts`](_src/test/e2e-preflight.ts) |
 | Compare bundle remains above Webpack’s default warning threshold | Performance has improved significantly, but bundle size still exceeds 244 KiB default warning level. | [`PERFORMANCE.md`](PERFORMANCE.md) |
 | Large source images still impact strict 3G targets | Optional optimization work remains for modern image formats and responsive variants. | [`PERFORMANCE.md`](PERFORMANCE.md) |
-| Legacy OpenSpending/jQuery treemap path is still in production code | Historical widget path increases maintenance burden and modernization effort. | [`_src/js/old/treemap.js`](_src/js/old/treemap.js) |
+| Legacy OpenSpending/jQuery treemap path is still in production code | Historical widget path increases maintenance burden and modernization effort. | [`_src/js/old/treemap.ts`](_src/js/old/treemap.ts) |
 | Historical page copy contains dated “pending” notices from 2016 | Content is factually historical, but appears stale/confusing if read as current status. | [`_src/2016-17-adjusted-budget-flow.jade:10`](_src/2016-17-adjusted-budget-flow.jade), [`_src/2016-17-adjusted-budget-tree.jade:10`](_src/2016-17-adjusted-budget-tree.jade) |
 
 ## Contributing
@@ -354,6 +379,7 @@ Typical workflow:
 
 Useful commands from `_src/`:
 ```bash
+npm audit fix
 npm run lint
 npm run test:unit:coverage
 npm run test:a11y
