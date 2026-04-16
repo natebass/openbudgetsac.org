@@ -72,8 +72,11 @@ def parse_fiscal_year_key(fiscal_year):
         return fiscal_year
     elif fiscal_year[:2] == "20":
         return int(fiscal_year)
+    return fiscal_year
 
-#creating by year json file
+# Create per-year JSON files from source budget rows.
+# NOTE: This function is legacy and intentionally preserves historical
+# output shape for downstream pages, even though the implementation is brittle.
 def create_files_by_year(df, cfg):
     df1 = pd.DataFrame()
     df2 = pd.DataFrame()
@@ -96,7 +99,7 @@ def create_files_by_year(df, cfg):
     nans = (df6.isna()) & (df6.applymap(type) != type(None))
     cols = nans.all()[nans.all()].index.to_list()
     df6 = df6.drop(cols,axis=1)
-    #concat two dataframes together
+    # Concatenate extracted filters with source rows to align legacy columns.
     for i in df5:
         df1 = pd.concat([df5,df6],axis=1)
 
@@ -141,7 +144,7 @@ def create_files_by_year(df, cfg):
         outfile.write(json3)
     with open("Expense.FY16-17.json", "w") as outfile:
         outfile.write(json4)
-    #new1 = pd.concat(df1,df3)new2 = pd.concat(df2,df4)
+    # Keep the generated file names stable for older treemap templates.
 #def create_files_by_year(department_table, account_categories_table, revenue_key, expense_key, config):
 #   for group in config["groups"]:
 #       fiscal_year_key = parse_fiscal_year_key(group['values'][1])
@@ -245,7 +248,9 @@ def generate_files(df, config):
     fiscal_years = np.sort(df[config["categories"]["fiscal_year_range"]].unique())
     revenue_key = config["account_types"]["revenue"]
     expense_key = config["account_types"]["expense"]
-    create_files_by_year(departments_totals_table, account_categories_totals_table, revenue_key, expense_key, config)
+    # Reuse the legacy file-writer path. The alternative implementation below
+    # is incomplete and had mismatched arguments.
+    create_files_by_year(df, config)
     create_budget_expenses_totals_file(departments_totals_table, expense_key, fiscal_years)
 
 

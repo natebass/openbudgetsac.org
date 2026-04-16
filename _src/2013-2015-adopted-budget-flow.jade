@@ -6,15 +6,10 @@ block title
 block datasource
   h6
     | Data source:&nbsp;
-    a(href = "https://data.oaklandnet.com") data.oaklandnet.com
+    a(href = "https://data.cityofsacramento.org") data.cityofsacramento.org
 
 block disqus_config
-  script(type="text/javascript").
-    var disqus_identifier = "2013-2015 adopted budget flow";
+  - var disqusIdentifier = '2013-2015 adopted budget flow'
 
 block get_datafiles
-  script(type="text/javascript").
-    var datafiles = [
-      {filename: "FY13-14__adopted.csv"}, 
-      {filename: "FY14-15__adopted.csv"}
-    ];
+  - var flowDatafiles = [{filename: 'FY13-14__adopted.csv'}, {filename: 'FY14-15__adopted.csv'}]

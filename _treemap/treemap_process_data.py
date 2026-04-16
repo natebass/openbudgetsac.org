@@ -40,12 +40,12 @@ def _load_csv(filepath):
     # open csv file and create csv reader
     reader = csv.reader(open(filepath, 'rU'))
 
-    # interperate the first row as the header
+    # Interpret the first row as the CSV header.
     header = reader.next()
     header_length = len(header)
 
     for row in reader:
-        # check that the row matches the header
+        # Check that each row has the same number of columns as the header.
         row_length = len(row)
         if row_length != header_length:
             _logger.warning(
@@ -61,7 +61,7 @@ def _load_csv(filepath):
                 _logger.info('Truncating row {0}'.format(reader.line_num))
                 row = row[0:header_length]
 
-        # convert list into a dictionary and store in "data"
+        # Convert each row list into a dictionary keyed by header names.
         data.append(dict(zip(header, row)))
 
     _logger.info('Loaded {0} items'.format(len(data)))
@@ -221,7 +221,7 @@ def _create_group_map_function(headers):
 
 def _group(config, budget):
     groups = []
-    # create a copy of budget items with ((group_info), (budget_item))
+    # Create (group-key, row) pairs so we can partition rows by configured groups.
     budget_groups = map(
         _create_group_map_function(config['grouping_headers']),
         budget)
@@ -229,16 +229,16 @@ def _group(config, budget):
     left_over = list(budget_groups)
 
     for group in config['groups']:
-        # get all budget items that match the group's "values"
+        # Select all budget items that match this group's key.
         key = tuple(group['values'])
         budget_group = filter(lambda x: x[0] == key, budget_groups)
         group_copy = dict(group)
 
-        # store budget items with configuration
+        # Attach matched budget rows to the group configuration.
         group_copy['budget'] = map(operator.itemgetter(1), budget_group)
         groups.append(group_copy)
 
-        # remove used up items
+        # Track leftovers to report any unmatched categories.
         left_over = filter(lambda x: x[0] != key, left_over)
 
     unused = set(map(operator.itemgetter(0), left_over))
@@ -286,9 +286,9 @@ def _prepare(config_filepath, budget_filepath):
             group['budget'], 
             _create_key_generator(group['hierarchy']),
             _reduce_lines)
-        # remove silly hierarchies with single duplicate children
+        # Collapse duplicate one-child chains to keep the output tree concise.
         _squeeze(group['tree'])
-        # rename fields for treemap viewer
+        # Rename fields to the shape expected by the treemap client.
         group['tree'] = _prep_for_treemap(group['tree'])
 
         # write output groups
@@ -320,4 +320,3 @@ if __name__ == '__main__':
     args = parser.parse_args()
     _prepare(args.configuration[0], args.budget[0]) 
     
-

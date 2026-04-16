@@ -1,31 +1,18 @@
 doctype html
-html
+html(lang='en')
   head
     meta(name='viewport', content='width=device-width')
     link(rel="stylesheet" href="/css/main.css")
     title= title
     if environment == "production"
-      script.
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-          ga('create', 'UA-35908939-3', 'openbudgetoakland.org');
-          ga('send', 'pageview');
-      script.
-        (function(h,o,t,j,a,r){
-          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-          h._hjSettings={hjid:1277223,hjsv:6};
-          a=o.getElementsByTagName('head')[0];
-          r=o.createElement('script');r.async=1;
-          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-          a.appendChild(r);
-          })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+      //- Google Analytics remains disabled for the Sacramento deployment.
+      script(src='/js/hotjar.js', defer)
 
-    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js").
-    script(src='https://code.jquery.com/jquery-migrate-1.2.1.js')
-    script(src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js").
-    script(src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.5/d3.min.js").
+    script(src='/js/vendor/jquery.min.js').
+    script(src='/js/vendor/jquery-migrate-1.2.1.min.js')
+    script(src='/js/vendor/bootstrap.min.js').
+    script(src='/js/vendor/d3.v3.4.5.min.js').
+    script(src='/js/i18n-site.js')
 
   body(class='#{slug}')
     #wrapper
@@ -33,59 +20,65 @@ html
         .navbar.navbar-default.navbar-fixed-top
           .container
             .navbar-header
-              button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
-                span.sr-only Toggle navigation
+              button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse', data-i18n-aria-label='ui.toggleNavigation')
+                span.sr-only(data-i18n='ui.toggleNavigation') Toggle navigation
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-              a.navbar-brand(href='/') Open Budget: Oakland
+              a.navbar-brand(href='/', data-i18n='ui.siteBrand') Open Budget: Sacramento
             .navbar-collapse.collapse
               ul.nav.navbar-nav.navbar-right
 
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown')
-                    | About
+                    span(data-i18n='nav.about') About
                     b.caret
                   ul.dropdown-menu
                     li
-                      a(href='what-we-do.html') What and How
+                      a(href='what-we-do.html', data-i18n='nav.whatAndHow') What and How
                     li
-                      a(href='who-we-are.html') Who We Are
+                      a(href='who-we-are.html', data-i18n='nav.whoWeAre') Who We Are
                     li
-                      a(href='news.html') News
+                      a(href='news.html', data-i18n='nav.news') News
                     li
-                      a(href='contact.html') Contact Us
+                      a(href='contact.html', data-i18n='nav.contactUs') Contact Us
 
                 li
-                  a(href='/budget-visuals.html') Visualizations
+                  a(href='/budget-visuals.html', data-i18n='nav.visualizations') Visualizations
 
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown')
-                    | Data
+                    span(data-i18n='nav.data') Data
                     b.caret
                   ul.dropdown-menu
                     li
-                      a(href='https://github.com/openoakland/openbudgetoakland/wiki/API-Documentation') Open Budget Oakland API
+                      a(href='https://github.com/code4sac/openbudgetsac.org/wiki/API-Documentation', title='Open Budget Sacramento Docs', aria-label='Open Budget Sacramento Docs') Open Budget Sacramento Docs
                     li
-                      a(href='https://cao-94612.s3.amazonaws.com/documents/FY-2019-21-Adopted-Budget-Policy-Book-FINAL-WEB-VERSION.pdf') Adopted Budget Policy Book
+                      a(href='https://www.cityofsacramento.org/-/media/Corporate/Files/Finance/Budget/FY2022_23_ApprovedBudget_Revised_WEB.pdf', title='Adopted Budget Policy Book', aria-label='Adopted Budget Policy Book') Adopted Budget Policy Book
                     li
-                      a(href='http://data.openoakland.org/dataset/city-oakland-budget') Legacy Datasets
+                      a(href='http://data.codeforsacramento.org/dataset/city-sacramento-budget', title='Legacy Datasets', aria-label='Legacy Datasets') Legacy Datasets
 
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown')
-                    | Resources
+                    span(data-i18n='nav.resources') Resources
                     b.caret
                   ul.dropdown-menu
                     li
-                      a(href='oakland-budget-101.html') Oakland Budget 101
+                      a(href='https://www.cityofsacramento.org/Finance/Budget', data-i18n='nav.budget101') Sacramento Budget 101
                     li
-                      a(href='tools-projects.html') Tools and Projects
+                      a(href='tools-projects.html', data-i18n='nav.toolsProjects') Tools and Projects
 
                   //- li
                   //-   a(href='discuss.html') Discuss
 
                   li
-                    a(href='feedback.html') Feedback
+                    a(href='feedback.html', data-i18n='nav.feedback') Feedback
+
+                li
+                  label.sr-only(for='locale-selector-legacy', data-i18n='ui.language') Language
+                  select#locale-selector-legacy.form-control.input-sm(data-locale-selector, aria-label='Language', data-i18n-aria-label='ui.language')
+                    option(value='en-US', data-i18n='ui.english') English (US)
+                    option(value='es-419', data-i18n='ui.spanishLatam') Español (Latinoamérica)
 
       != yield
       #wrapper-footer
@@ -96,29 +89,31 @@ html
           //-a(rel="license", href="http://creativecommons.org/licenses/by-nc-sa/4.0/")
             img(alt="Creative Commons License", style="border-width:0", src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png")
           .col-md-6.col-sm-9
-            p
-              | Open Budget: Oakland is an open-source project by #{' '}
-              a(href="https://openoakland.org") OpenOakland
-              |  to help citizens better understand Oakland's spending and budget process.
+            p(data-i18n-html='footer.aboutProjectHtml')
+              | Open Budget: Sacramento is an open-source project by #{' '}
+              a(href="https://opensac.org") Open Sacramento
+              |  to help citizens better understand Sacramento's spending and budget process.
             ul.list-inline
               li
-                a(href="https://openoakland.org")
-                  img(src="/images/global/openoakland-logo.png" width="150" alt="OpenOakland")
+                a.social-link(href="https://opensac.org", target='_blank', rel='noopener noreferrer', aria-label='Open Sacramento')
+                  img.social-icon(src="/images/global/github-icon.png", alt="Open Sacramento", width="22", height="22")
               li
-                a(href="https://twitter.com/openbudgetoak")
-                  img(src="/images/global/twitter-icon.png" alt="twitter")
+                a.social-link(href="https://www.x.com/opensacorg", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on X (formerly Twitter)')
+                  picture
+                    source(srcset="/images/global/x-icon.svg", type="image/svg+xml")
+                    img.social-icon(src="/images/global/twitter-icon.png", alt="X (formerly Twitter)", width="22", height="22")
               li
-                a(href="https://github.com/openoakland/openbudgetoakland")
-                  img(src="/images/global/github-icon.png" alt="github")
+                a.social-link(href="https://github.com/code4sac/openbudgetsac.org", target='_blank', rel='noopener noreferrer', aria-label='Code for Sacramento on GitHub')
+                  img.social-icon(src="/images/global/github-icon.png", alt="GitHub", width="22", height="22")
 
 
           .col-sm-3.col-md-push-3
             ul.list-unstyled
               li
-                a(href="who-we-are.html") About the Project
+                a(href="who-we-are.html", data-i18n='nav.aboutProject') About the Project
               li
-                a(href="http://www.meetup.com/OpenOakland") Get Involved
+                a(href="https://www.meetup.com/opensacorg/", data-i18n='nav.getInvolved') Get Involved
               li
-                a(href="feedback.html") Give Feedback
+                a(href="feedback.html", data-i18n='nav.giveFeedback') Give Feedback
 
     link(href='https://fonts.googleapis.com/css?family=Arvo:400,700', rel='stylesheet', type='text/css')

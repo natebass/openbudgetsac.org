@@ -18,14 +18,15 @@ mkdir ./build
 cd ./_src
 # install dependencies
 npm install
+# build the compare app bundle before Eleventy copies /js into the output site
+npm run build
 # run Sass preprocessor
 npm run build-css
 # compile source files to build folder
-# NB: compilation by 11ty is configured in .eleventy.js
-npx @11ty/eleventy
+# NB: compilation by 11ty is configured in .eleventy.ts
+NODE_OPTIONS='--import tsx' npx @11ty/eleventy --config=.eleventy.ts
 # document contents
 ls -F ../build
 # set this back to development so we don't go 
 # accidentally running prod code in dev environments
 # NODE_ENV=development
-

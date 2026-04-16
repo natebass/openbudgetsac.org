@@ -29,6 +29,37 @@ body {
   padding-top: 70px; // offset fixed navbar
 }
 
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding: 10px 14px;
+  background: #fff;
+  color: #000;
+  border: 2px solid #006d77;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #006d77;
+  outline-offset: 2px;
+}
+
 nav.main-nav {
   font-family: $headings-font-family;
 }
@@ -76,12 +107,20 @@ footer {
       margin-right: 10px;
       a {
         @include opacity(.8);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         &:hover {
           @include opacity(1);
         }
       }
       img {
         vertical-align: baseline;
+      }
+      img.social-icon {
+        width: 22px;
+        height: 22px;
+        display: block;
       }
     }
   }

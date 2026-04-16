@@ -1,0 +1,148 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-npm:
+    name: Validate NPM Scripts
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: _src
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+          cache-dependency-path: _src/package-lock.json
+
+      - name: Install dependencies
+        run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests with coverage (CI)
+        run: npm run test:unit:coverage
+
+      - name: i18n unit smoke tests (site + compare)
+        run: npm run test:i18n:smoke
+
+      - name: Accessibility tests
+        run: npm run test:a11y
+
+      - name: Performance budget report
+        run: npm run perf:report
+
+      - name: Benchmarks (JSON)
+        run: npm run bench:json
+
+      - name: Verify JSDoc coverage in active TS/JS files
+        run: npm run docs:jsdoc:check
+
+      - name: Generate JSDoc docs
+        run: npm run docs:jsdoc
+
+      - name: Build CSS
+        run: npm run build-css
+
+      - name: Build site with Eleventy
+        run: npm run site:build
+
+      - name: Verify i18n assets in built site
+        run: |
+          test -f build/js/i18n-site.js
+          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" build
+
+  validate-e2e:
+    name: Validate E2E (Puppeteer)
+    runs-on: ubuntu-latest
+    needs: validate-npm
+    defaults:
+      run:
+        working-directory: _src
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+          cache-dependency-path: _src/package-lock.json
+
+      - name: Install dependencies
+        run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
+
+      - name: Install Chromium runtime dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            ca-certificates \
+            fonts-liberation \
+            libasound2 \
+            libatk-bridge2.0-0 \
+            libatk1.0-0 \
+            libatspi2.0-0 \
+            libcairo2 \
+            libcups2 \
+            libdbus-1-3 \
+            libdrm2 \
+            libgbm1 \
+            libglib2.0-0 \
+            libgtk-3-0 \
+            libnspr4 \
+            libnss3 \
+            libpango-1.0-0 \
+            libx11-6 \
+            libx11-xcb1 \
+            libxcb1 \
+            libxext6 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxkbcommon0 \
+            libxrandr2 \
+            libxss1 \
+            xdg-utils
+
+      - name: Install Chromium browser for Puppeteer
+        run: PUPPETEER_SKIP_DOWNLOAD=false npx puppeteer browsers install chrome
+
+      - name: Build frontend bundle
+        run: npm run build
+
+      - name: Run E2E suite (no rebuild)
+        run: npm run test:e2e:nobuild
+
+  validate-docker:
+    name: Validate Docker Targets
+    runs-on: ubuntu-latest
+    needs: validate-npm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build site image (compose default service)
+        run: docker compose build site
+
+      - name: Build test image (Docker-optimized suite)
+        run: docker build --target test .
+
+      - name: Build verify-parallel image
+        run: docker build --target verify-parallel .

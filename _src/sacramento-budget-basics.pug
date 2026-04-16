@@ -1,0 +1,47 @@
+extends partials/layout
+
+prepend pageTitle
+  - var title = "Sacramento Budget Basics"
+
+block bodyClass
+  - var slug = "resources"
+
+block content
+  .container
+
+    .row
+      .col-md-9
+        div
+          h2.subheader Sacramento Budget Basics
+          p
+            | Soon, we'll relaunch this page as a wiki so people can more easily contribute. For now, 
+            a(href='/contact') send us links
+            | .
+          ul.disc
+            li
+              a(href='https://www.cityofsacramento.org/Finance/Budget') 2013 Budget Discussion
+              li
+                a(href='https://www.cityofsacramento.org/Finance/Budget') Budget Process Transparency Ordinance
+                li
+                  a(href='https://p2pu.org/en/groups/open-sacramento/content/sacramento-city-budget-101/') CODEFORSACRAMENTO's City Budget 101 (in progress)
+                li
+                  a(href='https://www.cityofsacramento.org/Government/o/CityAdministration/d/BudgetOffice/index.htm') Budget Office
+                li
+                  a(href='https://www.cityofsacramento.org/Government/o/CityAdministration/d/BudgetOffice/DOWD005079') Budget Process
+                li
+                  a(href='https://www.cityofsacramento.org/Government/o/CityAdministration/d/BudgetOffice/o/BudgetAdvisoryCommittee/index.htm') Budget Advisory Committee
+                  li
+                    a(href='https://sacramento.mindmixer.com/sacramento-budget-prioritization') Sacramento Budget Prioritization
+                    | : How would you allocate the City's General Fund budget?
+    //
+      Included JS Files (Uncompressed)
+    //
+        <script src="javascripts/jquery.js"></script><script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script><script src="javascripts/jquery.foundation.forms.js"></script><script src="javascripts/jquery.foundation.reveal.js"></script><script src="javascripts/jquery.foundation.orbit.js"></script><script src="javascripts/jquery.foundation.navigation.js"></script><script src="javascripts/jquery.foundation.buttons.js"></script><script src="javascripts/jquery.foundation.tabs.js"></script><script src="javascripts/jquery.foundation.tooltips.js"></script><script src="javascripts/jquery.foundation.accordion.js"></script><script src="javascripts/jquery.placeholder.js"></script><script src="javascripts/jquery.foundation.alerts.js"></script><script src="javascripts/jquery.foundation.topbar.js"></script><script src="javascripts/jquery.foundation.joyride.js"></script><script src="javascripts/jquery.foundation.clearing.js"></script><script src="js/jquery.foundation.magellan.js"></script>
+
+    //
+      Included JS Files (Compressed)
+    script(src='/js/old/jquery.js')
+    script(src='/js/old/foundation.min.js')
+    //
+      Initialize JS Plugins
+    script(src='/js/old/app.js')

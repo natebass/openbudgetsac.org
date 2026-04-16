@@ -1,0 +1,13 @@
+.git
+.github
+.codex
+build
+_treemap
+
+_src/node_modules
+_src/coverage
+_src/.cache
+_src/.ruff_cache
+_src/.codex
+_src/generated
+_src/data/__pycache__

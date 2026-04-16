@@ -3,11 +3,15 @@ www/
 
 node_modules/
 tmp/
-_src/js/dist/
+_src/generated/
 build/
+_site/
 yarn.lock
 .sass-cache/release
 _treemap/Approved.*.json
 .vscode/launch.json
 .vscode/settings.json
 .idea/
+_treemap/__pycache__
+.cache/standard/v17
+*:Zone.Identifier
