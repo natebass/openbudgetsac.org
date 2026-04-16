@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `namespace.findIndex = function(array, value, comparitor) {`
+Associated declaration: `namespace.findIndex = (array, value, comparitor) => {`
 
 ```ts
 /**
@@ -19,7 +19,7 @@ Associated declaration: `namespace.findIndex = function(array, value, comparitor
 
 ## Block 2
 
-Associated declaration: `namespace.hierarchy = function() {`
+Associated declaration: `namespace.hierarchy = () => {`
 
 ```ts
 /**
@@ -57,7 +57,7 @@ Associated declaration: `function _prepare(data) {`
 
 ## Block 5
 
-Associated declaration: `crunch: function(rows, order) {`
+Associated declaration: `crunch: (rows, order) => {`
 
 ```ts
 /**
@@ -71,7 +71,7 @@ Associated declaration: `crunch: function(rows, order) {`
 
 ## Block 6
 
-Associated declaration: `spelunk: function(root, keys, cmp) {`
+Associated declaration: `spelunk: function (root, keys, cmp) {`
 
 ```ts
 /**
@@ -86,7 +86,7 @@ Associated declaration: `spelunk: function(root, keys, cmp) {`
 
 ## Block 7
 
-Associated declaration: `path: function(node) {`
+Associated declaration: `path: node => {`
 
 ```ts
 /**
@@ -99,7 +99,7 @@ Associated declaration: `path: function(node) {`
 
 ## Block 8
 
-Associated declaration: `apply: function(node, func) {`
+Associated declaration: `apply: function (node, func) {`
 
 ```ts
 /**

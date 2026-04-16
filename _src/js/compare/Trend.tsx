@@ -1,9 +1,8 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
-
-import {asTick, getSortedBudgetKeys, translateDataLabel} from './utils';
 import {t} from './i18n';
 import type {BudgetBreakdownPair, SelectedYears} from './types';
+import {asTick, getSortedBudgetKeys, translateDataLabel} from './utils';
 
 const chartOptions: any = {
   animation: false,
@@ -52,17 +51,17 @@ interface TrendProps {
 }
 
 export default class Trend extends React.Component<TrendProps> {
-    /**
+  /**
    * Runs render.
    *
    * @returns {any} Function result.
    */
-render(): React.JSX.Element {
+  render(): React.JSX.Element {
     const rawLabels = getSortedBudgetKeys(this.props.data);
-    const labels = rawLabels.map((label) => translateDataLabel(label));
+    const labels = rawLabels.map(label => translateDataLabel(label));
     const datasets = this.props.data.map((record, index) => ({
       backgroundColor: this.props.colors[index],
-      data: rawLabels.map((label) => record[label] ?? 0),
+      data: rawLabels.map(label => record[label] ?? 0),
       label: this.props.years[index]?.fiscal_year_range ?? '',
     }));
 

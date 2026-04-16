@@ -4,12 +4,12 @@
 
 ## Block 1
 
-Associated declaration: `function() {`
+Associated declaration: `() => {`
 
 ```ts
 /**
-   * Checks whether hash.
-   *
-   * @returns {any} Function result.
-   */
+     * Checks whether hash.
+     *
+     * @returns {any} Function result.
+     */
 ```

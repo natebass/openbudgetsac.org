@@ -16,7 +16,7 @@ Associated declaration: `function getConnection(): NetworkInformation | null {`
 
 ## Block 2
 
-Associated declaration: `function derivePerformanceFlags(): {compactMode: boolean; constrainedMode: boolean} {`
+Associated declaration: `function derivePerformanceFlags(): {`
 
 ```tsx
 /**
@@ -42,7 +42,7 @@ Associated declaration: `function getBudgetOption(record: BudgetRecord, index: n
 
 ## Block 4
 
-Associated declaration: `function getBudgetDefaults(budgets: Array<BudgetOption>): [BudgetOption | null, BudgetOption | null] {`
+Associated declaration: `function getBudgetDefaults(`
 
 ```tsx
 /**
@@ -55,7 +55,7 @@ Associated declaration: `function getBudgetDefaults(budgets: Array<BudgetOption>
 
 ## Block 5
 
-Associated declaration: `function formatTotals(selectedYears: SelectedYears): Array<BudgetTotalDisplay | undefined> {`
+Associated declaration: `function formatTotals(`
 
 ```tsx
 /**
@@ -181,7 +181,7 @@ Associated declaration: `handleBreakdownSelect(key: BreakdownKey): void {`
 
 ## Block 15
 
-Associated declaration: `handleSelectBudget(key: 'budget1' | 'budget2', otherKey: 'budget1' | 'budget2', index: number): void {`
+Associated declaration: `handleSelectBudget(`
 
 ```tsx
 /**

@@ -1,16 +1,17 @@
 /* eslint-disable no-shadow-restricted-names, no-var */
 var ob = ob || {};
-ob.display = ob.display || {}
+ob.display = ob.display || {};
 
-;(function(namespace, undefined) {
+((namespace, undefined) => {
   /**
    * Creates a floating tooltip helper.
    *
    * @returns {{html:function,show:function,track:function,hide:function}} Tooltip API.
    */
-  namespace.tooltip = function() {
+  namespace.tooltip = () => {
     let _html = null;
-    const _tooltip = d3.select('body')
+    const _tooltip = d3
+      .select('body')
       .append('div')
       .style('position', 'absolute')
       .style('z-index', '10')
@@ -25,7 +26,7 @@ ob.display = ob.display || {}
        *
        * @returns {*}
        */
-      html: function() {
+      html: function () {
         if (arguments.length === 0) {
           return _html;
         }
@@ -38,7 +39,7 @@ ob.display = ob.display || {}
        *
        * @returns {*}
        */
-      show: function() {
+      show: function () {
         _tooltip.style('visibility', 'visible');
         if (_html) {
           try {
@@ -56,7 +57,7 @@ ob.display = ob.display || {}
        *
        * @returns {void}
        */
-      track: function() {
+      track: () => {
         // Legacy d3 handlers expose a global `event`; guard for modern browsers.
         const pointerEvent = event as MouseEvent | undefined;
         if (typeof pointerEvent === 'undefined' || !pointerEvent) {
@@ -65,10 +66,11 @@ ob.display = ob.display || {}
         const width = parseFloat(_tooltip.style('width'));
         const window_width = window.innerWidth;
         let left = pointerEvent.pageX + _offset.left;
-        if ((left + width) > window_width) {
+        if (left + width > window_width) {
           left = window_width - width;
         }
-        _tooltip.style('top', (pointerEvent.pageY + _offset.top) + 'px')
+        _tooltip
+          .style('top', pointerEvent.pageY + _offset.top + 'px')
           .style('left', left + 'px');
       },
 
@@ -77,7 +79,7 @@ ob.display = ob.display || {}
        *
        * @returns {*}
        */
-      hide: function() {
+      hide: function () {
         _tooltip.style('visibility', 'hidden');
         return this;
       },

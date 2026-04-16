@@ -51,8 +51,11 @@ function compareTreeHash(left: string, right: string): number {
  */
 function resolveTreeUrl(config: TreePageConfig): string {
   let url = config.urlTemplate;
-  Object.keys(config.dropdownChoice).forEach(function(key) {
-    url = url.replace(new RegExp(`\\{${key}\\}`, 'g'), config.dropdownChoice[key]);
+  Object.keys(config.dropdownChoice).forEach(key => {
+    url = url.replace(
+      new RegExp(`\\{${key}\\}`, 'g'),
+      config.dropdownChoice[key],
+    );
   });
   return url;
 }
@@ -105,23 +108,24 @@ function initTreePage(): void {
     return;
   }
 
-  const width = parentNode.offsetWidth -
+  const width =
+    parentNode.offsetWidth -
     parseInt(parent.style('padding-left'), 10) -
     parseInt(parent.style('padding-right'), 10);
 
   const runtimeConfig = {
     dropdown_values: config.dropdownValues,
     dropdown_choice: config.dropdownChoice,
-    url: function() {
-      return resolveTreeUrl({
+    url: () =>
+      resolveTreeUrl({
         dropdownValues: config.dropdownValues,
         dropdownChoice: runtimeConfig.dropdown_choice,
         urlTemplate: config.urlTemplate,
-      });
-    },
+      }),
   };
 
-  ob.display.budget_treemap()
+  ob.display
+    .budget_treemap()
     .width(width)
     .height(600)
     .count(40)
@@ -132,22 +136,23 @@ function initTreePage(): void {
     .title('#title')
     .hashnorm(normalizeTreeHash)
     .hashcmp(compareTreeHash)
-    .on('set_hash', function(hash: string) {
-      const prefix = normalizeTreeHash(runtimeConfig.dropdown_choice.Year) +
+    .on('set_hash', (hash: string) => {
+      const prefix =
+        normalizeTreeHash(runtimeConfig.dropdown_choice.Year) +
         '.' +
         normalizeTreeHash(runtimeConfig.dropdown_choice.Account);
       return hash.length ? `${prefix}.${hash}` : prefix;
     })
-    .on('get_hash', function(hash: string) {
-      return parseTreeHash(
+    .on('get_hash', (hash: string) =>
+      parseTreeHash(
         {
           dropdownValues: config.dropdownValues,
           dropdownChoice: runtimeConfig.dropdown_choice,
           urlTemplate: config.urlTemplate,
         },
         hash,
-      );
-    })
+      ),
+    )
     .url(runtimeConfig.url())
     .create();
 }

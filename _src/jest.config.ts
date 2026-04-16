@@ -1,6 +1,7 @@
 const moduleNameMapper = {
   '^d3-array$': '<rootDir>/node_modules/d3-array/dist/d3-array.js',
-  '^d3-collection$': '<rootDir>/node_modules/d3-collection/dist/d3-collection.js',
+  '^d3-collection$':
+    '<rootDir>/node_modules/d3-collection/dist/d3-collection.js',
   '^d3-format$': '<rootDir>/node_modules/d3-format/dist/d3-format.js',
 };
 
@@ -10,6 +11,7 @@ module.exports = {
     '!<rootDir>/js/compare/**/__tests__/**',
     '!<rootDir>/js/compare/index.tsx',
     '!<rootDir>/js/compare/Trend.tsx',
+    '!<rootDir>/js/compare/types.ts',
   ],
   coveragePathIgnorePatterns: ['/node_modules/'],
   coverageThreshold: {

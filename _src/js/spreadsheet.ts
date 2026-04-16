@@ -1,14 +1,14 @@
 /* eslint-disable no-shadow-restricted-names, no-var */
 var ob = ob || {};
-ob.display = ob.display || {}
+ob.display = ob.display || {};
 
-;(function(namespace, undefined) {
+((namespace, undefined) => {
   /**
    * Creates spreadsheet/table renderer for budget rows.
    *
    * @returns {{width:function,on:function,columns:function,column:function,cell:function,value:function,data:function,element:function,display:function}} Spreadsheet API.
    */
-  namespace.spreadsheet = function() {
+  namespace.spreadsheet = () => {
     let _data = null;
     let _element = null;
     let _width = null;
@@ -21,9 +21,7 @@ ob.display = ob.display || {}
      * @param {object} d Row datum.
      * @returns {*} Sort value.
      */
-    let _get_value = function(d) {
-      return d.value;
-    };
+    let _get_value = d => d.value;
 
     /**
      * Default cell renderer.
@@ -32,7 +30,7 @@ ob.display = ob.display || {}
      * @param {number} i Cell index.
      * @param {*} elem d3 cell selection.
      */
-    let _cell = function(d, i, _row, elem) {
+    let _cell = (d, i, _row, elem) => {
       elem.text(d.value == null ? '' : String(d.value));
     };
 
@@ -43,7 +41,7 @@ ob.display = ob.display || {}
      * @param {number} i Header index.
      * @param {*} elem d3 header selection.
      */
-    let _column = function(d, i, elem) {
+    let _column = (d, i, elem) => {
       elem.text(d.value == null ? '' : String(d.value));
     };
 
@@ -51,7 +49,7 @@ ob.display = ob.display || {}
       /**
        * Gets/sets table width.
        */
-      width: function() {
+      width: function () {
         if (arguments.length === 0) {
           return _width;
         }
@@ -62,7 +60,7 @@ ob.display = ob.display || {}
       /**
        * Gets/sets event handlers.
        */
-      on: function(action, callback) {
+      on: function (action, callback) {
         if (callback) {
           _on[action] = callback;
         } else if (action) {
@@ -74,7 +72,7 @@ ob.display = ob.display || {}
       /**
        * Gets/sets column labels.
        */
-      columns: function() {
+      columns: function () {
         if (arguments.length === 0) {
           return _columns;
         }
@@ -85,7 +83,7 @@ ob.display = ob.display || {}
       /**
        * Gets/sets column renderer.
        */
-      column: function() {
+      column: function () {
         if (arguments.length === 0) {
           return _column;
         }
@@ -96,7 +94,7 @@ ob.display = ob.display || {}
       /**
        * Gets/sets cell renderer.
        */
-      cell: function() {
+      cell: function () {
         if (arguments.length === 0) {
           return _cell;
         }
@@ -107,7 +105,7 @@ ob.display = ob.display || {}
       /**
        * Gets/sets value accessor for row sorting.
        */
-      value: function() {
+      value: function () {
         if (arguments.length === 0) {
           return _get_value;
         }
@@ -118,22 +116,20 @@ ob.display = ob.display || {}
       /**
        * Gets/sets source data.
        */
-      data: function() {
+      data: function () {
         if (arguments.length === 0) {
           return _data;
         }
 
         _data = arguments[0].slice();
-        _data.sort(function(a, b) {
-          return _get_value(b) - _get_value(a);
-        });
+        _data.sort((a, b) => _get_value(b) - _get_value(a));
         return this;
       },
 
       /**
        * Gets/sets host element.
        */
-      element: function() {
+      element: function () {
         if (arguments.length === 0) {
           return _element;
         }
@@ -144,10 +140,11 @@ ob.display = ob.display || {}
       /**
        * Renders the spreadsheet table.
        */
-      display: function() {
+      display: function () {
         /* Clear the previous render before rebuilding the table. */
         _element.select('table').remove();
-        const table = _element.append('table')
+        const table = _element
+          .append('table')
           .attr('class', 'spreadsheet table')
           .attr('width', _width);
         const thead_tr = table.append('thead').append('tr');
@@ -161,14 +158,16 @@ ob.display = ob.display || {}
 
         tbody.selectAll('tr').remove();
         const rows = tbody.selectAll('tr').data(_data);
-        const row = rows.enter().append('tr')
-          .on('click', function(d, i) {
+        const row = rows
+          .enter()
+          .append('tr')
+          .on('click', (d, i) => {
             if (_on.click) {
               _on.click(d, i);
             }
           });
 
-        const cells = row.selectAll('td').data(function(d, i) {
+        const cells = row.selectAll('td').data((d, i) => {
           const new_data = [];
           for (let j = 0; j < _columns.length; j++) {
             new_data.push({d, row: i});
@@ -177,7 +176,7 @@ ob.display = ob.display || {}
         });
 
         const cell = cells.enter().append('td');
-        cell.datum(function(d, i) {
+        cell.datum(function (d, i) {
           try {
             _cell(d.d, i, d.row, d3.select(this));
           } catch (error) {

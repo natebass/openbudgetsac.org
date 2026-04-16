@@ -34,7 +34,10 @@ declare global {
   interface Window {
     __axeA11yRuntimeEnabled?: boolean;
     axe?: {
-      run(root: Element, options?: unknown): Promise<{violations: Array<unknown>}>;
+      run(
+        root: Element,
+        options?: unknown,
+      ): Promise<{violations: Array<unknown>}>;
     };
     ob?: LegacyObNamespace;
     obI18n?: ObI18nRuntime;
@@ -86,5 +89,3 @@ declare global {
   let event: MouseEvent | undefined;
   let width: number;
 }
-
-export {};

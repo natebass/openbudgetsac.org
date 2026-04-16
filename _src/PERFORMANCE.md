@@ -49,6 +49,7 @@ Run from `_src/`:
 - `npm run perf:report`
 - `npm run bench`
 - `npm run lint`
+- `npm run format:biome`
 - `npm run docs:jsdoc:check`
 - `npm run test:unit:coverage`
 - `npm run test:a11y`
@@ -65,7 +66,7 @@ Memory profiling helpers:
 ## CI/CD Enforcement
 
 The workflows in `.github/workflows/` now enforce:
-- lint + unit coverage (CI) + a11y + perf + bench
+- lint (ESLint + Biome check) + unit coverage (CI) + a11y + perf + bench
 - i18n unit smoke tests (compare + site runtime)
 - Eleventy build + i18n asset sanity checks in generated output
 - Puppeteer E2E validation with explicit Chromium dependencies

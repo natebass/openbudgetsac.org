@@ -1,8 +1,8 @@
-$(function() {
+$(() => {
   const DEFAULT_DRILLDOWNS = ['department', 'unit', 'child-fund'];
   const DEFAULT_CUTS = {'time.year': '2011|time.year:2012'};
   const ROOT_CRUMB_TITLE = 'Departments';
-  const CANNOT_DIG_DEEPER_FALLBACK = 'Sorry, we can\'t dig deeper';
+  const CANNOT_DIG_DEEPER_FALLBACK = "Sorry, we can't dig deeper";
 
   const drilldowns = DEFAULT_DRILLDOWNS.slice();
   const cuts = Object.assign({}, DEFAULT_CUTS);
@@ -24,7 +24,7 @@ $(function() {
   const context = {
     dataset: 'sacramento-adopted-budget-fy-2011-13-expenditures',
     siteUrl: 'http://openspending.org',
-    drilldown: function(node) {
+    drilldown: node => {
       if (node.data.node.children.length) {
         window.location.href = buildDrilldownLocation(drilldowns[0], node.name);
         return;
@@ -33,7 +33,11 @@ $(function() {
     },
   };
 
-  window.wdg_widget = new OpenSpending.Treemap($('#treewidget11-13'), context, state);
+  window.wdg_widget = new OpenSpending.Treemap(
+    $('#treewidget11-13'),
+    context,
+    state,
+  );
 
   /**
    * Builds a breadcrumb URL for the next drilldown state.

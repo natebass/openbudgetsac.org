@@ -17,7 +17,7 @@ Associated declaration: `function isSafeBreakdownKey(value: unknown): value is s
 
 ## Block 2
 
-Associated declaration: `function getTotalsSortIndex(record: Pick<BudgetRecord, 'fiscal_year_range' | 'budget_type'>): number {`
+Associated declaration: `function getTotalsSortIndex(`
 
 ```ts
 /**
@@ -30,7 +30,7 @@ Associated declaration: `function getTotalsSortIndex(record: Pick<BudgetRecord, 
 
 ## Block 3
 
-Associated declaration: `function createBreakdownUrl(year: string, type: BudgetDataType, dimension: BreakdownDimension): string {`
+Associated declaration: `function createBreakdownUrl(`
 
 ```ts
 /**

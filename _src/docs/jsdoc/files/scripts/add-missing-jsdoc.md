@@ -149,7 +149,9 @@ Associated declaration: `\`);`
   ];
 
   params.forEach((param, index) => {
-    lines.push(`${indent} * @param {any} ${paramName(param, index)} Input value.`);
+    lines.push(
+      `${indent} * @param {any} ${paramName(param, index)} Input value.`,
+    );
   });
 
   lines.push(`${indent} * @returns {any} Function result.`);
@@ -158,7 +160,7 @@ Associated declaration: `\`);`
 
 ## Block 12
 
-Associated declaration: `function traverseAndCollect(node: any, parent: any, comments: Array<any>, source: string, inserts: Array<{index: number; text: string}>): void {`
+Associated declaration: `function traverseAndCollect(`
 
 ```ts
 /**
@@ -175,7 +177,7 @@ Associated declaration: `function traverseAndCollect(node: any, parent: any, com
 
 ## Block 13
 
-Associated declaration: `async function patchFile(absolutePath: string): Promise<{inserted: number; relativePath: string; skipped: boolean}> {`
+Associated declaration: `async function patchFile(`
 
 ```ts
 /**

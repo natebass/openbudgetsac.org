@@ -1,13 +1,14 @@
 /**
  * Loads the Disqus embed script for pages that include a configured thread node.
  */
-(function() {
+(() => {
   const thread = document.getElementById('disqus_thread');
   if (!thread) {
     return;
   }
 
-  const shortname = thread.getAttribute('data-disqus-shortname') || 'openbudgetsac';
+  const shortname =
+    thread.getAttribute('data-disqus-shortname') || 'openbudgetsac';
   const identifier = thread.getAttribute('data-disqus-identifier');
   const existing = document.querySelector('script[data-disqus-loader="true"]');
   if (existing) {
@@ -15,7 +16,8 @@
   }
 
   if (identifier) {
-    (window as Window & {disqus_identifier?: string}).disqus_identifier = identifier;
+    (window as Window & {disqus_identifier?: string}).disqus_identifier =
+      identifier;
   }
 
   const script = document.createElement('script');

@@ -19,6 +19,7 @@ Associated declaration: `*.test.[jt]s?(x)'],`
 /**',
     '!<rootDir>/js/compare/index.tsx',
     '!<rootDir>/js/compare/Trend.tsx',
+    '!<rootDir>/js/compare/types.ts',
   ],
   coveragePathIgnorePatterns: ['/node_modules/'],
   coverageThreshold: {

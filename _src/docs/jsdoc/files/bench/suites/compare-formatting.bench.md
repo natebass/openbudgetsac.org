@@ -8,10 +8,10 @@ Associated declaration: `function registerCompareFormattingSuite(suite: any, con
 
 ```ts
 /**
- * Runs exports.
- *
- * @param {any} suite Input value.
- * @param {any} context Input value.
- * @returns {any} Function result.
- */
+   * Runs exports.
+   *
+   * @param {any} suite Input value.
+   * @param {any} context Input value.
+   * @returns {any} Function result.
+   */
 ```

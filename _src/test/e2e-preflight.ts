@@ -57,11 +57,13 @@ function resolveChromePath() {
   try {
     return puppeteer.executablePath();
   } catch (error) {
-    fail([
-      'Unable to resolve a Chromium executable for Puppeteer.',
-      `Reason: ${error.message}`,
-      'Run: npx puppeteer browsers install chrome',
-    ].join('\n'));
+    fail(
+      [
+        'Unable to resolve a Chromium executable for Puppeteer.',
+        `Reason: ${error.message}`,
+        'Run: npx puppeteer browsers install chrome',
+      ].join('\n'),
+    );
   }
 }
 
@@ -74,9 +76,9 @@ function resolveChromePath() {
 function parseMissingLibraries(lddOutput) {
   return lddOutput
     .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => line.includes('=> not found'))
-    .map((line) => line.split('=>')[0].trim());
+    .map(line => line.trim())
+    .filter(line => line.includes('=> not found'))
+    .map(line => line.split('=>')[0].trim());
 }
 
 /**
@@ -86,7 +88,9 @@ function parseMissingLibraries(lddOutput) {
  * @returns {any} Function result.
  */
 function buildInstallHints(missingLibraries) {
-  const packages = [...new Set(missingLibraries.map((lib) => PACKAGE_HINTS[lib]).filter(Boolean))];
+  const packages = [
+    ...new Set(missingLibraries.map(lib => PACKAGE_HINTS[lib]).filter(Boolean)),
+  ];
 
   if (packages.length === 0) {
     return 'Install the missing shared libraries listed above using your OS package manager.';
@@ -105,55 +109,69 @@ function buildInstallHints(missingLibraries) {
  */
 function run() {
   if (process.platform !== 'linux') {
-    console.log(`[preflight:e2e] Skipping OS dependency check on ${process.platform}.`);
+    console.log(
+      `[preflight:e2e] Skipping OS dependency check on ${process.platform}.`,
+    );
     return;
   }
 
   const chromePath = resolveChromePath();
   if (!chromePath || !fs.existsSync(chromePath)) {
-    fail([
-      'Chromium executable path does not exist.',
-      `Resolved path: ${chromePath || '(empty)'}`,
-      'Run: npx puppeteer browsers install chrome',
-    ].join('\n'));
+    fail(
+      [
+        'Chromium executable path does not exist.',
+        `Resolved path: ${chromePath || '(empty)'}`,
+        'Run: npx puppeteer browsers install chrome',
+      ].join('\n'),
+    );
   }
 
   const result = spawnSync('ldd', [chromePath], {encoding: 'utf8'});
 
   if (result.error) {
     if (result.error.code === 'EPERM') {
-      console.warn([
-        '[preflight:e2e] Skipping Chromium dependency inspection because this environment does not allow ldd.',
-        `[preflight:e2e] Chromium binary: ${chromePath}`,
-      ].join('\n'));
+      console.warn(
+        [
+          '[preflight:e2e] Skipping Chromium dependency inspection because this environment does not allow ldd.',
+          `[preflight:e2e] Chromium binary: ${chromePath}`,
+        ].join('\n'),
+      );
       return;
     }
-    fail(`Could not run ldd against Chromium binary (${chromePath}): ${result.error.message}`);
+    fail(
+      `Could not run ldd against Chromium binary (${chromePath}): ${result.error.message}`,
+    );
   }
 
   if (result.status !== 0) {
-    fail([
-      `ldd failed with exit code ${result.status}.`,
-      `stderr: ${result.stderr || '(none)'}`,
-      `binary: ${chromePath}`,
-    ].join('\n'));
+    fail(
+      [
+        `ldd failed with exit code ${result.status}.`,
+        `stderr: ${result.stderr || '(none)'}`,
+        `binary: ${chromePath}`,
+      ].join('\n'),
+    );
   }
 
   const missingLibraries = parseMissingLibraries(result.stdout);
 
   if (missingLibraries.length > 0) {
-    const missingList = missingLibraries.map((lib) => `  - ${lib}`).join('\n');
+    const missingList = missingLibraries.map(lib => `  - ${lib}`).join('\n');
 
-    fail([
-      'Chromium system dependencies are missing. Puppeteer E2E tests will fail until these are installed.',
-      `Chromium binary: ${chromePath}`,
-      'Missing shared libraries:',
-      missingList,
-      buildInstallHints(missingLibraries),
-    ].join('\n'));
+    fail(
+      [
+        'Chromium system dependencies are missing. Puppeteer E2E tests will fail until these are installed.',
+        `Chromium binary: ${chromePath}`,
+        'Missing shared libraries:',
+        missingList,
+        buildInstallHints(missingLibraries),
+      ].join('\n'),
+    );
   }
 
-  console.log(`[preflight:e2e] Chromium dependency check passed (${chromePath}).`);
+  console.log(
+    `[preflight:e2e] Chromium dependency check passed (${chromePath}).`,
+  );
 }
 
 run();

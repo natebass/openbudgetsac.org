@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
 
-      - name: Lint
+      - name: Lint (ESLint + Biome check)
         run: npm run lint
 
       - name: Typecheck
@@ -65,8 +65,8 @@ jobs:
 
       - name: Verify i18n assets in built site
         run: |
-          test -f build/js/i18n-site.js
-          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" build
+          test -f ../build/js/i18n-site.js
+          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" ../build
 
   validate-e2e:
     name: Validate E2E (Puppeteer)

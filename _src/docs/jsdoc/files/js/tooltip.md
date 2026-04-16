@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `namespace.tooltip = function() {`
+Associated declaration: `namespace.tooltip = () => {`
 
 ```ts
 /**
@@ -16,7 +16,7 @@ Associated declaration: `namespace.tooltip = function() {`
 
 ## Block 2
 
-Associated declaration: `html: function() {`
+Associated declaration: `html: function () {`
 
 ```ts
 /**
@@ -28,7 +28,7 @@ Associated declaration: `html: function() {`
 
 ## Block 3
 
-Associated declaration: `show: function() {`
+Associated declaration: `show: function () {`
 
 ```ts
 /**
@@ -40,7 +40,7 @@ Associated declaration: `show: function() {`
 
 ## Block 4
 
-Associated declaration: `track: function() {`
+Associated declaration: `track: () => {`
 
 ```ts
 /**
@@ -52,7 +52,7 @@ Associated declaration: `track: function() {`
 
 ## Block 5
 
-Associated declaration: `hide: function() {`
+Associated declaration: `hide: function () {`
 
 ```ts
 /**

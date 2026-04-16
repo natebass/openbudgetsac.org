@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `function flowPageI18nT(key: string, fallback: string, vars?: Record<string, unknown>): string {`
+Associated declaration: `function flowPageI18nT(`
 
 ```ts
 /**
@@ -58,7 +58,7 @@ Associated declaration: `function readFlowFiles(): Array<FlowFileRecord> {`
 
 ## Block 5
 
-Associated declaration: `function buildFlowDisplayFiles(files: Array<FlowFileRecord>): Array<FlowDisplayRecord> {`
+Associated declaration: `function buildFlowDisplayFiles(`
 
 ```ts
 /**

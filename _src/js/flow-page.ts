@@ -21,7 +21,10 @@ const FLOW_FILENAME_ALIASES: Record<string, string> = {
   'FY18-19__proposed.csv': 'FY19.csv',
 };
 
-declare function data_wrangle(dataset: Array<Record<string, any>>, fy: string): any;
+declare function data_wrangle(
+  dataset: Array<Record<string, any>>,
+  fy: string,
+): any;
 declare function do_with_budget(data: any): void;
 
 /**
@@ -32,16 +35,20 @@ declare function do_with_budget(data: any): void;
  * @param {Record<string, unknown>} [vars] Interpolation values.
  * @returns {string} Localized text.
  */
-function flowPageI18nT(key: string, fallback: string, vars?: Record<string, unknown>): string {
+function flowPageI18nT(
+  key: string,
+  fallback: string,
+  vars?: Record<string, unknown>,
+): string {
   if (window.obI18n && typeof window.obI18n.t === 'function') {
     return window.obI18n.t(key, fallback, vars);
   }
   if (!vars) {
     return fallback;
   }
-  return fallback.replace(/\{\{(\w+)\}\}/g, function(_full, name) {
-    return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : '';
-  });
+  return fallback.replace(/\{\{(\w+)\}\}/g, (_full, name) =>
+    Object.hasOwn(vars, name) ? String(vars[name]) : '',
+  );
 }
 
 /**
@@ -98,10 +105,9 @@ function readFlowFiles(): Array<FlowFileRecord> {
     }
   }
 
-  return Array.from(document.querySelectorAll<HTMLInputElement>('input.filename-data'))
-    .map(function(inputEl) {
-      return {filename: inputEl.value};
-    });
+  return Array.from(
+    document.querySelectorAll<HTMLInputElement>('input.filename-data'),
+  ).map(inputEl => ({filename: inputEl.value}));
 }
 
 /**
@@ -110,9 +116,11 @@ function readFlowFiles(): Array<FlowFileRecord> {
  * @param {FlowFileRecord[]} files Raw file list.
  * @returns {FlowDisplayRecord[]} Sorted display records.
  */
-function buildFlowDisplayFiles(files: Array<FlowFileRecord>): Array<FlowDisplayRecord> {
+function buildFlowDisplayFiles(
+  files: Array<FlowFileRecord>,
+): Array<FlowDisplayRecord> {
   return files
-    .map(function(file) {
+    .map(file => {
       const nameParts = file.filename.slice(0, -4).split('__');
       return {
         filename: file.filename,
@@ -121,7 +129,7 @@ function buildFlowDisplayFiles(files: Array<FlowFileRecord>): Array<FlowDisplayR
         type: nameParts[1] || '',
       };
     })
-    .sort(function(left, right) {
+    .sort((left, right) => {
       const sortYear = d3.descending(left.fy, right.fy);
       const sortType = d3.ascending(left.type, right.type);
       return sortYear !== 0 ? sortYear : sortType;
@@ -134,8 +142,13 @@ function buildFlowDisplayFiles(files: Array<FlowFileRecord>): Array<FlowDisplayR
  * @returns {void}
  */
 function initFlowPage(): void {
-  const selectNode = document.querySelector<HTMLSelectElement>('#fy.form-control');
-  if (!selectNode || typeof data_wrangle !== 'function' || typeof do_with_budget !== 'function') {
+  const selectNode =
+    document.querySelector<HTMLSelectElement>('#fy.form-control');
+  if (
+    !selectNode ||
+    typeof data_wrangle !== 'function' ||
+    typeof do_with_budget !== 'function'
+  ) {
     return;
   }
 
@@ -153,13 +166,14 @@ function initFlowPage(): void {
   }
 
   const fySelect = d3.select(selectNode);
-  fySelect.selectAll('option')
+  fySelect
+    .selectAll('option')
     .data(files)
     .enter()
     .append('option')
-    .attr('value', function(d: FlowDisplayRecord) {return d.filename;})
-    .property('selected', function(_d: FlowDisplayRecord, index: number) {return index === 0;})
-    .text(function(d: FlowDisplayRecord) {return d.displayName;});
+    .attr('value', (d: FlowDisplayRecord) => d.filename)
+    .property('selected', (_d: FlowDisplayRecord, index: number) => index === 0)
+    .text((d: FlowDisplayRecord) => d.displayName);
 
   /**
    * Loads the selected flow CSV and redraws the chart.
@@ -183,33 +197,44 @@ function initFlowPage(): void {
     const filename = resolveFlowFilename(rawFilename);
     const fy = filename.slice(0, -4);
 
-    d3.csv(`/data/flow/${filename}`, function(error: any, data: Array<Record<string, any>>) {
-      if (error) {
-        console.error(`Unable to load flow chart data for file: ${filename} (selected: ${rawFilename})`, error);
-        showFlowStatus(
-          flowPageI18nT(
-            'flow.unableLoadChartData',
-            'Unable to load chart data for {{fy}}. Please try another fiscal year or refresh the page.',
-            {fy},
-          ),
-          true,
-        );
-        return false;
-      }
+    d3.csv(
+      `/data/flow/${filename}`,
+      (error: any, data: Array<Record<string, any>>) => {
+        if (error) {
+          console.error(
+            `Unable to load flow chart data for file: ${filename} (selected: ${rawFilename})`,
+            error,
+          );
+          showFlowStatus(
+            flowPageI18nT(
+              'flow.unableLoadChartData',
+              'Unable to load chart data for {{fy}}. Please try another fiscal year or refresh the page.',
+              {fy},
+            ),
+            true,
+          );
+          return false;
+        }
 
-      const finalData = data_wrangle(data, fy);
-      do_with_budget(finalData);
-      showFlowStatus(
-        flowPageI18nT('flow.showingChartFor', 'Showing chart for {{fy}}.', {fy}),
-        false,
-      );
-      return true;
-    });
+        const finalData = data_wrangle(data, fy);
+        do_with_budget(finalData);
+        showFlowStatus(
+          flowPageI18nT('flow.showingChartFor', 'Showing chart for {{fy}}.', {
+            fy,
+          }),
+          false,
+        );
+        return true;
+      },
+    );
     return true;
   }
 
   fySelect.on('change', drawFlow);
-  showFlowStatus(flowPageI18nT('flow.loadingChartData', 'Loading chart data...'), false);
+  showFlowStatus(
+    flowPageI18nT('flow.loadingChartData', 'Loading chart data...'),
+    false,
+  );
   drawFlow();
 }
 

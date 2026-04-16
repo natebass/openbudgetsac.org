@@ -1,9 +1,8 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
-
-import {DiffStyled, compareChartOptions} from './utils';
 import {t} from './i18n';
 import type {BudgetTotalDisplay, DiffColors} from './types';
+import {compareChartOptions, DiffStyled} from './utils';
 
 interface TotalProps {
   colors: Array<string>;
@@ -14,15 +13,19 @@ interface TotalProps {
 }
 
 export default class Total extends React.Component<TotalProps> {
-    /**
+  /**
    * Runs render.
    *
    * @returns {any} Function result.
    */
-render(): React.JSX.Element {
+  render(): React.JSX.Element {
     const totals = this.props.data;
-    if (!totals.length || totals.some((record) => !record)) {
-      return <div className='text-muted' role='status' aria-live='polite'>{t('loading.totals')}</div>;
+    if (!totals.length || totals.some(record => !record)) {
+      return (
+        <div className='text-muted' role='status' aria-live='polite'>
+          {t('loading.totals')}
+        </div>
+      );
     }
 
     const safeTotals = totals as [BudgetTotalDisplay, BudgetTotalDisplay];
@@ -61,7 +64,8 @@ render(): React.JSX.Element {
 
     return (
       <div>
-        <h2>{t('compare.totalChange')}
+        <h2>
+          {t('compare.totalChange')}
           <DiffStyled
             diff={diff}
             colors={this.props.diffColors}

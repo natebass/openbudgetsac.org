@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BarElement,
   CategoryScale,
@@ -8,6 +7,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import {format} from 'd3-format';
+import React from 'react';
 
 import {t} from './i18n';
 import type {BudgetBreakdownPair, DiffColors} from './types';
@@ -31,7 +31,10 @@ export /**
  * @returns {any} Function result.
  */
 function translateDataLabel(label: string): string {
-  if (typeof window !== 'undefined' && typeof window.obI18n?.translateLegacyText === 'function') {
+  if (
+    typeof window !== 'undefined' &&
+    typeof window.obI18n?.translateLegacyText === 'function'
+  ) {
     return window.obI18n.translateLegacyText(String(label));
   }
   return String(label);
@@ -69,8 +72,8 @@ export /**
  */
 function getSortedBudgetKeys(dataPair: BudgetBreakdownPair): Array<string> {
   const allKeys = new Set<string>();
-  dataPair.forEach((record) => {
-    Object.keys(record ?? {}).forEach((key) => {
+  dataPair.forEach(record => {
+    Object.keys(record ?? {}).forEach(key => {
       allKeys.add(key);
     });
   });
@@ -98,16 +101,19 @@ interface DiffStyledProps {
 }
 
 export class DiffStyled extends React.Component<DiffStyledProps> {
-    /**
+  /**
    * Runs render.
    *
    * @returns {any} Function result.
    */
-render(): React.JSX.Element {
+  render(): React.JSX.Element {
     const style = {
-      color: this.props.diff >= 0 ? this.props.colors.pos : this.props.colors.neg,
+      color:
+        this.props.diff >= 0 ? this.props.colors.pos : this.props.colors.neg,
     };
 
-    return <span style={style}> {asDiff(this.props.diff, this.props.usePct)}</span>;
+    return (
+      <span style={style}> {asDiff(this.props.diff, this.props.usePct)}</span>
+    );
   }
 }

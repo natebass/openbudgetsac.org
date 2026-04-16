@@ -9,7 +9,10 @@ interface TranslationTree {
 
 type TranslationValue = string | TranslationTree;
 
-const resources: Record<LanguageCode, {translation: Record<string, TranslationValue>}> = {
+const resources: Record<
+  LanguageCode,
+  {translation: Record<string, TranslationValue>}
+> = {
   'en-US': {
     translation: {
       loading: {
@@ -19,11 +22,14 @@ const resources: Record<LanguageCode, {translation: Record<string, TranslationVa
       },
       error: {
         noBudgetYears: 'No budget years available.',
-        compareDataUnavailable: 'Unable to load comparison data right now. Please refresh the page or try again in a moment.',
-        breakdownUnavailable: 'Unable to load this breakdown right now. Try selecting a different year pair or refreshing the page.',
+        compareDataUnavailable:
+          'Unable to load comparison data right now. Please refresh the page or try again in a moment.',
+        breakdownUnavailable:
+          'Unable to load this breakdown right now. Try selecting a different year pair or refreshing the page.',
       },
       mode: {
-        lowBandwidth: 'Low-bandwidth mode is on to reduce data and battery use.',
+        lowBandwidth:
+          'Low-bandwidth mode is on to reduce data and battery use.',
       },
       compare: {
         title: {
@@ -44,7 +50,8 @@ const resources: Record<LanguageCode, {translation: Record<string, TranslationVa
         totalChange: 'Total Change:',
         breakdowns: {
           title: 'Budget breakdowns',
-          description: 'Get more detail on where money came from and how it was spent.',
+          description:
+            'Get more detail on where money came from and how it was spent.',
           navLabel: 'Budget breakdown views',
           spendDept: 'Spending by Department',
           spendCat: 'Spending by Category',
@@ -52,8 +59,10 @@ const resources: Record<LanguageCode, {translation: Record<string, TranslationVa
           revCat: 'Revenue by Category',
         },
         chartAria: {
-          total: 'Comparison chart of total budget amounts by selected fiscal years',
-          trend: 'Bar chart showing budget amounts for each category across selected fiscal years',
+          total:
+            'Comparison chart of total budget amounts by selected fiscal years',
+          trend:
+            'Bar chart showing budget amounts for each category across selected fiscal years',
           row: 'Comparison chart for {{item}}',
         },
       },
@@ -88,11 +97,14 @@ const resources: Record<LanguageCode, {translation: Record<string, TranslationVa
       },
       error: {
         noBudgetYears: 'No hay años presupuestarios disponibles.',
-        compareDataUnavailable: 'No se pueden cargar los datos de comparación ahora. Actualiza la página o inténtalo de nuevo en un momento.',
-        breakdownUnavailable: 'No se puede cargar este desglose ahora. Intenta seleccionar otro par de años o actualiza la página.',
+        compareDataUnavailable:
+          'No se pueden cargar los datos de comparación ahora. Actualiza la página o inténtalo de nuevo en un momento.',
+        breakdownUnavailable:
+          'No se puede cargar este desglose ahora. Intenta seleccionar otro par de años o actualiza la página.',
       },
       mode: {
-        lowBandwidth: 'El modo de bajo consumo de datos está activado para reducir el uso de datos y batería.',
+        lowBandwidth:
+          'El modo de bajo consumo de datos está activado para reducir el uso de datos y batería.',
       },
       compare: {
         title: {
@@ -113,7 +125,8 @@ const resources: Record<LanguageCode, {translation: Record<string, TranslationVa
         totalChange: 'Cambio total:',
         breakdowns: {
           title: 'Desgloses del presupuesto',
-          description: 'Obtén más detalle sobre de dónde vino el dinero y cómo se gastó.',
+          description:
+            'Obtén más detalle sobre de dónde vino el dinero y cómo se gastó.',
           navLabel: 'Vistas de desglose del presupuesto',
           spendDept: 'Gasto por departamento',
           spendCat: 'Gasto por categoría',
@@ -121,8 +134,10 @@ const resources: Record<LanguageCode, {translation: Record<string, TranslationVa
           revCat: 'Ingresos por categoría',
         },
         chartAria: {
-          total: 'Gráfica de comparación de montos totales del presupuesto por años fiscales seleccionados',
-          trend: 'Gráfica de barras que muestra montos del presupuesto por categoría en los años fiscales seleccionados',
+          total:
+            'Gráfica de comparación de montos totales del presupuesto por años fiscales seleccionados',
+          trend:
+            'Gráfica de barras que muestra montos del presupuesto por categoría en los años fiscales seleccionados',
           row: 'Gráfica de comparación para {{item}}',
         },
       },
@@ -170,7 +185,7 @@ function normalizeLanguage(value: unknown): LanguageCode | null {
   }
 
   const exactMatch = SUPPORTED_LANGUAGES.find(
-    (language) => language.toLowerCase() === normalized,
+    language => language.toLowerCase() === normalized,
   );
   return exactMatch ?? null;
 }
@@ -181,7 +196,10 @@ function normalizeLanguage(value: unknown): LanguageCode | null {
  * @returns {any} Function result.
  */
 function resolveLanguage(): LanguageCode {
-  if (typeof window !== 'undefined' && typeof window.location.search === 'string') {
+  if (
+    typeof window !== 'undefined' &&
+    typeof window.location.search === 'string'
+  ) {
     const params = new URLSearchParams(window.location.search);
     const fromQuery = normalizeLanguage(params.get('lang'));
     if (fromQuery) {
@@ -197,7 +215,9 @@ function resolveLanguage(): LanguageCode {
   }
 
   if (typeof navigator !== 'undefined') {
-    const preferred = Array.isArray(navigator.languages) ? navigator.languages : [];
+    const preferred = Array.isArray(navigator.languages)
+      ? navigator.languages
+      : [];
     for (const language of preferred) {
       const normalized = normalizeLanguage(language);
       if (normalized) {
@@ -244,15 +264,16 @@ function lookupMessage(language: LanguageCode, key: string): string | null {
  * @param {any} values Input value.
  * @returns {any} Function result.
  */
-function interpolate(template: string, values?: Record<string, unknown>): string {
+function interpolate(
+  template: string,
+  values?: Record<string, unknown>,
+): string {
   if (!values) {
     return template;
   }
 
   return template.replace(/\{\{(\w+)\}\}/g, (_full, token: string) => {
-    return Object.prototype.hasOwnProperty.call(values, token) ?
-      String(values[token]) :
-      '';
+    return Object.hasOwn(values, token) ? String(values[token]) : '';
   });
 }
 

@@ -1,10 +1,9 @@
 import {render, waitFor} from '@testing-library/react';
 import {axe} from 'jest-axe';
-
+import {fetchBreakdownData} from '../../api';
 import Breakdown from '../../Breakdown';
 import DiffTable from '../../DiffTable';
 import Total from '../../Total';
-import {fetchBreakdownData} from '../../api';
 
 jest.mock('../../api', () => ({
   fetchBreakdownData: jest.fn(),
@@ -17,10 +16,18 @@ jest.mock('../../Trend', () => {
 });
 
 jest.mock('react-chartjs-2', () => ({
-  Bar: (props: any) => <div data-testid='mock-bar' role={props.role ?? 'img'} aria-label={props['aria-label'] ?? 'chart'} />,
+  Bar: (props: any) => (
+    <div
+      data-testid='mock-bar'
+      role={props.role ?? 'img'}
+      aria-label={props['aria-label'] ?? 'chart'}
+    />
+  ),
 }));
 
-const mockFetchBreakdownData = fetchBreakdownData as jest.MockedFunction<typeof fetchBreakdownData>;
+const mockFetchBreakdownData = fetchBreakdownData as jest.MockedFunction<
+  typeof fetchBreakdownData
+>;
 
 describe('compare accessibility', () => {
   beforeEach(() => {

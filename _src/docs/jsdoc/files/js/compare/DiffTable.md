@@ -32,7 +32,7 @@ Associated declaration: `function compareAsc(left: number | string, right: numbe
 
 ## Block 3
 
-Associated declaration: `function buildRowChartData(entry: DiffEntry, years: SelectedYears, colors: Array<string>) {`
+Associated declaration: `function buildRowChartData(`
 
 ```tsx
 /**

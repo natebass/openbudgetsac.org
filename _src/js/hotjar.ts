@@ -1,7 +1,7 @@
 /**
  * Loads Hotjar for production pages that opt into the legacy tracking snippet.
  */
-(function() {
+(() => {
   const head = document.getElementsByTagName('head')[0];
   if (!head) {
     return;
@@ -12,11 +12,15 @@
     _hjSettings?: {hjid: number; hjsv: number};
   };
 
-  state.hj = state.hj || function(...args: Array<any>) {
-    const queueOwner = state.hj as ((...items: Array<any>) => void) & {q?: Array<IArguments | Array<any>>};
-    queueOwner.q = queueOwner.q || [];
-    queueOwner.q.push(args);
-  };
+  state.hj =
+    state.hj ||
+    ((...args: Array<any>) => {
+      const queueOwner = state.hj as ((...items: Array<any>) => void) & {
+        q?: Array<IArguments | Array<any>>;
+      };
+      queueOwner.q = queueOwner.q || [];
+      queueOwner.q.push(args);
+    });
   state._hjSettings = {hjid: 1277223, hjsv: 6};
 
   const script = document.createElement('script');

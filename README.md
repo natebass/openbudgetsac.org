@@ -93,7 +93,8 @@ npm run docs:jsdoc:check       # fail if active TS/JS files are missing JSDoc co
 npm run docs:jsdoc             # generate Markdown JSDoc inventory in _src/docs/jsdoc
 node --import tsx scripts/add-missing-jsdoc.ts # add missing JSDoc blocks in active first-party TS/JS files
 npm run typecheck              # TypeScript program check for the whole project
-npm run lint                   # ESLint with Google TypeScript style rules
+npm run lint                   # ESLint semantic lint + Biome formatting check
+npm run format:biome           # apply Biome formatting across first-party TS/JS
 npm run test                   # lint + typecheck + unit + a11y + e2e
 npm run test:i18n:smoke        # site + compare i18n smoke tests
 npm run test:e2e               # preflight + e2e against local server
@@ -107,7 +108,7 @@ npm run probe:memory:watch     # RSS memory probe for webpack watch command (wri
 npm run probe:memory:watch:csv # convert watch JSON memory report to CSV
 ```
 
-ESLint is on flat config via [`_src/eslint.config.ts`](_src/eslint.config.ts). TypeScript linting follows the Google TypeScript style guide through `eslint-config-google` plus `@typescript-eslint`.
+ESLint is on flat config via [`_src/eslint.config.ts`](_src/eslint.config.ts). `npm run lint` runs ESLint first for semantic/static checks, then runs Biome in check mode as the formatting gate. TypeScript linting follows the Google TypeScript style guide through `eslint-config-google` plus `@typescript-eslint`.
 
 For performance baselines and guardrails, see [`PERFORMANCE.md`](PERFORMANCE.md) and [`_src/PERFORMANCE.md`](_src/PERFORMANCE.md).
 
@@ -217,7 +218,7 @@ openbudgetsac.org/
 - Automated bundle-size budget reporting (`npm run perf:report`).
 - RSS memory probe tooling for startup/watch diagnostics (`npm run probe:memory`, `npm run probe:memory:watch`).
 - CSV export utility for memory timelines (`npm run probe:memory:csv`, `npm run probe:memory:watch:csv`).
-- Linting via ESLint, `@typescript-eslint`, and the Google TypeScript style guide.
+- Linting via ESLint + `@typescript-eslint` (semantic checks) and Biome (formatting checks).
 - Unit + accessibility tests via Jest.
 - E2E verification via Puppeteer with Linux dependency preflight checks.
 - Benchmarks via `bench-node`.

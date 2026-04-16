@@ -31,7 +31,7 @@ Associated declaration: `function getAttrName(elm: Element): string | undefined 
 
 ## Block 3
 
-Associated declaration: `function promote(parent: Record<string, any>, key: string): Record<string, any> {`
+Associated declaration: `function promote(`
 
 ```ts
 /**
@@ -45,7 +45,7 @@ Associated declaration: `function promote(parent: Record<string, any>, key: stri
 
 ## Block 4
 
-Associated declaration: `function parse(parts: Array<string>, parent: Record<string, any>, key: string, val: any): void {`
+Associated declaration: `function parse(`
 
 ```ts
 /**
@@ -61,7 +61,7 @@ Associated declaration: `function parse(parts: Array<string>, parent: Record<str
 
 ## Block 5
 
-Associated declaration: `function merge(parent: Record<string, any>, key: string, val: any): Record<string, any> {`
+Associated declaration: `function merge(`
 
 ```ts
 /**
@@ -117,7 +117,7 @@ Associated declaration: `function lastBraceInKey(str: string): number | undefine
 
 ## Block 9
 
-Associated declaration: `function reduce(obj: Array<any>, accumulator: (current: any, value: any, index: number, source: Array<any>) => any, initial?: any): any {`
+Associated declaration: `function reduce(`
 
 ```ts
 /**
@@ -171,13 +171,13 @@ Associated declaration: `function purl(url?: string | boolean, strictMode?: bool
 
 ## Block 13
 
-Associated declaration: `function(strictMode?: boolean) {`
+Associated declaration: `function (strictMode?: boolean) {`
 
 ```ts
 /**
-     * Runs url.
-     *
-     * @param {any} strictMode Input value.
-     * @returns {any} Function result.
-     */
+       * Runs url.
+       *
+       * @param {any} strictMode Input value.
+       * @returns {any} Function result.
+       */
 ```

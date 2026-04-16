@@ -12,6 +12,7 @@ Detailed performance analysis is maintained in [`_src/PERFORMANCE.md`](_src/PERF
 - Legacy TypeScript browser output removes CommonJS prologue lines during `npm run build:legacy` via `_src/scripts/strip-cjs-prologue.ts`.
 - Active first-party TypeScript/JavaScript JSDoc coverage is enforced by `_src/scripts/add-missing-jsdoc.ts` via `npm run docs:jsdoc:check`.
 - Eleventy, Jest, webpack, and ESLint now run from their TypeScript config files through the npm scripts in `_src/package.json`.
+- Biome formatting checks now run in the lint gate (`npm run lint`) after ESLint semantic checks.
 - Memory regression tooling is available through:
   - `npm run probe:memory`
   - `npm run probe:memory:watch`
@@ -19,7 +20,7 @@ Detailed performance analysis is maintained in [`_src/PERFORMANCE.md`](_src/PERF
   - `npm run probe:memory:watch:csv`
 
 ## CI/CD Enforcement
-- CI (`.github/workflows/ci.yml`) runs lint, unit coverage (CI), i18n smoke, a11y, perf report, benchmarks, JSDoc coverage checks, JSDoc generation, Eleventy build checks, built-site i18n sanity checks, and Puppeteer E2E.
+- CI (`.github/workflows/ci.yml`) runs lint (ESLint + Biome check), unit coverage (CI), i18n smoke, a11y, perf report, benchmarks, JSDoc coverage checks, JSDoc generation, Eleventy build checks, built-site i18n sanity checks, and Puppeteer E2E.
 - CI now installs Chromium explicitly for E2E jobs (`npx puppeteer browsers install chrome`) after shared-library setup.
 - Non-E2E workflow installs disable browser download (`PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev`) to keep build times and network usage lower.
 - Docker `test` and `verify-parallel` targets mirror the same Puppeteer dependency model and test gates.

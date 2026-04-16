@@ -44,11 +44,13 @@ interface BreakdownRow {
  * @returns {any} Function result.
  */
 function isSafeBreakdownKey(value: unknown): value is string {
-  return typeof value === 'string' &&
+  return (
+    typeof value === 'string' &&
     value.length > 0 &&
     value !== '__proto__' &&
     value !== 'prototype' &&
-    value !== 'constructor';
+    value !== 'constructor'
+  );
 }
 
 /**
@@ -57,7 +59,9 @@ function isSafeBreakdownKey(value: unknown): value is string {
  * @param {any} record Input value.
  * @returns {any} Function result.
  */
-function getTotalsSortIndex(record: Pick<BudgetRecord, 'fiscal_year_range' | 'budget_type'>): number {
+function getTotalsSortIndex(
+  record: Pick<BudgetRecord, 'fiscal_year_range' | 'budget_type'>,
+): number {
   const year = record.fiscal_year_range.slice(2, 4);
   const type = TYPE_SORT_WEIGHT_BASE / Number(record.budget_type);
   return Number(`${year}.${type}`);
@@ -71,7 +75,11 @@ function getTotalsSortIndex(record: Pick<BudgetRecord, 'fiscal_year_range' | 'bu
  * @param {any} dimension Input value.
  * @returns {any} Function result.
  */
-function createBreakdownUrl(year: string, type: BudgetDataType, dimension: BreakdownDimension): string {
+function createBreakdownUrl(
+  year: string,
+  type: BudgetDataType,
+  dimension: BreakdownDimension,
+): string {
   return `${API_BASE}${typePaths[type]}${dimensionPaths[dimension]}/${encodeURIComponent(year)}.json`;
 }
 
@@ -101,14 +109,23 @@ function assertValidBreakdownRequest(
   type: unknown,
   dimension: unknown,
 ): asserts years is Array<string> {
-  if (!Array.isArray(years) || !Array.isArray(yearTypes) || years.length !== yearTypes.length || years.length === 0) {
+  if (
+    !Array.isArray(years) ||
+    !Array.isArray(yearTypes) ||
+    years.length !== yearTypes.length ||
+    years.length === 0
+  ) {
     throw new Error('Invalid budget comparison request');
   }
-  if (!years.every((year) => typeof year === 'string' && SAFE_YEAR_RE.test(year))) {
+  if (
+    !years.every(year => typeof year === 'string' && SAFE_YEAR_RE.test(year))
+  ) {
     throw new Error('Invalid fiscal year format');
   }
-  if (!Object.prototype.hasOwnProperty.call(typePaths, type) ||
-    !Object.prototype.hasOwnProperty.call(dimensionPaths, dimension)) {
+  if (
+    !Object.prototype.hasOwnProperty.call(typePaths, type) ||
+    !Object.prototype.hasOwnProperty.call(dimensionPaths, dimension)
+  ) {
     throw new Error('Unsupported comparison dimension or type');
   }
 }
@@ -129,11 +146,13 @@ async function fetchBreakdownData(
   dimension: BreakdownDimension,
 ): Promise<BudgetBreakdownPair> {
   assertValidBreakdownRequest(years, yearTypes, type, dimension);
-  const urls = years.map((year) => createBreakdownUrl(year, type, dimension));
+  const urls = years.map(year => createBreakdownUrl(year, type, dimension));
 
   try {
     const responses = await Promise.all(
-      urls.map((url) => axios.get<Array<BreakdownRow>>(url, {timeout: REQUEST_TIMEOUT_MS})),
+      urls.map(url =>
+        axios.get<Array<BreakdownRow>>(url, {timeout: REQUEST_TIMEOUT_MS}),
+      ),
     );
 
     const budgets = responses.map((response, index) => {
@@ -141,15 +160,18 @@ async function fetchBreakdownData(
         throw new Error(`Unexpected API response format for ${urls[index]}`);
       }
 
-      return response.data.reduce<Record<string, number>>((accumulator, row) => {
-        if (String(row.budget_type) === String(yearTypes[index])) {
-          const key = row[dimensionKeys[dimension]];
-          if (isSafeBreakdownKey(key)) {
-            accumulator[key] = parseNumericTotal(row.total);
+      return response.data.reduce<Record<string, number>>(
+        (accumulator, row) => {
+          if (String(row.budget_type) === String(yearTypes[index])) {
+            const key = row[dimensionKeys[dimension]];
+            if (isSafeBreakdownKey(key)) {
+              accumulator[key] = parseNumericTotal(row.total);
+            }
           }
-        }
-        return accumulator;
-      }, {});
+          return accumulator;
+        },
+        {},
+      );
     });
 
     return [budgets[0] ?? {}, budgets[1] ?? {}];
