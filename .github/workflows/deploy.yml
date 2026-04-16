@@ -60,6 +60,7 @@ jobs:
         run: npm run site:build
 
       - name: Verify i18n assets in built site
+        working-directory: .
         run: |
           test -f build/js/i18n-site.js
           grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" build
