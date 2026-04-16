@@ -13,6 +13,7 @@ const EXCLUDE_PREFIXES = [
   'js/dist/',
   'node_modules/',
   'styles/',
+  'vendor/',
 ];
 const SOURCE_FILE_RE = /\.(?:[cm]?ts|tsx|jsx|js)$/i;
 
