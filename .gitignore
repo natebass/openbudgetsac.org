@@ -12,5 +12,6 @@ _treemap/Approved.*.json
 .vscode/launch.json
 .vscode/settings.json
 .idea/
-
+_treemap/__pycache__
+.cache/standard/v17
 *:Zone.Identifier
