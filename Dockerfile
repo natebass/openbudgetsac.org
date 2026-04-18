@@ -1,4 +1,4 @@
-FROM node:22-bookworm AS base
+FROM node:24 AS base
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ FROM base AS chromium-deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     fonts-liberation \
-    libasound2 \
+    libasound2t64 \
     libatk-bridge2.0-0 \
     libatk1.0-0 \
     libatspi2.0-0 \
