@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {parse} from '@babel/parser';
+import type {ParserOptions} from '@babel/parser';
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes('--check');
-const EXCLUDE_PREFIXES = [
+const EXCLUDED_PATH_PREFIXES = [
   'build/',
   'coverage/',
   'css/bower_components/',
@@ -13,7 +14,29 @@ const EXCLUDE_PREFIXES = [
   'js/dist/',
   'node_modules/',
   'styles/',
+  'vendor/',
 ];
+const AST_IGNORED_KEYS = new Set([
+  'loc',
+  'start',
+  'end',
+  'leadingComments',
+  'trailingComments',
+  'innerComments',
+]);
+const FUNCTION_NODE_TYPES = new Set([
+  'FunctionDeclaration',
+  'FunctionExpression',
+  'ArrowFunctionExpression',
+  'ObjectMethod',
+  'ClassMethod',
+]);
+const PARSER_OPTIONS: ParserOptions = {
+  sourceType: 'unambiguous',
+  plugins: ['jsx', 'typescript'],
+  errorRecovery: false,
+  attachComment: true,
+};
 const SOURCE_FILE_RE = /\.(?:[cm]?ts|tsx|jsx|js)$/i;
 
 /**
@@ -34,7 +57,17 @@ function normalizeRelative(filePath: string): string {
  */
 function shouldSkip(relativePath: string): boolean {
   const normalized = normalizeRelative(relativePath);
-  return EXCLUDE_PREFIXES.some(prefix => normalized.startsWith(prefix));
+  return EXCLUDED_PATH_PREFIXES.some(prefix => normalized.startsWith(prefix));
+}
+
+/**
+ * Checks whether is source file.
+ *
+ * @param {any} filePath Input value.
+ * @returns {any} Function result.
+ */
+function isSourceFile(filePath: string): boolean {
+  return SOURCE_FILE_RE.test(filePath) && !filePath.endsWith('.d.ts');
 }
 
 /**
@@ -57,11 +90,7 @@ async function collectFiles(dir: string): Promise<Array<string>> {
       files.push(...(await collectFiles(absolutePath)));
       continue;
     }
-    if (
-      entry.isFile() &&
-      SOURCE_FILE_RE.test(absolutePath) &&
-      !absolutePath.endsWith('.d.ts')
-    ) {
+    if (entry.isFile() && isSourceFile(absolutePath)) {
       files.push(absolutePath);
     }
   }
@@ -267,14 +296,7 @@ function traverseAndCollect(
     return;
   }
 
-  const functionTypes = new Set([
-    'FunctionDeclaration',
-    'FunctionExpression',
-    'ArrowFunctionExpression',
-    'ObjectMethod',
-    'ClassMethod',
-  ]);
-  if (functionTypes.has(node.type)) {
+  if (FUNCTION_NODE_TYPES.has(node.type)) {
     const name = getFunctionName(node, parent);
     if (name && !hasJSDocBefore(node, comments)) {
       inserts.push({
@@ -289,16 +311,7 @@ function traverseAndCollect(
   }
 
   for (const [key, value] of Object.entries(node)) {
-    if (
-      [
-        'loc',
-        'start',
-        'end',
-        'leadingComments',
-        'trailingComments',
-        'innerComments',
-      ].includes(key)
-    ) {
+    if (AST_IGNORED_KEYS.has(key)) {
       continue;
     }
     if (Array.isArray(value)) {
@@ -328,12 +341,7 @@ async function patchFile(
   let ast;
 
   try {
-    ast = parse(source, {
-      sourceType: 'unambiguous',
-      plugins: ['jsx', 'typescript'],
-      errorRecovery: false,
-      attachComment: true,
-    });
+    ast = parse(source, PARSER_OPTIONS);
   } catch {
     return {
       inserted: 0,

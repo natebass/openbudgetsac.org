@@ -185,7 +185,7 @@ async function gatherFiles(): Promise<Array<string>> {
     try {
       files.push(...(await walk(absolutePath)));
     } catch {
-      // Keep going when an optional target is missing.
+      // Continue when an optional target path is missing.
     }
   }
   return uniqueSorted(files);

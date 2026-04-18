@@ -10,7 +10,7 @@ Detailed performance analysis is maintained in [`_src/PERFORMANCE.md`](_src/PERF
 - E2E reliability is protected by `_src/test/e2e-preflight.ts` (Linux Chromium dependency checks before test launch).
 - Legacy browser dependencies are served from local vendor assets (`build/js/vendor/*`) instead of external CDNs.
 - Legacy TypeScript browser output removes CommonJS prologue lines during `npm run build:legacy` via `_src/scripts/strip-cjs-prologue.ts`.
-- Active first-party TypeScript/JavaScript JSDoc coverage is enforced by `_src/scripts/add-missing-jsdoc.ts` via `npm run docs:jsdoc:check`.
+- Active first-party TypeScript/JavaScript JSDoc coverage is enforced by `_src/scripts/add-missing-jsdoc.ts` via `npm run docs:jsdoc:check` (third-party vendored scripts are excluded).
 - Eleventy, Jest, webpack, and ESLint now run from their TypeScript config files through the npm scripts in `_src/package.json`.
 - Biome formatting checks now run in the lint gate (`npm run lint`) after ESLint semantic checks.
 - Memory regression tooling is available through:

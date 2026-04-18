@@ -51,7 +51,7 @@ jobs:
       - name: Benchmarks (JSON)
         run: npm run bench:json
 
-      - name: Verify JSDoc coverage in active TS/JS files
+      - name: Verify JSDoc coverage in active first-party TS/JS files
         run: npm run docs:jsdoc:check
 
       - name: Generate JSDoc docs

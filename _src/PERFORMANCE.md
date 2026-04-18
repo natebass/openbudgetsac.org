@@ -51,6 +51,7 @@ Run from `_src/`:
 - `npm run lint`
 - `npm run format:biome`
 - `npm run docs:jsdoc:check`
+- `npm run docs:jsdoc:check` (first-party TS/JS scope; third-party vendored scripts are excluded)
 - `npm run test:unit:coverage`
 - `npm run test:a11y`
 - `npm run test:e2e:preflight`

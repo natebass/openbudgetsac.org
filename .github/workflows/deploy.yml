@@ -50,7 +50,7 @@ jobs:
       - name: Build CSS
         run: npm run build-css
 
-      - name: Verify JSDoc coverage in active TS/JS files
+      - name: Verify JSDoc coverage in active first-party TS/JS files
         run: npm run docs:jsdoc:check
 
       - name: Generate JSDoc docs

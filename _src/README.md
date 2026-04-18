@@ -39,5 +39,5 @@ The local site runs at `http://localhost:8011`.
 
 ## Documentation
 
-- `npm run docs:jsdoc:check` validates JSDoc coverage in active first-party TS/JS files.
+- `npm run docs:jsdoc:check` validates JSDoc coverage in active first-party TS/JS files (third-party vendor files are excluded).
 - `npm run docs:jsdoc` regenerates Markdown docs under `docs/jsdoc`.
