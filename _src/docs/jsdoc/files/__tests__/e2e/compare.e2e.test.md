@@ -55,7 +55,7 @@ Associated declaration: `async function openFirstNavDropdown(): Promise<void> {`
 
 ## Block 5
 
-Associated declaration: `async function switchLegacyAccount(accountValue: 'Revenue' | 'Expense'): Promise<void> {`
+Associated declaration: `async function switchLegacyAccount(`
 
 ```ts
 /**

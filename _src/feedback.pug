@@ -19,23 +19,19 @@ block content
           p
             | Submit feedback with the form below, or open it directly in a new tab.
             br
-            a(href='https://openbudgetsac.wufoo.com/forms/za3gq4n1oevxis/', target='_blank', rel='noopener noreferrer')
+            a(href='https://forms.gle/NqjmBatZmLHLFmQEA', target='_blank', rel='noopener noreferrer')
               | Open feedback form
           iframe(
             title='Open Budget Sacramento Feedback Form'
-            data-i18n-title='feedback.formTitle'
-            src='https://openbudgetsac.wufoo.com/forms/za3gq4n1oevxis/'
-            width='100%'
-            height='700'
-            frameborder='0'
-            marginheight='0'
-            marginwidth='0'
+            data-i18n-title='feedback.formTitle',
+            src='https://forms.gle/NqjmBatZmLHLFmQEA',
+            width='100%',
+            height='700',
+            frameborder='0',
+            marginheight='0',
+            marginwidth='0',
+            rolling="no",
+            onLoad="window.parent.scroll(0,0);"
           )
             span(data-i18n='feedback.loadingForm') Loading feedback form...
 
-        #disqus_thread(data-disqus-identifier='Open Budget: Sacramento feedback')
-
-  script(src='/js/disqus-loader.js', charset='utf-8', defer)
-  noscript
-    | Please enable JavaScript to view the
-    a(href='https://disqus.com/?ref_noscript') comments powered by Disqus.

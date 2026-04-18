@@ -35,7 +35,10 @@ function setSecurityHeaders(res) {
   res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  res.setHeader(
+    'Permissions-Policy',
+    'geolocation=(), microphone=(), camera=()',
+  );
 }
 
 /**
@@ -55,13 +58,21 @@ function buildEtag(stat) {
  * @returns {any} Function result.
  */
 function isTextResponse(contentType) {
-  return contentType.startsWith('text/') || contentType.includes('javascript') || contentType.includes('json') || contentType.includes('svg');
+  return (
+    contentType.startsWith('text/') ||
+    contentType.includes('javascript') ||
+    contentType.includes('json') ||
+    contentType.includes('svg')
+  );
 }
 
 const server = http.createServer(async (req, res) => {
   setSecurityHeaders(res);
   if (req.method !== 'GET' && req.method !== 'HEAD') {
-    res.writeHead(405, {'Content-Type': 'text/plain; charset=utf-8', 'Allow': 'GET, HEAD'});
+    res.writeHead(405, {
+      'Content-Type': 'text/plain; charset=utf-8',
+      Allow: 'GET, HEAD',
+    });
     res.end('Method Not Allowed');
     return;
   }
@@ -87,9 +98,11 @@ const server = http.createServer(async (req, res) => {
 
     const stat = await fs.stat(filePath);
     const etag = buildEtag(stat);
-    const contentType = CONTENT_TYPES[path.extname(filePath)] || 'application/octet-stream';
+    const contentType =
+      CONTENT_TYPES[path.extname(filePath)] || 'application/octet-stream';
     const acceptEncoding = req.headers['accept-encoding'] || '';
-    const useGzip = isTextResponse(contentType) && acceptEncoding.includes('gzip');
+    const useGzip =
+      isTextResponse(contentType) && acceptEncoding.includes('gzip');
 
     res.setHeader('Content-Type', contentType);
     res.setHeader('ETag', etag);

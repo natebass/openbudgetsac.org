@@ -4,30 +4,30 @@
 
 ## Block 1
 
-Associated declaration: `function(d) {`
+Associated declaration: `d => '$' + formatNumber(d);`
 
 ```ts
 /**
- * Builds format.
- *
- * @param {number} d Input value.
- * @returns {string} Function result.
- */
+   * Builds format.
+   *
+   * @param {number} d Input value.
+   * @returns {string} Function result.
+   */
 ```
 
 ## Block 2
 
-Associated declaration: `function(key: string, fallback?: string, vars?: Record<string, unknown>) {`
+Associated declaration: `(key: string, fallback?: string, vars?: Record<string, unknown>) => {`
 
 ```ts
 /**
- * Runs i18n t.
- *
- * @param {string} key Input value.
- * @param {string} [fallback] Input value.
- * @param {Record<string, unknown>} [vars] Input value.
- * @returns {string} Function result.
- */
+   * Runs i18n t.
+   *
+   * @param {string} key Input value.
+   * @param {string} [fallback] Input value.
+   * @param {Record<string, unknown>} [vars] Input value.
+   * @returns {string} Function result.
+   */
 ```
 
 ## Block 3
@@ -59,7 +59,7 @@ Associated declaration: `function data_wrangle(dataset, fy) {`
 
 ## Block 5
 
-Associated declaration: `const sort_by = (fields_arr) => {`
+Associated declaration: `const sort_by = fields_arr => {`
 
 ```ts
 /**
@@ -72,7 +72,7 @@ Associated declaration: `const sort_by = (fields_arr) => {`
 
 ## Block 6
 
-Associated declaration: `const fundKey = (fund_field, general_fund) => (d) => d[fund_field] == general_fund ? 'General Fund' : 'Non-discretionary funds';`
+Associated declaration: `const fundKey = (fund_field, general_fund) => d =>`
 
 ```ts
 /**
@@ -86,7 +86,7 @@ Associated declaration: `const fundKey = (fund_field, general_fund) => (d) => d[
 
 ## Block 7
 
-Associated declaration: `const rollupFn = (amount_field) => (v) => ({total: d3.sum(v, (d) => +d[amount_field])});`
+Associated declaration: `const rollupFn = amount_field => v => ({`
 
 ```ts
 /**
@@ -99,7 +99,7 @@ Associated declaration: `const rollupFn = (amount_field) => (v) => ({total: d3.s
 
 ## Block 8
 
-Associated declaration: `const flatten = (nested) => nested.reduce((acc, row) => acc.concat(row), []);`
+Associated declaration: `const flatten = nested => nested.reduce((acc, row) => acc.concat(row), []);`
 
 ```ts
 /**
@@ -114,7 +114,7 @@ Associated declaration: `const flatten = (nested) => nested.reduce((acc, row) =>
 
 ## Block 9
 
-Associated declaration: `function data_wrangle_v1(dataset, category_field, department_field, expense_field, revenue_value, expense_value, fund_field, general_fund, amount_field) {`
+Associated declaration: `function data_wrangle_v1(`
 
 ```ts
 /**

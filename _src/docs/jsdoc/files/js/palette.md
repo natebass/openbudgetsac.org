@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `namespace.stack = function() {`
+Associated declaration: `namespace.stack = () => {`
 
 ```ts
 /**
@@ -17,7 +17,7 @@ Associated declaration: `namespace.stack = function() {`
 
 ## Block 2
 
-Associated declaration: `let _transform = function(color, count) {`
+Associated declaration: `let _transform = (color, count) => {`
 
 ```ts
 /**
@@ -31,7 +31,7 @@ Associated declaration: `let _transform = function(color, count) {`
 
 ## Block 3
 
-Associated declaration: `transform: function() {`
+Associated declaration: `transform: function () {`
 
 ```ts
 /**
@@ -43,7 +43,7 @@ Associated declaration: `transform: function() {`
 
 ## Block 4
 
-Associated declaration: `palette: function() {`
+Associated declaration: `palette: function () {`
 
 ```ts
 /**
@@ -55,7 +55,7 @@ Associated declaration: `palette: function() {`
 
 ## Block 5
 
-Associated declaration: `shift: function() {`
+Associated declaration: `shift: function () {`
 
 ```ts
 /**
@@ -67,7 +67,7 @@ Associated declaration: `shift: function() {`
 
 ## Block 6
 
-Associated declaration: `unshift: function(color, count) {`
+Associated declaration: `unshift: function (color, count) {`
 
 ```ts
 /**

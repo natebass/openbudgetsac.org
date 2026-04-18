@@ -30,141 +30,141 @@ Associated declaration: `function safeNavigate(rawUrl) {`
 
 ## Block 3
 
-Associated declaration: `function(elem, context, state) {`
+Associated declaration: `function (elem, context, state) {`
 
 ```ts
 /**
-   * Runs treemap.
-   *
-   * @param {any} elem Input value.
-   * @param {any} context Input value.
-   * @param {any} state Input value.
-   * @returns {any} Function result.
-   */
-```
-
-## Block 4
-
-Associated declaration: `function(endConfigure) {`
-
-```ts
-/**
-     * Runs configure.
+     * Runs treemap.
      *
-     * @param {any} endConfigure Input value.
-     * @returns {any} Function result.
-     */
-```
-
-## Block 5
-
-Associated declaration: `function(state) {`
-
-```ts
-/**
-     * Sets update.
-     *
+     * @param {any} elem Input value.
+     * @param {any} context Input value.
      * @param {any} state Input value.
      * @returns {any} Function result.
      */
 ```
 
-## Block 6
+## Block 4
 
-Associated declaration: `function() {`
+Associated declaration: `endConfigure => {`
 
 ```ts
 /**
-     * Gets get download url.
-     *
-     * @returns {any} Function result.
-     */
+         * Runs configure.
+         *
+         * @param {any} endConfigure Input value.
+         * @returns {any} Function result.
+         */
+```
+
+## Block 5
+
+Associated declaration: `state => {`
+
+```ts
+/**
+         * Sets update.
+         *
+         * @param {any} state Input value.
+         * @returns {any} Function result.
+         */
+```
+
+## Block 6
+
+Associated declaration: `() => self.aggregator.getCSVURL();`
+
+```ts
+/**
+         * Gets get download url.
+         *
+         * @returns {any} Function result.
+         */
 ```
 
 ## Block 7
 
-Associated declaration: `function() {`
+Associated declaration: `() => self.state;`
 
 ```ts
 /**
-     * Runs serialize.
-     *
-     * @returns {any} Function result.
-     */
+         * Runs serialize.
+         *
+         * @returns {any} Function result.
+         */
 ```
 
 ## Block 8
 
-Associated declaration: `function() {`
+Associated declaration: `() => {`
 
 ```ts
 /**
-     * Runs init.
-     *
-     * @returns {any} Function result.
-     */
+         * Runs init.
+         *
+         * @returns {any} Function result.
+         */
 ```
 
 ## Block 9
 
-Associated declaration: `function(dataset, data) {`
+Associated declaration: `(dataset, data) => {`
 
 ```ts
 /**
-     * Sets set data from aggregator.
-     *
-     * @param {any} dataset Input value.
-     * @param {any} data Input value.
-     * @returns {any} Function result.
-     */
+         * Sets set data from aggregator.
+         *
+         * @param {any} dataset Input value.
+         * @param {any} data Input value.
+         * @returns {any} Function result.
+         */
 ```
 
 ## Block 10
 
-Associated declaration: `function(node) {`
+Associated declaration: `function (node) {`
 
 ```ts
 /**
-     * Sets set node.
-     *
-     * @param {any} node Input value.
-     * @returns {any} Function result.
-     */
+         * Sets set node.
+         *
+         * @param {any} node Input value.
+         * @returns {any} Function result.
+         */
 ```
 
 ## Block 11
 
-Associated declaration: `function(tile) {`
+Associated declaration: `tile => {`
 
 ```ts
 /**
-     * Runs drilldown.
-     *
-     * @param {any} tile Input value.
-     * @returns {any} Function result.
-     */
+         * Runs drilldown.
+         *
+         * @param {any} tile Input value.
+         * @returns {any} Function result.
+         */
 ```
 
 ## Block 12
 
-Associated declaration: `function() {`
+Associated declaration: `() => {`
 
 ```ts
 /**
-     * Runs auto colorize.
-     *
-     * @returns {any} Function result.
-     */
+         * Runs auto colorize.
+         *
+         * @returns {any} Function result.
+         */
 ```
 
 ## Block 13
 
-Associated declaration: `function() {`
+Associated declaration: `function () {`
 
 ```ts
 /**
-     * Runs draw.
-     *
-     * @returns {any} Function result.
-     */
+         * Runs draw.
+         *
+         * @returns {any} Function result.
+         */
 ```

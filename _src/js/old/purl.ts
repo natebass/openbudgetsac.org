@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 /*
  * JQuery URL Parser plugin, v2.2.1
  * Developed and maintained by Mark Perkins, mark@allmarkedup.com
@@ -6,25 +5,25 @@
  * Licensed under an MIT-style license. See https://github.com/allmarkedup/jQuery-URL-Parser/blob/master/LICENSE for details.
  */
 // This is a legacy third-party parser that older pages still load.
-// Do not refactor logic here unless you can verify old query-string behavior end to end.
+// Do not refactor this logic unless you verify legacy query-string behavior end to end.
 
-;(function(factory) {
+(factory => {
   if (typeof define === 'function' && define.amd) {
-    // AMD available; use anonymous module
+    // AMD is available, so use an anonymous module.
     if (typeof jQuery !== 'undefined') {
       define(['jquery'], factory);
     } else {
       define([], factory);
     }
   } else {
-    // No AMD available; mutate global vars
+    // AMD is not available, so write to globals.
     if (typeof jQuery !== 'undefined') {
       factory(jQuery);
     } else {
       factory();
     }
   }
-})(function($?: JQueryStatic) {
+})(($?: JQueryStatic) => {
   const tag2attr = {
     a: 'href',
     img: 'src',
@@ -35,15 +34,32 @@
     link: 'href',
   };
 
-  const key = ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'fragment']; // keys available to query
+  const key = [
+    'source',
+    'protocol',
+    'authority',
+    'userInfo',
+    'user',
+    'password',
+    'host',
+    'port',
+    'relative',
+    'path',
+    'directory',
+    'file',
+    'query',
+    'fragment',
+  ]; // Keys callers can request.
 
-  const aliases = {anchor: 'fragment'}; // aliases for backward compatibility
+  const aliases = {anchor: 'fragment'}; // Backward-compatibility aliases.
 
   const parser = {
-    // `strict` follows URL spec rules more closely.
-    strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/, // less intuitive, more accurate to the specs
-    // `loose` is more forgiving for informal URLs but less standards-compliant.
-    loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*):?([^:@]*))?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, // more intuitive, fails on relative paths and deviates from specs
+    // `strict` follows URL rules more closely.
+    strict:
+      /^(?:([^:/?#]+):)?(?:\/\/((?:(([^:@]*):?([^:@]*))?@)?([^:/?#]*)(?::(\d*))?))?((((?:[^?#/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/, // Less intuitive, but closer to the spec.
+    // `loose` accepts informal URLs but is less standards-compliant.
+    loose:
+      /^(?:(?![^:@]+:[^:@/]*@)([^:/?#.]+):)?(?:\/\/)?((?:(([^:@]*):?([^:@]*))?@)?([^:/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#/]*\.[^?#/.]+(?:[?#]|$)))*\/?)?([^?#/]*))(?:\?([^#]*))?(?:#(.*))?)/, // More intuitive, but fails on some relative paths.
   };
 
   const isint = /^[0-9]+$/;
@@ -69,12 +85,16 @@
     uri.param.query = parseString(uri.attr.query);
     uri.param.fragment = parseString(uri.attr.fragment);
 
-    // Split the path and fragment into segments.
+    // Split path and fragment into segments.
     uri.seg.path = uri.attr.path.replace(/^\/+|\/+$/g, '').split('/');
     uri.seg.fragment = uri.attr.fragment.replace(/^\/+|\/+$/g, '').split('/');
 
     // Build the base domain attribute.
-    uri.attr.base = uri.attr.host ? (uri.attr.protocol ? uri.attr.protocol + '://' + uri.attr.host : uri.attr.host) + (uri.attr.port ? ':' + uri.attr.port : '') : '';
+    uri.attr.base = uri.attr.host
+      ? (uri.attr.protocol
+          ? uri.attr.protocol + '://' + uri.attr.host
+          : uri.attr.host) + (uri.attr.port ? ':' + uri.attr.port : '')
+      : '';
 
     return uri;
   }
@@ -87,7 +107,9 @@
    */
   function getAttrName(elm: Element): string | undefined {
     const tn = elm.tagName;
-    if (typeof tn !== 'undefined') {return tag2attr[tn.toLowerCase()];}
+    if (typeof tn !== 'undefined') {
+      return tag2attr[tn.toLowerCase()];
+    }
     return tn;
   }
 
@@ -98,13 +120,18 @@
    * @param {any} key Input value.
    * @returns {any} Function result.
    */
-  function promote(parent: Record<string, any>, key: string): Record<string, any> {
+  function promote(
+    parent: Record<string, any>,
+    key: string,
+  ): Record<string, any> {
     if (parent[key].length === 0) {
       parent[key] = {};
       return parent[key];
     }
     const t = {};
-    for (const i in parent[key]) {t[i] = parent[key][i];}
+    for (const i in parent[key]) {
+      t[i] = parent[key][i];
+    }
     parent[key] = t;
     return t;
   }
@@ -118,7 +145,12 @@
    * @param {any} val Input value.
    * @returns {any} Function result.
    */
-  function parse(parts: Array<string>, parent: Record<string, any>, key: string, val: any): void {
+  function parse(
+    parts: Array<string>,
+    parent: Record<string, any>,
+    key: string,
+    val: any,
+  ): void {
     let part = parts.shift();
     if (!part) {
       if (isArray(parent[key])) {
@@ -131,10 +163,12 @@
         parent[key] = [parent[key], val];
       }
     } else {
-      let obj = parent[key] = parent[key] || [];
+      let obj = (parent[key] = parent[key] || []);
       if (part === ']') {
         if (isArray(obj)) {
-          if (val !== '') {obj.push(val);}
+          if (val !== '') {
+            obj.push(val);
+          }
         } else if (typeof obj === 'object') {
           obj[keys(obj).length] = val;
         } else {
@@ -142,10 +176,14 @@
         }
       } else if (~part.indexOf(']')) {
         part = part.substr(0, part.length - 1);
-        if (!isint.test(part) && isArray(obj)) {obj = promote(parent, key);}
+        if (!isint.test(part) && isArray(obj)) {
+          obj = promote(parent, key);
+        }
         parse(parts, obj, part, val);
       } else {
-        if (!isint.test(part) && isArray(obj)) {obj = promote(parent, key);}
+        if (!isint.test(part) && isArray(obj)) {
+          obj = promote(parent, key);
+        }
         parse(parts, obj, part, val);
       }
     }
@@ -159,14 +197,20 @@
    * @param {any} val Input value.
    * @returns {any} Function result.
    */
-  function merge(parent: Record<string, any>, key: string, val: any): Record<string, any> {
+  function merge(
+    parent: Record<string, any>,
+    key: string,
+    val: any,
+  ): Record<string, any> {
     if (~key.indexOf(']')) {
       const parts = key.split('[');
       parse(parts, parent, 'base', val);
     } else {
       if (!isint.test(key) && isArray(parent.base)) {
         const t = {};
-        for (const k in parent.base) {t[k] = parent.base[k];}
+        for (const k in parent.base) {
+          t[k] = parent.base[k];
+        }
         parent.base = t;
       }
       set(parent.base, key, val);
@@ -181,25 +225,29 @@
    * @returns {any} Function result.
    */
   function parseString(str: string): Record<string, any> {
-    return reduce(String(str).split(/&|;/), function(ret, pair) {
-      try {
-        pair = decodeURIComponent(pair.replace(/\+/g, ' '));
-      } catch (e) {
-        // Ignore invalid escape sequences and keep parsing the remaining string.
-      }
-      const eql = pair.indexOf('=');
-      const brace = lastBraceInKey(pair);
-      let key = pair.substr(0, brace || eql);
-      let val = pair.substr(brace || eql, pair.length);
-      val = val.substr(val.indexOf('=') + 1, val.length);
+    return reduce(
+      String(str).split(/&|;/),
+      (ret, pair) => {
+        try {
+          pair = decodeURIComponent(pair.replace(/\+/g, ' '));
+        } catch (e) {
+          // Ignore invalid escape sequences and keep parsing.
+        }
+        const eql = pair.indexOf('=');
+        const brace = lastBraceInKey(pair);
+        let key = pair.substr(0, brace || eql);
+        let val = pair.substr(brace || eql, pair.length);
+        val = val.substr(val.indexOf('=') + 1, val.length);
 
-      if (key === '') {
-        key = pair;
-        val = '';
-      }
+        if (key === '') {
+          key = pair;
+          val = '';
+        }
 
-      return merge(ret, key, val);
-    }, {base: {}}).base;
+        return merge(ret, key, val);
+      },
+      {base: {}},
+    ).base;
   }
 
   /**
@@ -233,9 +281,15 @@
     let c;
     for (let i = 0; i < len; ++i) {
       c = str[i];
-      if (c === ']') {brace = false;}
-      if (c === '[') {brace = true;}
-      if (c === '=' && !brace) {return i;}
+      if (c === ']') {
+        brace = false;
+      }
+      if (c === '[') {
+        brace = true;
+      }
+      if (c === '=' && !brace) {
+        return i;
+      }
     }
   }
 
@@ -246,12 +300,23 @@
    * @param {any} accumulator Input value.
    * @returns {any} Function result.
    */
-  function reduce(obj: Array<any>, accumulator: (current: any, value: any, index: number, source: Array<any>) => any, initial?: any): any {
+  function reduce(
+    obj: Array<any>,
+    accumulator: (
+      current: any,
+      value: any,
+      index: number,
+      source: Array<any>,
+    ) => any,
+    initial?: any,
+  ): any {
     let i = 0;
     const l = obj.length >> 0;
     let curr = initial;
     while (i < l) {
-      if (i in obj) {curr = accumulator(curr, obj[i], i, obj);}
+      if (i in obj) {
+        curr = accumulator(curr, obj[i], i, obj);
+      }
       ++i;
     }
     return curr;
@@ -276,7 +341,9 @@
   function keys(obj: Record<string, any>): Array<string> {
     const keys: Array<string> = [];
     for (const prop in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, prop)) {keys.push(prop);}
+      if (Object.hasOwn(obj, prop)) {
+        keys.push(prop);
+      }
     }
     return keys;
   }
@@ -294,30 +361,36 @@
       url = undefined;
     }
     strictMode = strictMode || false;
-    const resolvedUrl = typeof url === 'string' ? url : window.location.toString();
+    const resolvedUrl =
+      typeof url === 'string' ? url : window.location.toString();
 
     return {
-
       data: parseUri(resolvedUrl, strictMode),
 
       // Return URI attributes.
-      attr: function(attr) {
+      attr: function (attr) {
         attr = aliases[attr] || attr;
-        return typeof attr !== 'undefined' ? this.data.attr[attr] : this.data.attr;
+        return typeof attr !== 'undefined'
+          ? this.data.attr[attr]
+          : this.data.attr;
       },
 
-      // Return query string parameters.
-      param: function(param) {
-        return typeof param !== 'undefined' ? this.data.param.query[param] : this.data.param.query;
+      // Return query-string parameters.
+      param: function (param) {
+        return typeof param !== 'undefined'
+          ? this.data.param.query[param]
+          : this.data.param.query;
       },
 
       // Return fragment parameters.
-      fparam: function(param) {
-        return typeof param !== 'undefined' ? this.data.param.fragment[param] : this.data.param.fragment;
+      fparam: function (param) {
+        return typeof param !== 'undefined'
+          ? this.data.param.fragment[param]
+          : this.data.param.fragment;
       },
 
       // Return path segments.
-      segment: function(seg) {
+      segment: function (seg) {
         if (typeof seg === 'undefined') {
           return this.data.seg.path;
         } else {
@@ -327,7 +400,7 @@
       },
 
       // Return fragment segments.
-      fsegment: function(seg) {
+      fsegment: function (seg) {
         if (typeof seg === 'undefined') {
           return this.data.seg.fragment;
         } else {
@@ -335,24 +408,24 @@
           return this.data.seg.fragment[seg];
         }
       },
-
     };
   }
 
   if (typeof $ !== 'undefined') {
-    $.fn.url = /**
-     * Runs url.
-     *
-     * @param {any} strictMode Input value.
-     * @returns {any} Function result.
-     */
-function(strictMode?: boolean) {
-  let url = '';
-  if (this.length) {
-    url = $(this).attr(getAttrName(this[0])) || '';
-  }
-  return purl(url, strictMode);
-};
+    $.fn.url =
+      /**
+       * Runs url.
+       *
+       * @param {any} strictMode Input value.
+       * @returns {any} Function result.
+       */
+      function (strictMode?: boolean) {
+        let url = '';
+        if (this.length) {
+          url = $(this).attr(getAttrName(this[0])) || '';
+        }
+        return purl(url, strictMode);
+      };
 
     $.url = purl;
   } else {

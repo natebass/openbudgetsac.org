@@ -42,7 +42,9 @@ function isSourceFile(filePath: string): boolean {
  * @returns {any} Function result.
  */
 function shouldExcludePath(filePath: string): boolean {
-  return normalizeSlashes(filePath).split('/').some((segment) => EXCLUDE_SEGMENTS.has(segment));
+  return normalizeSlashes(filePath)
+    .split('/')
+    .some(segment => EXCLUDE_SEGMENTS.has(segment));
 }
 
 /**
@@ -54,17 +56,21 @@ function shouldExcludePath(filePath: string): boolean {
 async function walk(entryPath: string): Promise<Array<string>> {
   const stat = await fs.stat(entryPath);
   if (stat.isFile()) {
-    return isSourceFile(entryPath) && !shouldExcludePath(entryPath) ? [entryPath] : [];
+    return isSourceFile(entryPath) && !shouldExcludePath(entryPath)
+      ? [entryPath]
+      : [];
   }
   if (!stat.isDirectory()) {
     return [];
   }
 
   const children = await fs.readdir(entryPath);
-  const nested = await Promise.all(children.map(async (child) => {
-    const childPath = path.join(entryPath, child);
-    return shouldExcludePath(childPath) ? [] : await walk(childPath);
-  }));
+  const nested = await Promise.all(
+    children.map(async child => {
+      const childPath = path.join(entryPath, child);
+      return shouldExcludePath(childPath) ? [] : await walk(childPath);
+    }),
+  );
 
   return nested.flat();
 }
@@ -97,7 +103,7 @@ function findNextCodeLine(source: string, afterIndex: number): string {
  * @returns {any} Function result.
  */
 function buildFileDoc(relativeFilePath: string, source: string): string {
-  const blocks = Array.from(source.matchAll(DOCBLOCK_REGEX)).map((match) => {
+  const blocks = Array.from(source.matchAll(DOCBLOCK_REGEX)).map(match => {
     const block = match[0];
     const endIndex = (match.index || 0) + block.length;
     return {
@@ -106,7 +112,11 @@ function buildFileDoc(relativeFilePath: string, source: string): string {
     };
   });
 
-  const infoString = relativeFilePath.endsWith('tsx') ? 'tsx' : relativeFilePath.endsWith('ts') ? 'ts' : 'js';
+  const infoString = relativeFilePath.endsWith('tsx')
+    ? 'tsx'
+    : relativeFilePath.endsWith('ts')
+      ? 'ts'
+      : 'js';
   const lines = [
     `# ${relativeFilePath}`,
     '',
@@ -121,7 +131,10 @@ function buildFileDoc(relativeFilePath: string, source: string): string {
 
   blocks.forEach((entry, index) => {
     lines.push(`## Block ${index + 1}`, '');
-    lines.push(`Associated declaration: \`${entry.nextLine.replace(/`/g, '\\`')}\``, '');
+    lines.push(
+      `Associated declaration: \`${entry.nextLine.replace(/`/g, '\\`')}\``,
+      '',
+    );
     lines.push(`\`\`\`${infoString}`);
     lines.push(entry.block);
     lines.push('```', '');
@@ -170,9 +183,9 @@ async function gatherFiles(): Promise<Array<string>> {
   for (const target of TARGETS) {
     const absolutePath = getTargetPath(target);
     try {
-      files.push(...await walk(absolutePath));
+      files.push(...(await walk(absolutePath)));
     } catch {
-      // Keep going when an optional target is missing.
+      // Continue when an optional target path is missing.
     }
   }
   return uniqueSorted(files);
@@ -184,8 +197,14 @@ async function gatherFiles(): Promise<Array<string>> {
  * @param {any} absolutePath Input value.
  * @returns {any} Function result.
  */
-async function writeDocsForFile(absolutePath: string): Promise<{blockCount: number; outputFilePath: string; relativeFilePath: string}> {
-  const relativeFilePath = normalizeSlashes(path.relative(SRC_ROOT, absolutePath));
+async function writeDocsForFile(absolutePath: string): Promise<{
+  blockCount: number;
+  outputFilePath: string;
+  relativeFilePath: string;
+}> {
+  const relativeFilePath = normalizeSlashes(
+    path.relative(SRC_ROOT, absolutePath),
+  );
   const source = await fs.readFile(absolutePath, 'utf8');
   const markdown = buildFileDoc(relativeFilePath, source);
   const outputFilePath = path.join(
@@ -210,7 +229,13 @@ async function writeDocsForFile(absolutePath: string): Promise<{blockCount: numb
  * @param {any} entries Input value.
  * @returns {any} Function result.
  */
-async function writeIndex(entries: Array<{blockCount: number; outputFilePath: string; relativeFilePath: string}>): Promise<void> {
+async function writeIndex(
+  entries: Array<{
+    blockCount: number;
+    outputFilePath: string;
+    relativeFilePath: string;
+  }>,
+): Promise<void> {
   const lines = [
     '# Source JSDoc Index',
     '',
@@ -222,13 +247,21 @@ async function writeIndex(entries: Array<{blockCount: number; outputFilePath: st
     '| --- | ---: | --- |',
   ];
 
-  entries.forEach((entry) => {
-    const relativeDocPath = normalizeSlashes(path.relative(OUTPUT_ROOT, entry.outputFilePath));
-    lines.push(`| \`${entry.relativeFilePath}\` | ${entry.blockCount} | [${relativeDocPath}](${relativeDocPath}) |`);
+  entries.forEach(entry => {
+    const relativeDocPath = normalizeSlashes(
+      path.relative(OUTPUT_ROOT, entry.outputFilePath),
+    );
+    lines.push(
+      `| \`${entry.relativeFilePath}\` | ${entry.blockCount} | [${relativeDocPath}](${relativeDocPath}) |`,
+    );
   });
 
   lines.push('');
-  await fs.writeFile(path.join(OUTPUT_ROOT, 'README.md'), lines.join('\n'), 'utf8');
+  await fs.writeFile(
+    path.join(OUTPUT_ROOT, 'README.md'),
+    lines.join('\n'),
+    'utf8',
+  );
 }
 
 /**
@@ -240,12 +273,16 @@ async function main(): Promise<void> {
   await ensureCleanOutput();
   const files = await gatherFiles();
   const entries = await Promise.all(files.map(writeDocsForFile));
-  entries.sort((left, right) => left.relativeFilePath.localeCompare(right.relativeFilePath));
+  entries.sort((left, right) =>
+    left.relativeFilePath.localeCompare(right.relativeFilePath),
+  );
   await writeIndex(entries);
-  console.log(`Generated JSDoc documentation for ${entries.length} files in ${normalizeSlashes(path.relative(SRC_ROOT, OUTPUT_ROOT))}`);
+  console.log(
+    `Generated JSDoc documentation for ${entries.length} files in ${normalizeSlashes(path.relative(SRC_ROOT, OUTPUT_ROOT))}`,
+  );
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error(error);
   process.exit(1);
 });

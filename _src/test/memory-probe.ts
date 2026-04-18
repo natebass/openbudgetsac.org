@@ -42,11 +42,17 @@ function parseArgs(argv) {
   for (let i = 0; i < metaArgs.length; i++) {
     const arg = metaArgs[i];
     if (arg === '--interval' && metaArgs[i + 1]) {
-      options.intervalMs = parseNumberOption(metaArgs[++i], DEFAULT_INTERVAL_MS);
+      options.intervalMs = parseNumberOption(
+        metaArgs[++i],
+        DEFAULT_INTERVAL_MS,
+      );
       continue;
     }
     if (arg === '--duration' && metaArgs[i + 1]) {
-      options.durationMs = parseNumberOption(metaArgs[++i], DEFAULT_DURATION_MS);
+      options.durationMs = parseNumberOption(
+        metaArgs[++i],
+        DEFAULT_DURATION_MS,
+      );
       continue;
     }
     if (arg === '--out' && metaArgs[i + 1]) {
@@ -113,7 +119,10 @@ function readProcStat(pid) {
     if (closeIdx < 0) {
       return null;
     }
-    const tail = raw.slice(closeIdx + 2).trim().split(/\s+/);
+    const tail = raw
+      .slice(closeIdx + 2)
+      .trim()
+      .split(/\s+/);
     if (tail.length < 3) {
       return null;
     }
@@ -133,9 +142,10 @@ function readProcStat(pid) {
  */
 function listAllPids() {
   try {
-    return fs.readdirSync('/proc')
-      .filter((entry) => /^\d+$/.test(entry))
-      .map((entry) => Number(entry));
+    return fs
+      .readdirSync('/proc')
+      .filter(entry => /^\d+$/.test(entry))
+      .map(entry => Number(entry));
   } catch {
     return [];
   }
@@ -259,16 +269,22 @@ function summarize(samples) {
  */
 function run() {
   if (process.platform !== 'linux') {
-    console.error('[memory-probe] This script currently supports Linux / WSL only.');
+    console.error(
+      '[memory-probe] This script currently supports Linux / WSL only.',
+    );
     process.exit(1);
   }
 
   const options = parseArgs(process.argv.slice(2));
   const displayCommand = options.commandTokens.join(' ');
 
-  const child = spawn(options.commandTokens[0], options.commandTokens.slice(1), {
-    stdio: 'inherit',
-  });
+  const child = spawn(
+    options.commandTokens[0],
+    options.commandTokens.slice(1),
+    {
+      stdio: 'inherit',
+    },
+  );
 
   const start = Date.now();
   const samples = [];
@@ -328,7 +344,7 @@ function run() {
       try {
         process.kill(pid, 'SIGTERM');
       } catch {
-        continue;
+        // Best effort: process may already have exited.
       }
     }
     setTimeout(() => {
@@ -336,7 +352,7 @@ function run() {
         try {
           process.kill(pid, 'SIGKILL');
         } catch {
-          continue;
+          // Best effort: process may already have exited.
         }
       }
     }, 4000);
@@ -351,7 +367,9 @@ function run() {
   intervalId = setInterval(takeSample, options.intervalMs);
 
   timeoutId = setTimeout(() => {
-    console.log(`[memory-probe] Duration limit reached (${options.durationMs} ms).`);
+    console.log(
+      `[memory-probe] Duration limit reached (${options.durationMs} ms).`,
+    );
     terminateChildTree();
   }, options.durationMs);
 
@@ -387,7 +405,9 @@ function run() {
     console.log(`  samples: ${summary.sampleCount}`);
     console.log(`  initial RSS: ${toMiB(summary.initialRssBytes)} MiB`);
     console.log(`  final RSS:   ${toMiB(summary.finalRssBytes)} MiB`);
-    console.log(`  peak RSS:    ${toMiB(summary.peakRssBytes)} MiB at ${summary.peakAtMs} ms`);
+    console.log(
+      `  peak RSS:    ${toMiB(summary.peakRssBytes)} MiB at ${summary.peakAtMs} ms`,
+    );
     console.log(`  delta RSS:   ${toMiB(summary.deltaRssBytes)} MiB`);
 
     if (typeof code === 'number') {

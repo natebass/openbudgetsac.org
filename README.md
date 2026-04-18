@@ -78,36 +78,37 @@ docker compose --profile test build test-parallel
 From `_src/`:
 
 ```bash
-npm audit fix                  # resolves supply-side security issues introduced by NPM packages
-npm run serve                  # build TypeScript assets + CSS, then start the Eleventy dev server
-npm run watch                  # watch legacy TypeScript assets and the compare bundle
-npm run build:legacy           # emit legacy/browser TypeScript assets and patch browser-incompatible prologue lines
-npm run build:compare          # build the React compare bundle
-npm run build:assets           # build all JavaScript/TypeScript assets
-npm run build                  # alias for build:assets
-npm run build-css              # compile Sass
-npm run site:build             # build the Eleventy site with the TypeScript config
-npm run site:serve             # serve the Eleventy site with the TypeScript config
-npm run docs:jsdoc:autofix     # insert missing JSDoc in active TS/JS files and regenerate docs
-npm run docs:jsdoc:check       # fail if active TS/JS files are missing JSDoc comments
-npm run docs:jsdoc             # generate Markdown JSDoc inventory in _src/docs/jsdoc
+npm audit fix                                  # resolves supply-side security issues introduced by NPM packages
+npm run serve                                  # build TypeScript assets + CSS, then start the Eleventy dev server
+npm run watch                                  # watch legacy TypeScript assets and the compare bundle
+npm run build:legacy                           # emit legacy/browser TypeScript assets and patch browser-incompatible prologue lines
+npm run build:compare                          # build the React compare bundle
+npm run build:assets                           # build all JavaScript/TypeScript assets
+npm run build                                  # alias for build:assets
+npm run build-css                              # compile Sass
+npm run site:build                             # build the Eleventy site with the TypeScript config
+npm run site:serve                             # serve the Eleventy site with the TypeScript config
+npm run docs:jsdoc:autofix                     # insert missing JSDoc in active first-party TS/JS files and regenerate docs
+npm run docs:jsdoc:check                       # fail if active first-party TS/JS files are missing JSDoc comments
+npm run docs:jsdoc                             # generate Markdown JSDoc inventory in _src/docs/jsdoc
 node --import tsx scripts/add-missing-jsdoc.ts # add missing JSDoc blocks in active first-party TS/JS files
-npm run typecheck              # TypeScript program check for the whole project
-npm run lint                   # ESLint with Google TypeScript style rules
-npm run test                   # lint + typecheck + unit + a11y + e2e
-npm run test:i18n:smoke        # site + compare i18n smoke tests
-npm run test:e2e               # preflight + e2e against local server
-npm run test:docker            # Docker-optimized full suite (coverage + a11y + e2e)
-npm run verify:all:parallel    # run lint/tests/e2e in parallel (used by Docker verify-parallel target)
-npm run perf:report            # compare bundle size budgets
-npm run bench                  # benchmark suite
-npm run probe:memory           # RSS memory probe for serve command (writes JSON report)
-npm run probe:memory:csv       # convert serve JSON memory report to CSV
-npm run probe:memory:watch     # RSS memory probe for webpack watch command (writes JSON report)
-npm run probe:memory:watch:csv # convert watch JSON memory report to CSV
+npm run typecheck                              # TypeScript program check for the whole project
+npm run lint                                   # ESLint semantic lint + Biome formatting check
+npm run format:biome                           # apply Biome formatting across first-party TS/JS
+npm run test                                   # lint + typecheck + unit + a11y + e2e
+npm run test:i18n:smoke                        # site + compare i18n smoke tests
+npm run test:e2e                               # preflight + e2e against local server
+npm run test:docker                            # Docker-optimized full suite (coverage + a11y + e2e)
+npm run verify:all:parallel                    # run lint/tests/e2e in parallel (used by Docker verify-parallel target)
+npm run perf:report                            # compare bundle size budgets
+npm run bench                                  # benchmark suite
+npm run probe:memory                           # RSS memory probe for serve command (writes JSON report)
+npm run probe:memory:csv                       # convert serve JSON memory report to CSV
+npm run probe:memory:watch                     # RSS memory probe for webpack watch command (writes JSON report)
+npm run probe:memory:watch:csv                 # convert watch JSON memory report to CSV
 ```
 
-ESLint is on flat config via [`_src/eslint.config.ts`](_src/eslint.config.ts). TypeScript linting follows the Google TypeScript style guide through `eslint-config-google` plus `@typescript-eslint`.
+ESLint is on flat config via [`_src/eslint.config.ts`](_src/eslint.config.ts). `npm run lint` runs ESLint first for semantic/static checks, then runs Biome in check mode as the formatting gate. TypeScript linting follows the Google TypeScript style guide through `eslint-config-google` plus `@typescript-eslint`.
 
 For performance baselines and guardrails, see [`PERFORMANCE.md`](PERFORMANCE.md) and [`_src/PERFORMANCE.md`](_src/PERFORMANCE.md).
 
@@ -120,7 +121,7 @@ Memory profiling outputs:
 ## CI/CD
 
 - CI workflow (`.github/workflows/ci.yml`) validates:
-  - npm checks (lint, typecheck, i18n unit smoke, unit coverage in CI, a11y, perf, bench, JSDoc coverage check, JSDoc docs generation, Eleventy build)
+  - npm checks (lint, typecheck, i18n unit smoke, unit coverage in CI, a11y, perf, bench, first-party JSDoc coverage check, JSDoc docs generation, Eleventy build)
   - dependency installs with Puppeteer browser download disabled for non-E2E jobs (`PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev`)
   - built-site i18n sanity checks (`build/js/i18n-site.js` and localized markup wiring in generated HTML)
   - explicit Chromium browser install for E2E (`npx puppeteer browsers install chrome`) after Linux shared-library provisioning
@@ -130,7 +131,7 @@ Memory profiling outputs:
     - `docker compose build site` (runtime/default website image)
     - `docker build --target test .` (full Docker-optimized test suite)
     - `docker build --target verify-parallel .` (parallel verification target)
-- Deploy workflow (`.github/workflows/deploy.yml`) runs i18n smoke tests, verifies JSDoc coverage, generates JSDoc docs, builds static files from `_src`, validates i18n assets in output, and publishes to GitHub Pages.
+- Deploy workflow (`.github/workflows/deploy.yml`) runs i18n smoke tests, verifies first-party JSDoc coverage, generates JSDoc docs, builds static files from `_src`, validates i18n assets in output, and publishes to GitHub Pages.
 
 ## Source Tree
 ```text
@@ -217,7 +218,7 @@ openbudgetsac.org/
 - Automated bundle-size budget reporting (`npm run perf:report`).
 - RSS memory probe tooling for startup/watch diagnostics (`npm run probe:memory`, `npm run probe:memory:watch`).
 - CSV export utility for memory timelines (`npm run probe:memory:csv`, `npm run probe:memory:watch:csv`).
-- Linting via ESLint, `@typescript-eslint`, and the Google TypeScript style guide.
+- Linting via ESLint + `@typescript-eslint` (semantic checks) and Biome (formatting checks).
 - Unit + accessibility tests via Jest.
 - E2E verification via Puppeteer with Linux dependency preflight checks.
 - Benchmarks via `bench-node`.

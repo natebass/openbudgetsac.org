@@ -48,7 +48,8 @@ function createContext() {
  */
 function loadSuiteRegistrars() {
   const suitesDir = path.resolve(__dirname, 'suites');
-  return fs.readdirSync(suitesDir)
+  return fs
+    .readdirSync(suitesDir)
     .filter((file: string) => file.endsWith('.bench.ts'))
     .sort()
     .map((file: string) => {
@@ -77,7 +78,9 @@ async function run() {
   const context = createContext();
   const registrars = loadSuiteRegistrars();
   if (registrars.length === 0) {
-    console.error('[bench] No benchmark suites found in bench/suites/*.bench.ts');
+    console.error(
+      '[bench] No benchmark suites found in bench/suites/*.bench.ts',
+    );
     process.exit(1);
   }
 

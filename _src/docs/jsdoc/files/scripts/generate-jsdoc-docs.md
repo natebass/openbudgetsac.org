@@ -134,7 +134,7 @@ Associated declaration: `async function gatherFiles(): Promise<Array<string>> {`
 
 ## Block 11
 
-Associated declaration: `async function writeDocsForFile(absolutePath: string): Promise<{blockCount: number; outputFilePath: string; relativeFilePath: string}> {`
+Associated declaration: `async function writeDocsForFile(absolutePath: string): Promise<{`
 
 ```ts
 /**
@@ -147,7 +147,7 @@ Associated declaration: `async function writeDocsForFile(absolutePath: string): 
 
 ## Block 12
 
-Associated declaration: `async function writeIndex(entries: Array<{blockCount: number; outputFilePath: string; relativeFilePath: string}>): Promise<void> {`
+Associated declaration: `async function writeIndex(`
 
 ```ts
 /**

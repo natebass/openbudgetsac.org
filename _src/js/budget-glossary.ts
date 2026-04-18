@@ -6,7 +6,9 @@
  */
 function validateRes(res) {
   if (!res.ok) {
-    throw new Error(`HTTP ${res.status}: ${res.statusText || 'Request failed'}`);
+    throw new Error(
+      `HTTP ${res.status}: ${res.statusText || 'Request failed'}`,
+    );
   }
   return res;
 }
@@ -28,16 +30,23 @@ function formatRes(res) {
  * @returns {any} Function result.
  */
 function saveRes(formattedRes) {
-  if (window.localStorage && formattedRes?.data && Array.isArray(formattedRes.data.budgetterms)) {
+  if (
+    window.localStorage &&
+    formattedRes?.data &&
+    Array.isArray(formattedRes.data.budgetterms)
+  ) {
     const ls = window.localStorage;
     const terms = formattedRes.data.budgetterms.slice(1);
-    terms.forEach((term) => {
+    terms.forEach(term => {
       if (term[2] && term[2].length > 0) {
         try {
           ls.setItem(term[0], term[2]);
         } catch (storageError) {
           // Storage can fail in private mode or when quota is exhausted.
-          console.warn('Unable to persist glossary entry in localStorage', storageError);
+          console.warn(
+            'Unable to persist glossary entry in localStorage',
+            storageError,
+          );
         }
       }
     });

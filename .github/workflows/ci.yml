@@ -18,19 +18,19 @@ jobs:
         working-directory: _src
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 24
           cache: npm
           cache-dependency-path: _src/package-lock.json
 
       - name: Install dependencies
         run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
 
-      - name: Lint
+      - name: Lint (ESLint + Biome check)
         run: npm run lint
 
       - name: Typecheck
@@ -51,7 +51,7 @@ jobs:
       - name: Benchmarks (JSON)
         run: npm run bench:json
 
-      - name: Verify JSDoc coverage in active TS/JS files
+      - name: Verify JSDoc coverage in active first-party TS/JS files
         run: npm run docs:jsdoc:check
 
       - name: Generate JSDoc docs
@@ -65,8 +65,8 @@ jobs:
 
       - name: Verify i18n assets in built site
         run: |
-          test -f build/js/i18n-site.js
-          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" build
+          test -f ../build/js/i18n-site.js
+          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" ../build
 
   validate-e2e:
     name: Validate E2E (Puppeteer)
@@ -77,12 +77,12 @@ jobs:
         working-directory: _src
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 24
           cache: npm
           cache-dependency-path: _src/package-lock.json
 
@@ -95,7 +95,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             ca-certificates \
             fonts-liberation \
-            libasound2 \
+            libasound2t64 \
             libatk-bridge2.0-0 \
             libatk1.0-0 \
             libatspi2.0-0 \
@@ -129,6 +129,8 @@ jobs:
 
       - name: Run E2E suite (no rebuild)
         run: npm run test:e2e:nobuild
+        env:
+          PUPPETEER_ARGS: '--no-sandbox --disable-setuid-sandbox'
 
   validate-docker:
     name: Validate Docker Targets
@@ -136,7 +138,7 @@ jobs:
     needs: validate-npm
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build site image (compose default service)
         run: docker compose build site

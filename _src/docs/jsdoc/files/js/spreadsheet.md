@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `namespace.spreadsheet = function() {`
+Associated declaration: `namespace.spreadsheet = () => {`
 
 ```ts
 /**
@@ -16,7 +16,7 @@ Associated declaration: `namespace.spreadsheet = function() {`
 
 ## Block 2
 
-Associated declaration: `let _get_value = function(d) {`
+Associated declaration: `let _get_value = d => d.value;`
 
 ```ts
 /**
@@ -29,7 +29,7 @@ Associated declaration: `let _get_value = function(d) {`
 
 ## Block 3
 
-Associated declaration: `let _cell = function(d, i, _row, elem) {`
+Associated declaration: `let _cell = (d, i, _row, elem) => {`
 
 ```ts
 /**
@@ -43,7 +43,7 @@ Associated declaration: `let _cell = function(d, i, _row, elem) {`
 
 ## Block 4
 
-Associated declaration: `let _column = function(d, i, elem) {`
+Associated declaration: `let _column = (d, i, elem) => {`
 
 ```ts
 /**
@@ -57,7 +57,7 @@ Associated declaration: `let _column = function(d, i, elem) {`
 
 ## Block 5
 
-Associated declaration: `width: function() {`
+Associated declaration: `width: function () {`
 
 ```ts
 /**
@@ -67,7 +67,7 @@ Associated declaration: `width: function() {`
 
 ## Block 6
 
-Associated declaration: `on: function(action, callback) {`
+Associated declaration: `on: function (action, callback) {`
 
 ```ts
 /**
@@ -77,7 +77,7 @@ Associated declaration: `on: function(action, callback) {`
 
 ## Block 7
 
-Associated declaration: `columns: function() {`
+Associated declaration: `columns: function () {`
 
 ```ts
 /**
@@ -87,7 +87,7 @@ Associated declaration: `columns: function() {`
 
 ## Block 8
 
-Associated declaration: `column: function() {`
+Associated declaration: `column: function () {`
 
 ```ts
 /**
@@ -97,7 +97,7 @@ Associated declaration: `column: function() {`
 
 ## Block 9
 
-Associated declaration: `cell: function() {`
+Associated declaration: `cell: function () {`
 
 ```ts
 /**
@@ -107,7 +107,7 @@ Associated declaration: `cell: function() {`
 
 ## Block 10
 
-Associated declaration: `value: function() {`
+Associated declaration: `value: function () {`
 
 ```ts
 /**
@@ -117,7 +117,7 @@ Associated declaration: `value: function() {`
 
 ## Block 11
 
-Associated declaration: `data: function() {`
+Associated declaration: `data: function () {`
 
 ```ts
 /**
@@ -127,7 +127,7 @@ Associated declaration: `data: function() {`
 
 ## Block 12
 
-Associated declaration: `element: function() {`
+Associated declaration: `element: function () {`
 
 ```ts
 /**
@@ -137,7 +137,7 @@ Associated declaration: `element: function() {`
 
 ## Block 13
 
-Associated declaration: `display: function() {`
+Associated declaration: `display: function () {`
 
 ```ts
 /**

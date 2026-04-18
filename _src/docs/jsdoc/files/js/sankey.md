@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `d3.sankey = function() {`
+Associated declaration: `d3.sankey = () => {`
 
 ```ts
 /**

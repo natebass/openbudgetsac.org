@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `(function() {`
+Associated declaration: `(() => {`
 
 ```ts
 /**

@@ -2,7 +2,9 @@ import {render, screen} from '@testing-library/react';
 
 import Trend from '../Trend';
 
-const mockBar = jest.fn((props: any) => <div data-testid='mock-bar' data-options={JSON.stringify(props.options)} />);
+const mockBar = jest.fn((props: any) => (
+  <div data-testid='mock-bar' data-options={JSON.stringify(props.options)} />
+));
 
 jest.mock('react-chartjs-2', () => ({
   Bar: (props: any) => mockBar(props),
@@ -29,7 +31,9 @@ describe('Trend component', () => {
 
     expect(screen.getByTestId('mock-bar')).toBeInTheDocument();
     expect(mockBar).toHaveBeenCalledTimes(1);
-    const props = mockBar.mock.calls[0]?.[0] as {options: {maintainAspectRatio?: boolean}};
+    const props = mockBar.mock.calls[0]?.[0] as {
+      options: {maintainAspectRatio?: boolean};
+    };
     expect(props.options.maintainAspectRatio).not.toBe(false);
   });
 });

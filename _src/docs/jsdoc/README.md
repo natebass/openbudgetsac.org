@@ -1,6 +1,6 @@
 # Source JSDoc Index
 
-Generated on 2026-04-15T17:42:05.790Z.
+Generated on 2026-04-18T18:36:48.764Z.
 
 Total files scanned: 162
 
@@ -116,7 +116,7 @@ Total files scanned: 162
 | `js/compare/__tests__/a11y/compare.a11y.tsx` | 0 | [files/js/compare/__tests__/a11y/compare.a11y.md](files/js/compare/__tests__/a11y/compare.a11y.md) |
 | `js/compare/__tests__/api.test.ts` | 0 | [files/js/compare/__tests__/api.test.md](files/js/compare/__tests__/api.test.md) |
 | `js/compare/__tests__/Breakdown.test.tsx` | 0 | [files/js/compare/__tests__/Breakdown.test.md](files/js/compare/__tests__/Breakdown.test.md) |
-| `js/compare/__tests__/DiffTable.test.tsx` | 0 | [files/js/compare/__tests__/DiffTable.test.md](files/js/compare/__tests__/DiffTable.test.md) |
+| `js/compare/__tests__/DiffTable.test.tsx` | 1 | [files/js/compare/__tests__/DiffTable.test.md](files/js/compare/__tests__/DiffTable.test.md) |
 | `js/compare/__tests__/i18n.test.ts` | 0 | [files/js/compare/__tests__/i18n.test.md](files/js/compare/__tests__/i18n.test.md) |
 | `js/compare/__tests__/siteI18n.test.ts` | 0 | [files/js/compare/__tests__/siteI18n.test.md](files/js/compare/__tests__/siteI18n.test.md) |
 | `js/compare/__tests__/Total.test.tsx` | 0 | [files/js/compare/__tests__/Total.test.md](files/js/compare/__tests__/Total.test.md) |
@@ -154,7 +154,7 @@ Total files scanned: 162
 | `js/tooltip.ts` | 5 | [files/js/tooltip.md](files/js/tooltip.md) |
 | `js/tree-page.ts` | 6 | [files/js/tree-page.md](files/js/tree-page.md) |
 | `js/treemap.ts` | 11 | [files/js/treemap.md](files/js/treemap.md) |
-| `scripts/add-missing-jsdoc.ts` | 14 | [files/scripts/add-missing-jsdoc.md](files/scripts/add-missing-jsdoc.md) |
+| `scripts/add-missing-jsdoc.ts` | 15 | [files/scripts/add-missing-jsdoc.md](files/scripts/add-missing-jsdoc.md) |
 | `scripts/generate-jsdoc-docs.ts` | 13 | [files/scripts/generate-jsdoc-docs.md](files/scripts/generate-jsdoc-docs.md) |
 | `scripts/run-eslint.ts` | 3 | [files/scripts/run-eslint.md](files/scripts/run-eslint.md) |
 | `scripts/strip-cjs-prologue.ts` | 2 | [files/scripts/strip-cjs-prologue.md](files/scripts/strip-cjs-prologue.md) |

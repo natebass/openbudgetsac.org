@@ -49,7 +49,7 @@ function runCommand(command, args, env) {
  * @returns {any} Function result.
  */
 function canBindPort(host, port) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const server = net.createServer();
 
     server.once('error', () => {
@@ -76,7 +76,7 @@ function getRandomPort(host) {
     server.listen(0, host, () => {
       const address = server.address();
       const port = typeof address === 'object' && address ? address.port : null;
-      server.close((closeError) => {
+      server.close(closeError => {
         if (closeError) {
           reject(closeError);
           return;
@@ -124,8 +124,12 @@ async function main() {
 
   console.log(`[e2e] Using ${baseUrl}`);
 
-  const serverScript = options.noBuild ? 'npm run serve:test:static:nobuild' : 'npm run serve:test:static';
-  const testScript = options.inBand ? 'npm run test:e2e:run:ci' : 'npm run test:e2e:run';
+  const serverScript = options.noBuild
+    ? 'npm run serve:test:static:nobuild'
+    : 'npm run serve:test:static';
+  const testScript = options.inBand
+    ? 'npm run test:e2e:run:ci'
+    : 'npm run test:e2e:run';
 
   const exitCode = await runCommand(
     'npx',
@@ -141,7 +145,7 @@ async function main() {
   process.exit(Number(exitCode));
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error('[e2e] Failed to run end-to-end tests.');
   console.error(error.message);
   process.exit(1);

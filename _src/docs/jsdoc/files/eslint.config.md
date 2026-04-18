@@ -35,7 +35,7 @@ Associated declaration: `*.d.ts'],`
     ignores: ['js/compare/**'],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
-      'eqeqeq': 'off',
+      eqeqeq: 'off',
       'guard-for-in': 'off',
       'new-cap': 'off',
       'no-empty': 'off',

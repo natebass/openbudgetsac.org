@@ -36,8 +36,12 @@ describe('site i18n runtime', () => {
 
     expect(document.documentElement.lang).toBe('es-419');
     expect(document.querySelector('label')?.textContent).toBe('Idioma');
-    expect(document.getElementById('internal')?.getAttribute('href')).toBe('/who-we-are?lang=es-419');
-    expect(document.getElementById('external')?.getAttribute('href')).toBe('https://example.com/docs');
+    expect(document.getElementById('internal')?.getAttribute('href')).toBe(
+      '/who-we-are?lang=es-419',
+    );
+    expect(document.getElementById('external')?.getAttribute('href')).toBe(
+      'https://example.com/docs',
+    );
     expect(window.localStorage.getItem('ob.locale')).toBe('es-419');
   });
 
@@ -54,26 +58,36 @@ describe('site i18n runtime', () => {
     });
 
     expect(document.body.textContent).toContain('Qué hacemos');
-    expect(document.body.textContent).toContain('Ahora que ya conoces nuestros objetivos');
+    expect(document.body.textContent).toContain(
+      'Ahora que ya conoces nuestros objetivos',
+    );
     expect(document.body.textContent).toContain('comparte tus ideas aquí');
     expect(document.body.textContent).toContain('Ayúdanos');
-    expect(document.body.textContent).toContain('una plataforma de discusión de código abierto');
+    expect(document.body.textContent).toContain(
+      'una plataforma de discusión de código abierto',
+    );
   });
 
   test('exposes the legacy label translation helper for dynamic data labels', () => {
     jest.isolateModules(() => {
       const siteI18n = require('../../i18n-site');
       siteI18n.setLocale('es-419');
-      expect(siteI18n.translateLegacyText('Parks & Recreation')).toBe('Parques y recreación');
-      expect(siteI18n.translateLegacyText('Intergovernmental')).toBe('Intergubernamental');
+      expect(siteI18n.translateLegacyText('Parks & Recreation')).toBe(
+        'Parques y recreación',
+      );
+      expect(siteI18n.translateLegacyText('Intergovernmental')).toBe(
+        'Intergubernamental',
+      );
     });
   });
 
   test('gracefully handles storage read failures and still resolves locale from query', () => {
     window.history.replaceState({}, '', '/adopted-budget-tree?lang=es-419');
-    const getItemSpy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
-      throw new Error('blocked');
-    });
+    const getItemSpy = jest
+      .spyOn(Storage.prototype, 'getItem')
+      .mockImplementation(() => {
+        throw new Error('blocked');
+      });
 
     try {
       jest.isolateModules(() => {

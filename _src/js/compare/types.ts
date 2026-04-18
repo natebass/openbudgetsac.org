@@ -34,6 +34,9 @@ export interface DiffColors {
 }
 
 export type BudgetBreakdownRecord = Record<string, number>;
-export type BudgetBreakdownPair = [BudgetBreakdownRecord, BudgetBreakdownRecord];
+export type BudgetBreakdownPair = [
+  BudgetBreakdownRecord,
+  BudgetBreakdownRecord,
+];
 export type SelectedBudget = BudgetRecord | null;
 export type SelectedYears = [SelectedBudget, SelectedBudget];

@@ -32,7 +32,12 @@ The local site runs at `http://localhost:8011`.
 - `npm run test:e2e`
 - `npm run test` (full suite)
 
+## Lint and Format
+
+- `npm run lint` runs ESLint semantic checks and Biome formatting checks.
+- `npm run format:biome` applies Biome formatting changes.
+
 ## Documentation
 
-- `npm run docs:jsdoc:check` validates JSDoc coverage in active first-party TS/JS files.
+- `npm run docs:jsdoc:check` validates JSDoc coverage in active first-party TS/JS files (third-party vendor files are excluded).
 - `npm run docs:jsdoc` regenerates Markdown docs under `docs/jsdoc`.

@@ -1,12 +1,11 @@
+import {schemeSet2 as colors} from 'd3-scale-chromatic';
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import Select, {type SingleValue} from 'react-select';
-import {schemeSet2 as colors} from 'd3-scale-chromatic';
-
-import Breakdown from './Breakdown';
-import Total from './Total';
 import {fetchTotals} from './api';
+import Breakdown from './Breakdown';
 import {t} from './i18n';
+import Total from './Total';
 import type {
   BreakdownKey,
   BreakdownView,
@@ -67,7 +66,12 @@ function getConnection(): NetworkInformation | null {
   if (typeof navigator === 'undefined') {
     return null;
   }
-  return navigator.connection ?? navigator.mozConnection ?? navigator.webkitConnection ?? null;
+  return (
+    navigator.connection ??
+    navigator.mozConnection ??
+    navigator.webkitConnection ??
+    null
+  );
 }
 
 /**
@@ -75,7 +79,10 @@ function getConnection(): NetworkInformation | null {
  *
  * @returns {any} Function result.
  */
-function derivePerformanceFlags(): {compactMode: boolean; constrainedMode: boolean} {
+function derivePerformanceFlags(): {
+  compactMode: boolean;
+  constrainedMode: boolean;
+} {
   if (typeof window === 'undefined') {
     return {compactMode: false, constrainedMode: false};
   }
@@ -84,14 +91,16 @@ function derivePerformanceFlags(): {compactMode: boolean; constrainedMode: boole
   const effectiveType = String(connection?.effectiveType ?? '').toLowerCase();
   const lowBandwidthConnection = Boolean(
     connection?.saveData ||
-    effectiveType.includes('slow-2g') ||
-    effectiveType.includes('2g') ||
-    effectiveType.includes('3g'),
+      effectiveType.includes('slow-2g') ||
+      effectiveType.includes('2g') ||
+      effectiveType.includes('3g'),
   );
-  const lowMemoryDevice = typeof navigator.deviceMemory === 'number' &&
+  const lowMemoryDevice =
+    typeof navigator.deviceMemory === 'number' &&
     navigator.deviceMemory <= LOW_MEMORY_DEVICE_MAX_GB;
   const compactMode = window.innerWidth <= MOBILE_WIDTH_MAX;
-  const constrainedMode = compactMode && (lowBandwidthConnection || lowMemoryDevice);
+  const constrainedMode =
+    compactMode && (lowBandwidthConnection || lowMemoryDevice);
 
   return {compactMode, constrainedMode};
 }
@@ -104,7 +113,9 @@ function derivePerformanceFlags(): {compactMode: boolean; constrainedMode: boole
  * @returns {any} Function result.
  */
 function getBudgetOption(record: BudgetRecord, index: number): BudgetOption {
-  const labelKey = BUDGET_TYPE_LABEL_KEYS[Number(record.budget_type)] ?? BUDGET_TYPE_LABEL_KEYS[1];
+  const labelKey =
+    BUDGET_TYPE_LABEL_KEYS[Number(record.budget_type)] ??
+    BUDGET_TYPE_LABEL_KEYS[1];
   return {
     value: index,
     label: `${record.fiscal_year_range} ${t(labelKey)}`,
@@ -117,7 +128,9 @@ function getBudgetOption(record: BudgetRecord, index: number): BudgetOption {
  * @param {any} budgets Input value.
  * @returns {any} Function result.
  */
-function getBudgetDefaults(budgets: Array<BudgetOption>): [BudgetOption | null, BudgetOption | null] {
+function getBudgetDefaults(
+  budgets: Array<BudgetOption>,
+): [BudgetOption | null, BudgetOption | null] {
   if (!budgets.length) {
     return [null, null];
   }
@@ -133,8 +146,10 @@ function getBudgetDefaults(budgets: Array<BudgetOption>): [BudgetOption | null, 
  * @param {any} selectedYears Input value.
  * @returns {any} Function result.
  */
-function formatTotals(selectedYears: SelectedYears): Array<BudgetTotalDisplay | undefined> {
-  return selectedYears.map((record) => {
+function formatTotals(
+  selectedYears: SelectedYears,
+): Array<BudgetTotalDisplay | undefined> {
+  return selectedYears.map(record => {
     if (!record) {
       return undefined;
     }
@@ -167,13 +182,13 @@ class Compare extends React.Component<Record<string, never>, CompareState> {
   private resizeHandler?: () => void;
   private resizeRaf: number | null = null;
 
-    /**
+  /**
    * Runs constructor.
    *
    * @param {any} props Input value.
    * @returns {any} Function result.
    */
-constructor(props: Record<string, never>) {
+  constructor(props: Record<string, never>) {
     super(props);
     this.state = {
       activeBreakdown: 'spendDept',
@@ -197,25 +212,29 @@ constructor(props: Record<string, never>) {
     this.handleSelectBudget = this.handleSelectBudget.bind(this);
     this.handleSelectBudget1 = this.handleSelectBudget1.bind(this);
     this.handleSelectBudget2 = this.handleSelectBudget2.bind(this);
-    this.scheduleApplyPerformanceFlags = this.scheduleApplyPerformanceFlags.bind(this);
+    this.scheduleApplyPerformanceFlags =
+      this.scheduleApplyPerformanceFlags.bind(this);
   }
 
-    /**
+  /**
    * Runs component did mount.
    *
    * @returns {any} Function result.
    */
-componentDidMount(): void {
+  componentDidMount(): void {
     this.applyPerformanceFlags();
     this.resizeHandler = this.scheduleApplyPerformanceFlags;
     window.addEventListener('resize', this.resizeHandler, {passive: true});
     this.connection = getConnection();
-    if (this.connection && typeof this.connection.addEventListener === 'function') {
+    if (
+      this.connection &&
+      typeof this.connection.addEventListener === 'function'
+    ) {
       this.connection.addEventListener('change', this.resizeHandler);
     }
 
     void fetchTotals()
-      .then((totals) => {
+      .then(totals => {
         const budgetChoices = totals.map(getBudgetOption);
         const defaultChoices = getBudgetDefaults(budgetChoices);
         if (!defaultChoices[0] || !defaultChoices[1]) {
@@ -225,8 +244,12 @@ componentDidMount(): void {
 
         const budget1Choice = defaultChoices[0].value;
         const budget2Choice = defaultChoices[1].value;
-        const budget1Options = budgetChoices.filter((option) => option.value !== budget2Choice);
-        const budget2Options = budgetChoices.filter((option) => option.value !== budget1Choice);
+        const budget1Options = budgetChoices.filter(
+          option => option.value !== budget2Choice,
+        );
+        const budget2Options = budgetChoices.filter(
+          option => option.value !== budget1Choice,
+        );
 
         this.setState({
           budget1: totals[budget1Choice],
@@ -241,22 +264,29 @@ componentDidMount(): void {
           totals,
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Failed loading compare totals', error);
-        this.setState({error: t('error.compareDataUnavailable'), loading: false});
+        this.setState({
+          error: t('error.compareDataUnavailable'),
+          loading: false,
+        });
       });
   }
 
-    /**
+  /**
    * Runs component will unmount.
    *
    * @returns {any} Function result.
    */
-componentWillUnmount(): void {
+  componentWillUnmount(): void {
     if (this.resizeHandler) {
       window.removeEventListener('resize', this.resizeHandler);
     }
-    if (this.connection && this.resizeHandler && typeof this.connection.removeEventListener === 'function') {
+    if (
+      this.connection &&
+      this.resizeHandler &&
+      typeof this.connection.removeEventListener === 'function'
+    ) {
       this.connection.removeEventListener('change', this.resizeHandler);
     }
     if (this.resizeRaf) {
@@ -265,26 +295,28 @@ componentWillUnmount(): void {
     }
   }
 
-    /**
+  /**
    * Sets apply performance flags.
    *
    * @returns {any} Function result.
    */
-applyPerformanceFlags(): void {
+  applyPerformanceFlags(): void {
     const nextFlags = derivePerformanceFlags();
-    if (nextFlags.compactMode === this.state.compactMode &&
-      nextFlags.constrainedMode === this.state.constrainedMode) {
+    if (
+      nextFlags.compactMode === this.state.compactMode &&
+      nextFlags.constrainedMode === this.state.constrainedMode
+    ) {
       return;
     }
     this.setState(nextFlags);
   }
 
-    /**
+  /**
    * Runs schedule apply performance flags.
    *
    * @returns {any} Function result.
    */
-scheduleApplyPerformanceFlags(): void {
+  scheduleApplyPerformanceFlags(): void {
     if (this.resizeRaf) {
       return;
     }
@@ -294,54 +326,56 @@ scheduleApplyPerformanceFlags(): void {
     });
   }
 
-    /**
+  /**
    * Runs handle change type.
    *
    * @param {any} event Input value.
    * @returns {any} Function result.
    */
-handleChangeType(event: React.ChangeEvent<HTMLSelectElement>): void {
-    this.setState({changeType: event.target.value as CompareState['changeType']});
+  handleChangeType(event: React.ChangeEvent<HTMLSelectElement>): void {
+    this.setState({
+      changeType: event.target.value as CompareState['changeType'],
+    });
   }
 
-    /**
+  /**
    * Runs handle select budget1.
    *
    * @param {any} option Input value.
    * @returns {any} Function result.
    */
-handleSelectBudget1(option: SingleValue<BudgetOption>): void {
+  handleSelectBudget1(option: SingleValue<BudgetOption>): void {
     if (option) {
       this.handleSelectBudget('budget1', 'budget2', option.value);
     }
   }
 
-    /**
+  /**
    * Runs handle select budget2.
    *
    * @param {any} option Input value.
    * @returns {any} Function result.
    */
-handleSelectBudget2(option: SingleValue<BudgetOption>): void {
+  handleSelectBudget2(option: SingleValue<BudgetOption>): void {
     if (option) {
       this.handleSelectBudget('budget2', 'budget1', option.value);
     }
   }
 
-    /**
+  /**
    * Runs handle breakdown select.
    *
    * @param {any} key Input value.
    * @returns {any} Function result.
    */
-handleBreakdownSelect(key: BreakdownKey): void {
+  handleBreakdownSelect(key: BreakdownKey): void {
     if (this.state.activeBreakdown === key) {
       return;
     }
     this.setState({activeBreakdown: key});
   }
 
-    /**
+  /**
    * Runs handle select budget.
    *
    * @param {any} key Input value.
@@ -349,61 +383,101 @@ handleBreakdownSelect(key: BreakdownKey): void {
    * @param {any} index Input value.
    * @returns {any} Function result.
    */
-handleSelectBudget(key: 'budget1' | 'budget2', otherKey: 'budget1' | 'budget2', index: number): void {
-    const selectedChoiceKey = `${key}Choice` as 'budget1Choice' | 'budget2Choice';
-    const otherOptionsKey = `${otherKey}Options` as 'budget1Options' | 'budget2Options';
+  handleSelectBudget(
+    key: 'budget1' | 'budget2',
+    otherKey: 'budget1' | 'budget2',
+    index: number,
+  ): void {
+    const selectedChoiceKey = `${key}Choice` as
+      | 'budget1Choice'
+      | 'budget2Choice';
+    const otherOptionsKey = `${otherKey}Options` as
+      | 'budget1Options'
+      | 'budget2Options';
 
     if (this.state[selectedChoiceKey] === index) {
       return;
     }
 
-    const otherBudgetOptions = this.state.budgetChoices.filter((option) => option.value !== index);
+    const otherBudgetOptions = this.state.budgetChoices.filter(
+      option => option.value !== index,
+    );
     this.setState({
       [key]: this.state.totals[index],
       [selectedChoiceKey]: index,
       [otherOptionsKey]: otherBudgetOptions,
-    } as Pick<CompareState, 'budget1' | 'budget2' | 'budget1Choice' | 'budget2Choice' | 'budget1Options' | 'budget2Options'>);
+    } as Pick<
+      CompareState,
+      | 'budget1'
+      | 'budget2'
+      | 'budget1Choice'
+      | 'budget2Choice'
+      | 'budget1Options'
+      | 'budget2Options'
+    >);
   }
 
-    /**
+  /**
    * Runs render.
    *
    * @returns {any} Function result.
    */
-render(): React.JSX.Element {
+  render(): React.JSX.Element {
     if (this.state.loading) {
-      return <div className='text-muted' role='status' aria-live='polite'>{t('loading.comparisonData')}</div>;
+      return (
+        <div className='text-muted' role='status' aria-live='polite'>
+          {t('loading.comparisonData')}
+        </div>
+      );
     }
     if (this.state.error) {
-      return <div className='alert alert-warning' role='alert'>{this.state.error}</div>;
+      return (
+        <div className='alert alert-warning' role='alert'>
+          {this.state.error}
+        </div>
+      );
     }
 
     const usePct = this.state.changeType === 'pct';
-    const budget1Selected = this.state.budgetChoices.find(
-      (option) => option.value === this.state.budget1Choice,
-    ) ?? null;
-    const budget2Selected = this.state.budgetChoices.find(
-      (option) => option.value === this.state.budget2Choice,
-    ) ?? null;
-    const selectedYears: SelectedYears = [this.state.budget1, this.state.budget2];
+    const budget1Selected =
+      this.state.budgetChoices.find(
+        option => option.value === this.state.budget1Choice,
+      ) ?? null;
+    const budget2Selected =
+      this.state.budgetChoices.find(
+        option => option.value === this.state.budget2Choice,
+      ) ?? null;
+    const selectedYears: SelectedYears = [
+      this.state.budget1,
+      this.state.budget2,
+    ];
     const totals = formatTotals(selectedYears);
-    const breakdowns = BREAKDOWNS.map((item) => ({
+    const breakdowns = BREAKDOWNS.map(item => ({
       ...item,
       label: t(item.labelKey ?? ''),
     }));
-    const activeBreakdown = breakdowns.find((item) => item.key === this.state.activeBreakdown) ?? breakdowns[0];
+    const activeBreakdown =
+      breakdowns.find(item => item.key === this.state.activeBreakdown) ??
+      breakdowns[0];
 
     return (
       <div className='compare-app'>
-        {this.state.constrainedMode ?
-          <p className='text-muted small'>{t('mode.lowBandwidth')}</p> :
-          null}
+        {this.state.constrainedMode ? (
+          <p className='text-muted small'>{t('mode.lowBandwidth')}</p>
+        ) : null}
         <div className='row'>
           <div className='col-sm-10'>
             <h1 className='compare-title'>
-              <span className='compare-title__label'>{t('compare.title.compare')}</span>
-              <span style={headingStyles[0]} className='choose-budget compare-title__budget'>
-                <span id='compareBudgetYearALabel' className='sr-only'>{t('compare.budgetYear.first')}</span>
+              <span className='compare-title__label'>
+                {t('compare.title.compare')}
+              </span>
+              <span
+                style={headingStyles[0]}
+                className='choose-budget compare-title__budget'
+              >
+                <span id='compareBudgetYearALabel' className='sr-only'>
+                  {t('compare.budgetYear.first')}
+                </span>
                 <Select<BudgetOption, false>
                   options={this.state.budget1Options}
                   value={budget1Selected}
@@ -415,9 +489,16 @@ render(): React.JSX.Element {
                   isClearable={false}
                 />
               </span>{' '}
-              <span className='compare-title__connector'>{t('compare.title.with')}</span>{' '}
-              <span style={headingStyles[1]} className='choose-budget compare-title__budget'>
-                <span id='compareBudgetYearBLabel' className='sr-only'>{t('compare.budgetYear.second')}</span>
+              <span className='compare-title__connector'>
+                {t('compare.title.with')}
+              </span>{' '}
+              <span
+                style={headingStyles[1]}
+                className='choose-budget compare-title__budget'
+              >
+                <span id='compareBudgetYearBLabel' className='sr-only'>
+                  {t('compare.budgetYear.second')}
+                </span>
                 <Select<BudgetOption, false>
                   options={this.state.budget2Options}
                   value={budget2Selected}
@@ -433,14 +514,18 @@ render(): React.JSX.Element {
           </div>
           <div className='col-sm-2'>
             <div className='form-group'>
-              <label htmlFor='changeTypeControl'>{t('compare.showChangesAs')}</label>
+              <label htmlFor='changeTypeControl'>
+                {t('compare.showChangesAs')}
+              </label>
               <select
                 className='form-control'
                 id='changeTypeControl'
                 value={this.state.changeType}
                 onChange={this.handleChangeType}
               >
-                <option value='pct'>{t('compare.changeType.percentage')}</option>
+                <option value='pct'>
+                  {t('compare.changeType.percentage')}
+                </option>
                 <option value='usd'>{t('compare.changeType.dollars')}</option>
               </select>
             </div>
@@ -459,8 +544,12 @@ render(): React.JSX.Element {
         </div>
         <div className='row'>
           <div className='col-sm-3'>
-            <ul className='nav nav-pills nav-stacked' role='tablist' aria-label={t('compare.breakdowns.navLabel')}>
-              {breakdowns.map((item) => (
+            <ul
+              className='nav nav-pills nav-stacked'
+              role='tablist'
+              aria-label={t('compare.breakdowns.navLabel')}
+            >
+              {breakdowns.map(item => (
                 <li
                   key={item.key}
                   className={item.key === activeBreakdown.key ? 'active' : ''}

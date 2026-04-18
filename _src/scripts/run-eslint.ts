@@ -25,9 +25,7 @@ function sumResultField(
   results: Array<ESLint.LintResult>,
   field: 'errorCount' | 'fatalErrorCount' | 'warningCount',
 ): number {
-  return results.reduce(function(total, result) {
-    return total + result[field];
-  }, 0);
+  return results.reduce((total, result) => total + result[field], 0);
 }
 
 /**
@@ -50,7 +48,8 @@ async function main(): Promise<void> {
     console.log(output);
   }
 
-  const errorCount = sumResultField(results, 'errorCount') +
+  const errorCount =
+    sumResultField(results, 'errorCount') +
     sumResultField(results, 'fatalErrorCount');
   const warningCount = sumResultField(results, 'warningCount');
   if (errorCount > 0 || warningCount > 0) {
@@ -58,7 +57,7 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch(function(error: unknown) {
+main().catch((error: unknown) => {
   console.error(error);
   process.exit(1);
 });

@@ -1,9 +1,9 @@
-$(function() {
+$(() => {
   const DEFAULT_DRILLDOWNS = ['fund', 'department', 'unit'];
   const DEFAULT_CUTS = {'time.year': '2013'};
-  const DEFAULT_HEADER = 'Mayor\'s Proposed Spending';
+  const DEFAULT_HEADER = "Mayor's Proposed Spending";
   const ROOT_CRUMB_TITLE = 'Funds';
-  const CANNOT_DIG_DEEPER_FALLBACK = 'Sorry, we can\'t dig deeper';
+  const CANNOT_DIG_DEEPER_FALLBACK = "Sorry, we can't dig deeper";
 
   const drilldowns = DEFAULT_DRILLDOWNS.slice();
   let cuts = Object.assign({}, DEFAULT_CUTS);
@@ -13,7 +13,7 @@ $(function() {
   const yearsSelection = buildYearSelection(parameters.reference_years, ' & ');
   if (yearsSelection) {
     cuts = {'time.year': yearsSelection.cutString};
-    headerText = yearsSelection.headerText + ' Mayor\'s Proposed Spending';
+    headerText = yearsSelection.headerText + " Mayor's Proposed Spending";
   }
 
   $('#year-header').text(headerText);
@@ -34,7 +34,7 @@ $(function() {
   const context = {
     dataset: 'mayor_s_proposed_policy_budget_fy2013-15',
     siteUrl: 'http://openspending.org',
-    drilldown: function(node) {
+    drilldown: node => {
       if (node.data.node.children.length) {
         window.location.href = buildDrilldownLocation(drilldowns[0], node.name);
         return;
@@ -43,7 +43,11 @@ $(function() {
     },
   };
 
-  window.wdg_widget = new OpenSpending.Treemap($('#treewidget13-15'), context, state);
+  window.wdg_widget = new OpenSpending.Treemap(
+    $('#treewidget13-15'),
+    context,
+    state,
+  );
 
   /**
    * Builds year filter values and heading text from query parameters.
@@ -61,7 +65,7 @@ $(function() {
     let displayYears = '';
     const years = referenceYears.split(' ');
 
-    $.each(years, function(index, year) {
+    $.each(years, (index, year) => {
       if (index !== 0) {
         cutString += '|time.year:';
         displayYears += headerJoiner;

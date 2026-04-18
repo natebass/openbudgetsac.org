@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow-restricted-names, no-var, no-prototype-builtins */
+/* eslint-disable no-shadow-restricted-names, no-var */
 var ob = ob || {};
 ob.display = ob.display || {};
 
@@ -27,7 +27,7 @@ interface TreemapConfig {
   url: () => string;
 }
 
-;(function(namespace, undefined) {
+((namespace, undefined) => {
   /**
    * Resolves a localized message with optional interpolation.
    *
@@ -36,16 +36,20 @@ interface TreemapConfig {
    * @param {Record<string, unknown>} vars Interpolation variables.
    * @returns {string} Localized message text.
    */
-  function i18nT(key: string, fallback?: string, vars?: Record<string, unknown>) {
+  function i18nT(
+    key: string,
+    fallback?: string,
+    vars?: Record<string, unknown>,
+  ) {
     if (window.obI18n && typeof window.obI18n.t === 'function') {
       return window.obI18n.t(key, fallback, vars);
     }
     if (!vars) {
       return fallback || key;
     }
-    return (fallback || key).replace(/\{\{(\w+)\}\}/g, function(_full, name) {
-      return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : '';
-    });
+    return (fallback || key).replace(/\{\{(\w+)\}\}/g, (_full, name) =>
+      Object.hasOwn(vars, name) ? String(vars[name]) : '',
+    );
   }
 
   /**
@@ -71,7 +75,10 @@ interface TreemapConfig {
    */
   function i18nLabel(value) {
     const text = String(value == null ? '' : value);
-    if (window.obI18n && typeof window.obI18n.translateLegacyText === 'function') {
+    if (
+      window.obI18n &&
+      typeof window.obI18n.translateLegacyText === 'function'
+    ) {
       return window.obI18n.translateLegacyText(text);
     }
     return text;
@@ -82,7 +89,7 @@ interface TreemapConfig {
    *
    * @returns {object} Budget treemap API.
    */
-  namespace.budget_treemap = function() {
+  namespace.budget_treemap = () => {
     let _url: string | null = null;
     let _treemap: any = null;
     let _spreadsheet: any = null;
@@ -95,9 +102,7 @@ interface TreemapConfig {
      * @param {object} d Node datum.
      * @returns {number} Amount value.
      */
-    let _get_value = function(d) {
-      return d.data.amount;
-    };
+    let _get_value = d => d.data.amount;
     let _max_rects = 40;
     const _max_spreadsheet_rows = 10;
     const _min_area_for_text = 0.0125;
@@ -136,9 +141,7 @@ interface TreemapConfig {
     let _config: TreemapConfig = {
       dropdown_values: {},
       dropdown_choice: {},
-      url: function() {
-        return '';
-      },
+      url: () => '',
     };
 
     /**
@@ -147,9 +150,7 @@ interface TreemapConfig {
      * @param {string} s Hash segment.
      * @returns {string} Normalized segment.
      */
-    let _hash_normalize = function(s) {
-      return s;
-    };
+    let _hash_normalize = s => s;
 
     /**
      * Compares hash path segment values.
@@ -158,9 +159,7 @@ interface TreemapConfig {
      * @param {*} v2 Segment value B.
      * @returns {number} 0 when equal, otherwise 1.
      */
-    let _hash_compare = function(v1, v2) {
-      return v1 == v2 ? 0 : 1;
-    };
+    let _hash_compare = (v1, v2) => (v1 == v2 ? 0 : 1);
 
     /* Track interaction handlers. */
     const _on_handlers: LegacyHandlerMap = {};
@@ -173,7 +172,7 @@ interface TreemapConfig {
      */
     function _apply_handlers(d3obj: any) {
       for (const event_name in _on_handlers) {
-        if (_on_handlers.hasOwnProperty(event_name)) {
+        if (Object.hasOwn(_on_handlers, event_name)) {
           if (_on_handlers[event_name]) {
             d3obj.on(event_name, _on_handlers[event_name]);
           }
@@ -189,16 +188,25 @@ interface TreemapConfig {
      * @param {number} i Node index.
      * @returns {string} Tooltip HTML.
      */
-    let _tooltip_function = function(d: LegacyTreeNode, i: number) {
+    let _tooltip_function = (d: LegacyTreeNode, i: number) => {
       /* Build tooltip HTML for the hovered treemap node. */
       let percent = 1.0;
       if (d.parent) {
         const parentValue = _get_value(d.parent);
-        percent = parentValue ? (_get_value(d) / parentValue) : 0;
+        percent = parentValue ? _get_value(d) / parentValue : 0;
       }
-      let display = '<p class="treemap_tooltip title">' + escapeHtml(i18nLabel(d.key)) + '</p>';
-      display += '<p class="treemap_tooltip amount">' + escapeHtml(_format.number(_get_value(d))) + '</p>';
-      display += '<p class="treemap_tooltip percentage">' + _format.percent(percent) + '</p>';
+      let display =
+        '<p class="treemap_tooltip title">' +
+        escapeHtml(i18nLabel(d.key)) +
+        '</p>';
+      display +=
+        '<p class="treemap_tooltip amount">' +
+        escapeHtml(_format.number(_get_value(d))) +
+        '</p>';
+      display +=
+        '<p class="treemap_tooltip percentage">' +
+        _format.percent(percent) +
+        '</p>';
       return display;
     };
 
@@ -211,7 +219,7 @@ interface TreemapConfig {
        *
        * @returns {*}
        */
-      expected: function() {
+      expected: function () {
         if (arguments.length) {
           this._expected_hash = arguments[0];
           return this;
@@ -225,21 +233,18 @@ interface TreemapConfig {
        * @param {object} root Root node.
        * @returns {object} Active node.
        */
-      get: function(root: LegacyTreeNode): LegacyTreeNode {
+      get: (root: LegacyTreeNode): LegacyTreeNode => {
         let hash = window.location.hash.replace('#', '');
-        if (_on_handlers.hasOwnProperty('get_hash')) {
+        if (Object.hasOwn(_on_handlers, 'get_hash')) {
           hash = _on_handlers.get_hash?.(hash) || '';
         }
 
         if (hash.length < 1) {
           return root;
         }
-        // When part of the path is stale or missing, `spelunk` returns the deepest valid node so the page still renders.
-        return _cruncher.spelunk(
-          root,
-          hash.split('.'),
-          _hash_compare,
-        );
+        // If part of the path is stale or missing, `spelunk` returns the deepest valid node.
+        // This keeps the page rendering.
+        return _cruncher.spelunk(root, hash.split('.'), _hash_compare);
       },
       /**
        * Sets window hash to represent the provided node path.
@@ -247,12 +252,13 @@ interface TreemapConfig {
        * @param {object} node Active node.
        * @returns {void}
        */
-      set: function(node: LegacyTreeNode) {
-        let hash = _cruncher.path(node)
+      set: function (node: LegacyTreeNode) {
+        let hash = _cruncher
+          .path(node)
           .slice(1)
-          .map(function(d: LegacyTreeNode) {return _hash_normalize(d.key);})
+          .map((d: LegacyTreeNode) => _hash_normalize(d.key))
           .join('.');
-        if (_on_handlers.hasOwnProperty('set_hash')) {
+        if (Object.hasOwn(_on_handlers, 'set_hash')) {
           hash = _on_handlers.set_hash?.(hash) || '';
         }
         this.expected(hash);
@@ -284,19 +290,22 @@ interface TreemapConfig {
      * @param {(error: Error|null, data: object|null) => void} callback Data callback.
      * @returns {void}
      */
-    function _load_data(url: string | null, callback: (error: Error | null, data: LegacyTreeNode | null) => void) {
+    function _load_data(
+      url: string | null,
+      callback: (error: Error | null, data: LegacyTreeNode | null) => void,
+    ) {
       if (!url) {
         callback(new Error('No treemap URL was configured.'), null);
         return;
       }
-      if (Object.prototype.hasOwnProperty.call(_dataset_cache, url)) {
-        window.setTimeout(function() {
+      if (Object.hasOwn(_dataset_cache, url)) {
+        window.setTimeout(() => {
           callback(null, _dataset_cache[url]);
         }, 0);
         return;
       }
 
-      d3.json(url, function(errOrData: any, maybeData: any) {
+      d3.json(url, function (errOrData: any, maybeData: any) {
         const error = arguments.length > 1 ? errOrData : null;
         const data = arguments.length > 1 ? maybeData : errOrData;
         if (!error && data) {
@@ -307,7 +316,7 @@ interface TreemapConfig {
     }
 
     return {
-      width: function() {
+      width: function () {
         if (arguments.length) {
           _layout.width = arguments[0];
           return this;
@@ -315,7 +324,7 @@ interface TreemapConfig {
         return _layout.width;
       },
 
-      height: function() {
+      height: function () {
         if (arguments.length) {
           _layout.height = arguments[0];
           return this;
@@ -323,7 +332,7 @@ interface TreemapConfig {
         return _layout.height;
       },
 
-      url: function() {
+      url: function () {
         if (arguments.length) {
           _url = arguments[0];
           return this;
@@ -331,7 +340,7 @@ interface TreemapConfig {
         return _url;
       },
 
-      count: function() {
+      count: function () {
         if (arguments.length) {
           _max_rects = arguments[0];
           return this;
@@ -339,7 +348,7 @@ interface TreemapConfig {
         return _max_rects;
       },
 
-      palette: function() {
+      palette: function () {
         if (arguments.length) {
           _palette = arguments[0];
           return this;
@@ -347,7 +356,7 @@ interface TreemapConfig {
         return _palette;
       },
 
-      hashnorm: function() {
+      hashnorm: function () {
         if (arguments.length) {
           _hash_normalize = arguments[0];
           return this;
@@ -355,7 +364,7 @@ interface TreemapConfig {
         return _hash_normalize;
       },
 
-      hashcmp: function() {
+      hashcmp: function () {
         if (arguments.length) {
           _hash_compare = arguments[0];
           return this;
@@ -363,7 +372,7 @@ interface TreemapConfig {
         return _hash_compare;
       },
 
-      value: function() {
+      value: function () {
         if (arguments.length) {
           _get_value = arguments[0];
           return this;
@@ -371,7 +380,7 @@ interface TreemapConfig {
         return _get_value;
       },
 
-      on: function(eventname, eventfunc) {
+      on: function (eventname, eventfunc) {
         _on_handlers[eventname] = eventfunc;
         if (_treemap) {
           _treemap.on(eventname, eventfunc);
@@ -385,7 +394,7 @@ interface TreemapConfig {
         return this;
       },
 
-      config: function() {
+      config: function () {
         if (arguments.length) {
           _config = arguments[0];
           return this;
@@ -393,7 +402,7 @@ interface TreemapConfig {
         return _config;
       },
 
-      tooltip: function() {
+      tooltip: function () {
         if (arguments.length) {
           _tooltip_function = arguments[0];
           return this;
@@ -401,7 +410,7 @@ interface TreemapConfig {
         return _tooltip_function;
       },
 
-      dropdown: function() {
+      dropdown: function () {
         if (arguments.length) {
           _dropdown_selector = arguments[0];
           return this;
@@ -409,7 +418,7 @@ interface TreemapConfig {
         return _dropdown_selector;
       },
 
-      spreadsheet: function() {
+      spreadsheet: function () {
         if (arguments.length) {
           _spreadsheet_selector = arguments[0];
           return this;
@@ -417,7 +426,7 @@ interface TreemapConfig {
         return _spreadsheet_selector;
       },
 
-      treemap: function() {
+      treemap: function () {
         if (arguments.length) {
           _treemap_selector = arguments[0];
           return this;
@@ -425,7 +434,7 @@ interface TreemapConfig {
         return _treemap_selector;
       },
 
-      title: function() {
+      title: function () {
         if (arguments.length) {
           _title_selector = arguments[0];
           return this;
@@ -433,7 +442,7 @@ interface TreemapConfig {
         return _title_selector;
       },
 
-      breadcrumbs: function() {
+      breadcrumbs: function () {
         if (arguments.length) {
           _breadcrumbs_selector = arguments[0];
           return this;
@@ -442,28 +451,28 @@ interface TreemapConfig {
       },
 
       /**
-         * Loads data and initializes composed treemap UI widgets.
-         *
-         * @returns {void}
-         */
-      create: function() {
-        /* Handle browser back/forward navigation by reloading the active node. */
-        const self: any = this;
+       * Loads data and initializes composed treemap UI widgets.
+       *
+       * @returns {void}
+       */
+      create: function () {
         /**
          * Refreshes the treemap when browser hash navigation changes.
          *
          * @returns {void}
          */
-        window.onhashchange = function() {
+        window.onhashchange = () => {
           const hash = window.location.hash.replace('#', '');
           // Ignore hash updates triggered by normal in-app transitions.
           if (hash != _hash.expected()) {
-            self.refresh();
+            this.refresh();
           }
         };
 
         /* Create the initial color palette. */
-        const _color_stack = ob.palette.stack().palette(d3.scale.ordinal().range(_palette));
+        const _color_stack = ob.palette
+          .stack()
+          .palette(d3.scale.ordinal().range(_palette));
         _ensure_elements();
         if (!_dropdown || _dropdown.empty()) {
           this._create_dropdown();
@@ -475,10 +484,15 @@ interface TreemapConfig {
         const _tooltip = ob.display.tooltip().html(_tooltip_function);
 
         /* Load budget data with d3, then render it after it loads. */
-        _load_data(_url, function(error, data) {
+        _load_data(_url, (error, data) => {
           if (error || !data) {
-            console.error('Unable to load treemap data', error || new Error('No data returned'));
-            d3.select(_title_selector).text(i18nT('treemap.unableLoadData', 'Unable to load data'));
+            console.error(
+              'Unable to load treemap data',
+              error || new Error('No data returned'),
+            );
+            d3.select(_title_selector).text(
+              i18nT('treemap.unableLoadData', 'Unable to load data'),
+            );
             return;
           }
 
@@ -493,13 +507,16 @@ interface TreemapConfig {
             const current_node = d;
             d3.select(_breadcrumbs_selector).selectAll('.crumb').remove();
 
-            const crumbs = d3.select(_breadcrumbs_selector)
+            const crumbs = d3
+              .select(_breadcrumbs_selector)
               .selectAll('.crumb')
               .data(ob.data.hierarchy().path(d));
 
-            crumbs.enter().append('span')
+            crumbs
+              .enter()
+              .append('span')
               .attr('class', 'crumb')
-              .on('click', function(clicked, i) {
+              .on('click', (clicked, i) => {
                 if (clicked == current_node) {
                   /* Do not transition when users click the node that is already displayed. */
                   return;
@@ -512,23 +529,23 @@ interface TreemapConfig {
                 }
                 _treemap.transition(clicked, levels, false);
               })
-              .text(function(d: LegacyTreeNode, i: number) {
+              .text((d: LegacyTreeNode, i: number) => {
                 const label = i18nLabel(d.key);
                 return i > 0 ? ' > ' + label : label;
               });
           }
 
           /* Set parent links. */
-          _cruncher.apply(root, function(node: LegacyTreeNode) {
+          _cruncher.apply(root, (node: LegacyTreeNode) => {
             if (node.values) {
-              node.values.forEach(function(child: LegacyTreeNode) {
+              node.values.forEach((child: LegacyTreeNode) => {
                 child.parent = node;
               });
             }
           });
 
           /* Calculate percentages for downstream UI consumers. */
-          _cruncher.apply(root, function(node: LegacyTreeNode) {
+          _cruncher.apply(root, (node: LegacyTreeNode) => {
             if (node.parent) {
               // Keep both spellings for backward compatibility with old templates.
               const ratio = _get_value(node) / _get_value(node.parent);
@@ -541,19 +558,21 @@ interface TreemapConfig {
           });
           const node = _hash.get(root);
 
-          _cruncher.path(node).forEach(function(d: LegacyTreeNode) {
+          _cruncher.path(node).forEach((d: LegacyTreeNode) => {
             if (d.parent) {
               const i = d.parent.values.indexOf(d);
               _color_stack.unshift(
                 _color_stack.palette()(i),
-                Math.min(d.values.length, _max_rects));
+                Math.min(d.values.length, _max_rects),
+              );
             }
           });
 
-          _spreadsheet = ob.display.spreadsheet()
+          _spreadsheet = ob.display
+            .spreadsheet()
             .element(_spreadsheet_element)
             .width(_layout.width)
-            .value(function(d: LegacyTreeNode) {
+            .value((d: LegacyTreeNode) => {
               /* D3 treemap drops zero-area nodes. Use a tiny floor so rows remain visible. */
               return _get_value(d) <= 0 ? 0.001 : _get_value(d);
             })
@@ -563,7 +582,7 @@ interface TreemapConfig {
               i18nT('treemap.table.expense', 'Expense'),
               i18nT('treemap.table.revenue', 'Revenue'),
             ])
-            .column(function(d: any, i: number, elem: any) {
+            .column((d: any, i: number, elem: any) => {
               if (i == 1) {
                 elem.attr('class', 'item').text(i18nLabel(d));
               } else if (i == 2) {
@@ -572,34 +591,43 @@ interface TreemapConfig {
                 elem.attr('class', 'money').text(d);
               }
             })
-            .cell(function(d: LegacyTreeNode, i: number, j: number, elem: any) {
+            .cell((d: LegacyTreeNode, i: number, j: number, elem: any) => {
               if (i == 0) {
-                elem.append('div')
+                elem
+                  .append('div')
                   .attr('class', 'square')
                   .style('background-color', _color_stack.palette()(j));
               } else if (i == 1) {
                 elem.attr('class', 'item').text(i18nLabel(d.key));
               } else if (i == 2) {
-                elem.attr('class', 'money').text(_format.number(d.data.expense));
+                elem
+                  .attr('class', 'money')
+                  .text(_format.number(d.data.expense));
               } else if (i == 3) {
-                elem.attr('class', 'money').text(_format.number(d.data.revenue));
+                elem
+                  .attr('class', 'money')
+                  .text(_format.number(d.data.revenue));
               }
               if (i == 0) {
                 const parent_node = d3.select(elem.node().parentNode);
                 if (j > _max_spreadsheet_rows) {
-                  parent_node.style('visibility', 'hidden')
+                  parent_node
+                    .style('visibility', 'hidden')
                     .style('display', 'none');
                 } else {
-                  parent_node.style('visibility', 'visible')
+                  parent_node
+                    .style('visibility', 'visible')
                     .style('display', 'table-row');
                 }
-                if (j == (_max_spreadsheet_rows + 1)) {
-                  _spreadsheet_element.append('button')
+                if (j == _max_spreadsheet_rows + 1) {
+                  _spreadsheet_element
+                    .append('button')
                     .attr('class', 'btn btn-default')
                     .attr('id', 'more')
                     .text(i18nT('treemap.showMore', 'Show more'))
-                    .on('click', function() {
-                      _spreadsheet_element.selectAll('tr')
+                    .on('click', () => {
+                      _spreadsheet_element
+                        .selectAll('tr')
                         .style('visibility', 'visible')
                         .style('display', 'table-row');
                       _spreadsheet_element.select('#more').remove();
@@ -612,7 +640,8 @@ interface TreemapConfig {
           _apply_handlers(_spreadsheet);
 
           /* Create the treemap with the current color scheme. */
-          _treemap = ob.display.treemap()
+          _treemap = ob.display
+            .treemap()
             .colors(_color_stack.palette())
             .value(_get_value);
 
@@ -620,14 +649,15 @@ interface TreemapConfig {
           _apply_handlers(_treemap);
 
           /* Configure and render the treemap. */
-          _treemap.width(_layout.width)
+          _treemap
+            .width(_layout.width)
             .height(_layout.height)
-            .value(function(d: LegacyTreeNode) {
+            .value((d: LegacyTreeNode) => {
               /* D3 treemap drops zero-area nodes. Use a tiny floor so rows remain visible. */
               return _get_value(d) <= 0 ? 0.001 : _get_value(d);
             })
             .rects(_max_rects)
-            .rect_text(function(d: LegacyTreeNode, i: number) {
+            .rect_text((d: LegacyTreeNode, i: number) => {
               /* Show labels only when rectangles are large enough to stay legible. */
               const text_width = _layout.width * d.dx;
               const text_height = _layout.height * d.dy;
@@ -641,42 +671,44 @@ interface TreemapConfig {
               html += '</div>';
               return html;
             })
-            .on('mouseover', function(d: LegacyTreeNode, i: number) {
+            .on('mouseover', (d: LegacyTreeNode, i: number) => {
               /* Show tooltip for the currently hovered rectangle. */
               _tooltip.show(d, i);
             })
-            .on('mousemove', function(d: LegacyTreeNode, i: number) {
+            .on('mousemove', (d: LegacyTreeNode, i: number) => {
               /* Keep tooltip anchored to the pointer while moving. */
               _tooltip.track();
             })
-            .on('mouseout', function(d: LegacyTreeNode, i: number) {
+            .on('mouseout', (d: LegacyTreeNode, i: number) => {
               /* Hide tooltip when leaving a rectangle. */
               _tooltip.hide();
             })
-            .on('display', function(d: LegacyTreeNode) {
+            .on('display', (d: LegacyTreeNode) => {
               /* Sync URL hash and detail table whenever the active node changes. */
               _hash.set(d);
-              _spreadsheet.data(d.values)
-                .display();
+              _spreadsheet.data(d.values).display();
               d3.select(_title_selector).text(i18nLabel(d.key));
               /* Set breadcrumbs. */
               _create_breadcrumbs(d);
             })
-            .on('transition', function(d: LegacyTreeNode, i: number, direction: boolean) {
-              /* Update stacked palettes before each transition animation. */
-              if (direction) {
-                /* Add a deeper shade range for the next level down. */
-                _color_stack.unshift(_treemap.colors()(i), d.children.length);
-              } else {
-                /* Remove one shade range per level when moving up. */
-                while (i < 0) {
-                  _color_stack.shift();
-                  i += 1;
+            .on(
+              'transition',
+              (d: LegacyTreeNode, i: number, direction: boolean) => {
+                /* Update stacked palettes before each transition animation. */
+                if (direction) {
+                  /* Add a deeper shade range for the next level down. */
+                  _color_stack.unshift(_treemap.colors()(i), d.children.length);
+                } else {
+                  /* Remove one shade range per level when moving up. */
+                  while (i < 0) {
+                    _color_stack.shift();
+                    i += 1;
+                  }
                 }
-              }
-              /* Apply the updated palette to subsequent rectangle renders. */
-              _treemap.colors(_color_stack.palette());
-            })
+                /* Apply the updated palette to subsequent rectangle renders. */
+                _treemap.colors(_color_stack.palette());
+              },
+            )
             .data(root)
             .display(_treemap_element, node);
           /* Clicking a table row triggers the matching treemap transition. */
@@ -695,12 +727,12 @@ interface TreemapConfig {
        *
        * @returns {void}
        */
-      _create_dropdown: function() {
+      _create_dropdown: function () {
         const self: any = this;
         const values: Array<string> = [];
         _ensure_elements();
         for (const key in _config.dropdown_values) {
-          if (_config.dropdown_values.hasOwnProperty(key)) {
+          if (Object.hasOwn(_config.dropdown_values, key)) {
             values.push(key);
           }
         }
@@ -712,7 +744,7 @@ interface TreemapConfig {
           .enter()
           .append('div')
           .attr('class', 'col-sm-6 dropdown')
-          .text(function(d) {
+          .text(d => {
             if (d === 'Year') {
               return i18nT('treemap.dropdown.year', 'Year');
             }
@@ -723,7 +755,7 @@ interface TreemapConfig {
           })
           .append('select')
           .attr('class', 'form-control')
-          .on('change', function(d: string) {
+          .on('change', function (d: string) {
             _config.dropdown_choice[d] = this.options[this.selectedIndex].value;
             _hash.set(_treemap.node());
             self.refresh();
@@ -731,31 +763,32 @@ interface TreemapConfig {
         _apply_handlers(_dropdown);
 
         /* Add options to the dropdown. */
-        _dropdown.selectAll('option')
-          .data(function(d: string) {
-            return _config.dropdown_values[d].map(function(v) {return {key: d, value: v};});
-          })
+        _dropdown
+          .selectAll('option')
+          .data((d: string) =>
+            _config.dropdown_values[d].map(v => ({key: d, value: v})),
+          )
           .enter()
           .append('option')
-          .attr('value', function(d) {return d.value;})
-          .text(function(d) {return i18nLabel(d.value);})
-          .attr('selected', function(d) {
-            if (d.value == _config.dropdown_choice[d.key]) {return 'selected';}
+          .attr('value', d => d.value)
+          .text(d => i18nLabel(d.value))
+          .attr('selected', d => {
+            if (d.value == _config.dropdown_choice[d.key]) {
+              return 'selected';
+            }
           });
       },
 
       /**
-         * Applies current dropdown choice values to existing dropdown controls.
-         *
-         * @returns {void}
-         */
-      _sync_dropdown_selection: function() {
+       * Applies current dropdown choice values to existing dropdown controls.
+       *
+       * @returns {void}
+       */
+      _sync_dropdown_selection: () => {
         if (!_dropdown || _dropdown.empty()) {
           return;
         }
-        _dropdown.property('value', function(d) {
-          return _config.dropdown_choice[d];
-        });
+        _dropdown.property('value', d => _config.dropdown_choice[d]);
       },
 
       /**
@@ -763,7 +796,7 @@ interface TreemapConfig {
        *
        * @returns {void}
        */
-      refresh: function() {
+      refresh: function () {
         _ensure_elements();
         _spreadsheet_element.select('table').remove();
         _spreadsheet_element.select('#more').remove();

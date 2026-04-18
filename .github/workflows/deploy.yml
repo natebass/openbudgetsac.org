@@ -23,17 +23,17 @@ jobs:
         working-directory: _src
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 24
           cache: npm
           cache-dependency-path: _src/package-lock.json
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Install dependencies
         run: PUPPETEER_SKIP_DOWNLOAD=true npm ci --include=dev
@@ -50,7 +50,7 @@ jobs:
       - name: Build CSS
         run: npm run build-css
 
-      - name: Verify JSDoc coverage in active TS/JS files
+      - name: Verify JSDoc coverage in active first-party TS/JS files
         run: npm run docs:jsdoc:check
 
       - name: Generate JSDoc docs
@@ -61,11 +61,11 @@ jobs:
 
       - name: Verify i18n assets in built site
         run: |
-          test -f build/js/i18n-site.js
-          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" build
+          test -f ../build/js/i18n-site.js
+          grep -R -nE "data-locale-selector|js/i18n-site.js" --include="*.html" ../build
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: build
 
@@ -79,4 +79,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

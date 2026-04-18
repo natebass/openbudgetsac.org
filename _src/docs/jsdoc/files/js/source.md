@@ -17,14 +17,14 @@ Associated declaration: `function isSafeIdentifier(value) {`
 
 ## Block 2
 
-Associated declaration: `function(api_key, table_id) {`
+Associated declaration: `(api_key, table_id) => ({`
 
 ```ts
 /**
-   * Runs fusion.
-   *
-   * @param {any} api_key Input value.
-   * @param {any} table_id Input value.
-   * @returns {any} Function result.
-   */
+     * Runs fusion.
+     *
+     * @param {any} api_key Input value.
+     * @param {any} table_id Input value.
+     * @returns {any} Function result.
+     */
 ```

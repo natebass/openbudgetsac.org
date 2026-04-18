@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {parse} from '@babel/parser';
+import type {ParserOptions} from '@babel/parser';
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes('--check');
-const EXCLUDE_PREFIXES = [
+const EXCLUDED_PATH_PREFIXES = [
   'build/',
   'coverage/',
   'css/bower_components/',
@@ -15,6 +16,27 @@ const EXCLUDE_PREFIXES = [
   'styles/',
   'vendor/',
 ];
+const AST_IGNORED_KEYS = new Set([
+  'loc',
+  'start',
+  'end',
+  'leadingComments',
+  'trailingComments',
+  'innerComments',
+]);
+const FUNCTION_NODE_TYPES = new Set([
+  'FunctionDeclaration',
+  'FunctionExpression',
+  'ArrowFunctionExpression',
+  'ObjectMethod',
+  'ClassMethod',
+]);
+const PARSER_OPTIONS: ParserOptions = {
+  sourceType: 'unambiguous',
+  plugins: ['jsx', 'typescript'],
+  errorRecovery: false,
+  attachComment: true,
+};
 const SOURCE_FILE_RE = /\.(?:[cm]?ts|tsx|jsx|js)$/i;
 
 /**
@@ -35,7 +57,17 @@ function normalizeRelative(filePath: string): string {
  */
 function shouldSkip(relativePath: string): boolean {
   const normalized = normalizeRelative(relativePath);
-  return EXCLUDE_PREFIXES.some((prefix) => normalized.startsWith(prefix));
+  return EXCLUDED_PATH_PREFIXES.some(prefix => normalized.startsWith(prefix));
+}
+
+/**
+ * Checks whether is source file.
+ *
+ * @param {any} filePath Input value.
+ * @returns {any} Function result.
+ */
+function isSourceFile(filePath: string): boolean {
+  return SOURCE_FILE_RE.test(filePath) && !filePath.endsWith('.d.ts');
 }
 
 /**
@@ -55,10 +87,10 @@ async function collectFiles(dir: string): Promise<Array<string>> {
       continue;
     }
     if (entry.isDirectory()) {
-      files.push(...await collectFiles(absolutePath));
+      files.push(...(await collectFiles(absolutePath)));
       continue;
     }
-    if (entry.isFile() && SOURCE_FILE_RE.test(absolutePath) && !absolutePath.endsWith('.d.ts')) {
+    if (entry.isFile() && isSourceFile(absolutePath)) {
       files.push(absolutePath);
     }
   }
@@ -74,7 +106,9 @@ async function collectFiles(dir: string): Promise<Array<string>> {
  * @returns {any} Function result.
  */
 function hasJSDocBefore(node: any, comments: Array<any>): boolean {
-  const leading = comments.filter((comment) => comment.end <= node.start).slice(-2);
+  const leading = comments
+    .filter(comment => comment.end <= node.start)
+    .slice(-2);
   if (!leading.length) {
     return false;
   }
@@ -173,10 +207,19 @@ function getFunctionName(node: any, parent: any): string | null {
   if (node.type === 'FunctionDeclaration' && node.id?.name) {
     return node.id.name;
   }
-  if ((node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression') && parent?.type === 'VariableDeclarator' && parent.id?.type === 'Identifier') {
+  if (
+    (node.type === 'FunctionExpression' ||
+      node.type === 'ArrowFunctionExpression') &&
+    parent?.type === 'VariableDeclarator' &&
+    parent.id?.type === 'Identifier'
+  ) {
     return parent.id.name;
   }
-  if ((node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression') && parent?.type === 'AssignmentExpression') {
+  if (
+    (node.type === 'FunctionExpression' ||
+      node.type === 'ArrowFunctionExpression') &&
+    parent?.type === 'AssignmentExpression'
+  ) {
     if (parent.left?.type === 'Identifier') {
       return parent.left.name;
     }
@@ -184,12 +227,18 @@ function getFunctionName(node: any, parent: any): string | null {
       if (!parent.left.computed && parent.left.property?.name) {
         return parent.left.property.name;
       }
-      if (parent.left.computed && parent.left.property?.type === 'StringLiteral') {
+      if (
+        parent.left.computed &&
+        parent.left.property?.type === 'StringLiteral'
+      ) {
         return parent.left.property.value;
       }
     }
   }
-  if ((node.type === 'ObjectMethod' || node.type === 'ClassMethod') && !node.computed) {
+  if (
+    (node.type === 'ObjectMethod' || node.type === 'ClassMethod') &&
+    !node.computed
+  ) {
     if (node.key?.type === 'Identifier') {
       return node.key.name;
     }
@@ -216,7 +265,9 @@ function buildJSDoc(name: string, params: Array<any>, indent: string): string {
   ];
 
   params.forEach((param, index) => {
-    lines.push(`${indent} * @param {any} ${paramName(param, index)} Input value.`);
+    lines.push(
+      `${indent} * @param {any} ${paramName(param, index)} Input value.`,
+    );
   });
 
   lines.push(`${indent} * @returns {any} Function result.`);
@@ -234,28 +285,37 @@ function buildJSDoc(name: string, params: Array<any>, indent: string): string {
  * @param {any} inserts Input value.
  * @returns {any} Function result.
  */
-function traverseAndCollect(node: any, parent: any, comments: Array<any>, source: string, inserts: Array<{index: number; text: string}>): void {
+function traverseAndCollect(
+  node: any,
+  parent: any,
+  comments: Array<any>,
+  source: string,
+  inserts: Array<{index: number; text: string}>,
+): void {
   if (!node || typeof node !== 'object') {
     return;
   }
 
-  const functionTypes = new Set(['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression', 'ObjectMethod', 'ClassMethod']);
-  if (functionTypes.has(node.type)) {
+  if (FUNCTION_NODE_TYPES.has(node.type)) {
     const name = getFunctionName(node, parent);
     if (name && !hasJSDocBefore(node, comments)) {
       inserts.push({
         index: node.start,
-        text: buildJSDoc(name, node.params || [], getIndent(source, node.start)),
+        text: buildJSDoc(
+          name,
+          node.params || [],
+          getIndent(source, node.start),
+        ),
       });
     }
   }
 
   for (const [key, value] of Object.entries(node)) {
-    if (['loc', 'start', 'end', 'leadingComments', 'trailingComments', 'innerComments'].includes(key)) {
+    if (AST_IGNORED_KEYS.has(key)) {
       continue;
     }
     if (Array.isArray(value)) {
-      value.forEach((child) => {
+      value.forEach(child => {
         if (child && typeof child === 'object') {
           traverseAndCollect(child, node, comments, source, inserts);
         }
@@ -274,31 +334,41 @@ function traverseAndCollect(node: any, parent: any, comments: Array<any>, source
  * @param {any} absolutePath Input value.
  * @returns {any} Function result.
  */
-async function patchFile(absolutePath: string): Promise<{inserted: number; relativePath: string; skipped: boolean}> {
+async function patchFile(
+  absolutePath: string,
+): Promise<{inserted: number; relativePath: string; skipped: boolean}> {
   const source = await fs.readFile(absolutePath, 'utf8');
   let ast;
 
   try {
-    ast = parse(source, {
-      sourceType: 'unambiguous',
-      plugins: ['jsx', 'typescript'],
-      errorRecovery: false,
-      attachComment: true,
-    });
+    ast = parse(source, PARSER_OPTIONS);
   } catch {
-    return {inserted: 0, relativePath: normalizeRelative(path.relative(ROOT, absolutePath)), skipped: true};
+    return {
+      inserted: 0,
+      relativePath: normalizeRelative(path.relative(ROOT, absolutePath)),
+      skipped: true,
+    };
   }
 
   const inserts: Array<{index: number; text: string}> = [];
   traverseAndCollect(ast.program, null, ast.comments || [], source, inserts);
   if (!inserts.length) {
-    return {inserted: 0, relativePath: normalizeRelative(path.relative(ROOT, absolutePath)), skipped: false};
+    return {
+      inserted: 0,
+      relativePath: normalizeRelative(path.relative(ROOT, absolutePath)),
+      skipped: false,
+    };
   }
 
   let nextSource = source;
-  inserts.sort((left, right) => right.index - left.index).forEach((insert) => {
-    nextSource = nextSource.slice(0, insert.index) + insert.text + nextSource.slice(insert.index);
-  });
+  inserts
+    .sort((left, right) => right.index - left.index)
+    .forEach(insert => {
+      nextSource =
+        nextSource.slice(0, insert.index) +
+        insert.text +
+        nextSource.slice(insert.index);
+    });
 
   if (!CHECK_MODE) {
     await fs.writeFile(absolutePath, nextSource, 'utf8');
@@ -316,7 +386,9 @@ async function patchFile(absolutePath: string): Promise<{inserted: number; relat
  * @returns {any} Function result.
  */
 async function main(): Promise<void> {
-  const files = (await collectFiles(ROOT)).sort((left, right) => left.localeCompare(right));
+  const files = (await collectFiles(ROOT)).sort((left, right) =>
+    left.localeCompare(right),
+  );
   let totalInserted = 0;
   const changed: Array<{inserted: number; relativePath: string}> = [];
 
@@ -329,16 +401,18 @@ async function main(): Promise<void> {
     changed.push(result);
   }
 
-  changed.forEach((entry) => {
+  changed.forEach(entry => {
     console.log(`${entry.relativePath}: +${entry.inserted} JSDoc block(s)`);
   });
-  console.log(`${CHECK_MODE ? 'TOTAL_MISSING' : 'TOTAL_INSERTED'}=${totalInserted}`);
+  console.log(
+    `${CHECK_MODE ? 'TOTAL_MISSING' : 'TOTAL_INSERTED'}=${totalInserted}`,
+  );
   if (CHECK_MODE && totalInserted > 0) {
     process.exit(1);
   }
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error(error);
   process.exit(1);
 });

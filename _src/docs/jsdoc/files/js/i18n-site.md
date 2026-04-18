@@ -98,7 +98,7 @@ Associated declaration: `function applyFragmentMap(value, map) {`
 
 ## Block 8
 
-Associated declaration: `function translateLegacyText(value: string | null | undefined, locale?: string) {`
+Associated declaration: `function translateLegacyText(`
 
 ```ts
 /**
@@ -112,7 +112,7 @@ Associated declaration: `function translateLegacyText(value: string | null | und
 
 ## Block 9
 
-Associated declaration: `function applyLegacyAttributeTranslations(root: Document | Element, attributeMap?: Record<string, string>) {`
+Associated declaration: `function applyLegacyAttributeTranslations(`
 
 ```ts
 /**
@@ -126,7 +126,7 @@ Associated declaration: `function applyLegacyAttributeTranslations(root: Documen
 
 ## Block 10
 
-Associated declaration: `function applyLegacyTextNodeTranslations(root: Document | Element, textMap?: Record<string, string>) {`
+Associated declaration: `function applyLegacyTextNodeTranslations(`
 
 ```ts
 /**
@@ -166,7 +166,7 @@ Associated declaration: `function applyLegacyLeafText(root: Document | Element) 
 
 ## Block 13
 
-Associated declaration: `function propagateLocaleToLinks(locale: 'en-US' | 'es-419', root: Document | Element) {`
+Associated declaration: `function propagateLocaleToLinks(`
 
 ```ts
 /**

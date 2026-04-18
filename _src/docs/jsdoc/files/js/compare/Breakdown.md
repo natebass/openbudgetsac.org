@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `function areSameYears(currentYears: SelectedYears, previousYears: SelectedYears): boolean {`
+Associated declaration: `function areSameYears(`
 
 ```tsx
 /**
@@ -18,7 +18,7 @@ Associated declaration: `function areSameYears(currentYears: SelectedYears, prev
 
 ## Block 2
 
-Associated declaration: `function hasCompleteYears(years: SelectedYears): years is [NonNullable<SelectedYears[0]>, NonNullable<SelectedYears[1]>] {`
+Associated declaration: `function hasCompleteYears(`
 
 ```tsx
 /**

@@ -1,6 +1,6 @@
 # scripts/add-missing-jsdoc.ts
 
-- JSDoc blocks found: 14
+- JSDoc blocks found: 15
 
 ## Block 1
 
@@ -30,6 +30,19 @@ Associated declaration: `function shouldSkip(relativePath: string): boolean {`
 
 ## Block 3
 
+Associated declaration: `function isSourceFile(filePath: string): boolean {`
+
+```ts
+/**
+ * Checks whether is source file.
+ *
+ * @param {any} filePath Input value.
+ * @returns {any} Function result.
+ */
+```
+
+## Block 4
+
 Associated declaration: `async function collectFiles(dir: string): Promise<Array<string>> {`
 
 ```ts
@@ -41,7 +54,7 @@ Associated declaration: `async function collectFiles(dir: string): Promise<Array
  */
 ```
 
-## Block 4
+## Block 5
 
 Associated declaration: `function hasJSDocBefore(node: any, comments: Array<any>): boolean {`
 
@@ -55,7 +68,7 @@ Associated declaration: `function hasJSDocBefore(node: any, comments: Array<any>
  */
 ```
 
-## Block 5
+## Block 6
 
 Associated declaration: `function toWords(name: string): string {`
 
@@ -68,7 +81,7 @@ Associated declaration: `function toWords(name: string): string {`
  */
 ```
 
-## Block 6
+## Block 7
 
 Associated declaration: `function describeName(name: string): string {`
 
@@ -81,7 +94,7 @@ Associated declaration: `function describeName(name: string): string {`
  */
 ```
 
-## Block 7
+## Block 8
 
 Associated declaration: `function paramName(node: any, index: number): string {`
 
@@ -95,7 +108,7 @@ Associated declaration: `function paramName(node: any, index: number): string {`
  */
 ```
 
-## Block 8
+## Block 9
 
 Associated declaration: `function getIndent(source: string, index: number): string {`
 
@@ -109,7 +122,7 @@ Associated declaration: `function getIndent(source: string, index: number): stri
  */
 ```
 
-## Block 9
+## Block 10
 
 Associated declaration: `function getFunctionName(node: any, parent: any): string | null {`
 
@@ -123,7 +136,7 @@ Associated declaration: `function getFunctionName(node: any, parent: any): strin
  */
 ```
 
-## Block 10
+## Block 11
 
 Associated declaration: `function buildJSDoc(name: string, params: Array<any>, indent: string): string {`
 
@@ -138,7 +151,7 @@ Associated declaration: `function buildJSDoc(name: string, params: Array<any>, i
  */
 ```
 
-## Block 11
+## Block 12
 
 Associated declaration: `\`);`
 
@@ -149,16 +162,18 @@ Associated declaration: `\`);`
   ];
 
   params.forEach((param, index) => {
-    lines.push(`${indent} * @param {any} ${paramName(param, index)} Input value.`);
+    lines.push(
+      `${indent} * @param {any} ${paramName(param, index)} Input value.`,
+    );
   });
 
   lines.push(`${indent} * @returns {any} Function result.`);
   lines.push(`${indent} */
 ```
 
-## Block 12
+## Block 13
 
-Associated declaration: `function traverseAndCollect(node: any, parent: any, comments: Array<any>, source: string, inserts: Array<{index: number; text: string}>): void {`
+Associated declaration: `function traverseAndCollect(`
 
 ```ts
 /**
@@ -173,9 +188,9 @@ Associated declaration: `function traverseAndCollect(node: any, parent: any, com
  */
 ```
 
-## Block 13
+## Block 14
 
-Associated declaration: `async function patchFile(absolutePath: string): Promise<{inserted: number; relativePath: string; skipped: boolean}> {`
+Associated declaration: `async function patchFile(`
 
 ```ts
 /**
@@ -186,7 +201,7 @@ Associated declaration: `async function patchFile(absolutePath: string): Promise
  */
 ```
 
-## Block 14
+## Block 15
 
 Associated declaration: `async function main(): Promise<void> {`
 

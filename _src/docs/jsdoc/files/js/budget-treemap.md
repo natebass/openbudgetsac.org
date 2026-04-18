@@ -4,7 +4,7 @@
 
 ## Block 1
 
-Associated declaration: `function i18nT(key: string, fallback?: string, vars?: Record<string, unknown>) {`
+Associated declaration: `function i18nT(`
 
 ```ts
 /**
@@ -45,7 +45,7 @@ Associated declaration: `function i18nLabel(value) {`
 
 ## Block 4
 
-Associated declaration: `namespace.budget_treemap = function() {`
+Associated declaration: `namespace.budget_treemap = () => {`
 
 ```ts
 /**
@@ -57,7 +57,7 @@ Associated declaration: `namespace.budget_treemap = function() {`
 
 ## Block 5
 
-Associated declaration: `let _get_value = function(d) {`
+Associated declaration: `let _get_value = d => d.data.amount;`
 
 ```ts
 /**
@@ -70,7 +70,7 @@ Associated declaration: `let _get_value = function(d) {`
 
 ## Block 6
 
-Associated declaration: `let _hash_normalize = function(s) {`
+Associated declaration: `let _hash_normalize = s => s;`
 
 ```ts
 /**
@@ -83,7 +83,7 @@ Associated declaration: `let _hash_normalize = function(s) {`
 
 ## Block 7
 
-Associated declaration: `let _hash_compare = function(v1, v2) {`
+Associated declaration: `let _hash_compare = (v1, v2) => (v1 == v2 ? 0 : 1);`
 
 ```ts
 /**
@@ -110,7 +110,7 @@ Associated declaration: `function _apply_handlers(d3obj: any) {`
 
 ## Block 9
 
-Associated declaration: `let _tooltip_function = function(d: LegacyTreeNode, i: number) {`
+Associated declaration: `let _tooltip_function = (d: LegacyTreeNode, i: number) => {`
 
 ```ts
 /**
@@ -124,7 +124,7 @@ Associated declaration: `let _tooltip_function = function(d: LegacyTreeNode, i: 
 
 ## Block 10
 
-Associated declaration: `expected: function() {`
+Associated declaration: `expected: function () {`
 
 ```ts
 /**
@@ -136,7 +136,7 @@ Associated declaration: `expected: function() {`
 
 ## Block 11
 
-Associated declaration: `get: function(root: LegacyTreeNode): LegacyTreeNode {`
+Associated declaration: `get: (root: LegacyTreeNode): LegacyTreeNode => {`
 
 ```ts
 /**
@@ -149,7 +149,7 @@ Associated declaration: `get: function(root: LegacyTreeNode): LegacyTreeNode {`
 
 ## Block 12
 
-Associated declaration: `set: function(node: LegacyTreeNode) {`
+Associated declaration: `set: function (node: LegacyTreeNode) {`
 
 ```ts
 /**
@@ -174,7 +174,7 @@ Associated declaration: `function _ensure_elements() {`
 
 ## Block 14
 
-Associated declaration: `function _load_data(url: string | null, callback: (error: Error | null, data: LegacyTreeNode | null) => void) {`
+Associated declaration: `function _load_data(`
 
 ```ts
 /**
@@ -188,19 +188,19 @@ Associated declaration: `function _load_data(url: string | null, callback: (erro
 
 ## Block 15
 
-Associated declaration: `create: function() {`
+Associated declaration: `create: function () {`
 
 ```ts
 /**
-         * Loads data and initializes composed treemap UI widgets.
-         *
-         * @returns {void}
-         */
+       * Loads data and initializes composed treemap UI widgets.
+       *
+       * @returns {void}
+       */
 ```
 
 ## Block 16
 
-Associated declaration: `window.onhashchange = function() {`
+Associated declaration: `window.onhashchange = () => {`
 
 ```ts
 /**
@@ -225,7 +225,7 @@ Associated declaration: `function _create_breadcrumbs(d: LegacyTreeNode) {`
 
 ## Block 18
 
-Associated declaration: `_create_dropdown: function() {`
+Associated declaration: `_create_dropdown: function () {`
 
 ```ts
 /**
@@ -237,19 +237,19 @@ Associated declaration: `_create_dropdown: function() {`
 
 ## Block 19
 
-Associated declaration: `_sync_dropdown_selection: function() {`
+Associated declaration: `_sync_dropdown_selection: () => {`
 
 ```ts
 /**
-         * Applies current dropdown choice values to existing dropdown controls.
-         *
-         * @returns {void}
-         */
+       * Applies current dropdown choice values to existing dropdown controls.
+       *
+       * @returns {void}
+       */
 ```
 
 ## Block 20
 
-Associated declaration: `refresh: function() {`
+Associated declaration: `refresh: function () {`
 
 ```ts
 /**

@@ -9,13 +9,15 @@ const path = require('node:path');
  * @returns {any} Function result.
  */
 function usage(code) {
-  console.log([
-    'Usage:',
-    '  node test/memory-report-to-csv.js <input.json> [output.csv]',
-    '',
-    'Example:',
-    '  node test/memory-report-to-csv.js test/memory-serve-report.json test/memory-serve-report.csv',
-  ].join('\n'));
+  console.log(
+    [
+      'Usage:',
+      '  node test/memory-report-to-csv.js <input.json> [output.csv]',
+      '',
+      'Example:',
+      '  node test/memory-report-to-csv.js test/memory-serve-report.json test/memory-serve-report.csv',
+    ].join('\n'),
+  );
   process.exit(code);
 }
 
@@ -56,7 +58,9 @@ function run() {
 
   const resolvedInput = path.resolve(inputPath);
   if (!fs.existsSync(resolvedInput)) {
-    console.error(`[memory-report-to-csv] Input report not found: ${resolvedInput}`);
+    console.error(
+      `[memory-report-to-csv] Input report not found: ${resolvedInput}`,
+    );
     process.exit(1);
   }
 
@@ -64,7 +68,9 @@ function run() {
   try {
     report = JSON.parse(fs.readFileSync(resolvedInput, 'utf8'));
   } catch (error) {
-    console.error(`[memory-report-to-csv] Failed to parse JSON: ${error.message}`);
+    console.error(
+      `[memory-report-to-csv] Failed to parse JSON: ${error.message}`,
+    );
     process.exit(1);
   }
 
